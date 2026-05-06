@@ -5,12 +5,14 @@ public class Cliente {
     private String nome;
     private String email;
     private String telefone;
+    private String senha;
 
-    public Cliente(String nome, String email, String telefone) {
-        validarEstado(nome, email, telefone);
+    public Cliente(String nome, String email, String telefone, String senha) {
+        validarEstado(nome, email, telefone, senha);
         this.nome = nome;
         this.email = email;
         this.telefone = telefone;
+        this.senha = senha;
     }
 
     public int getId() {
@@ -29,7 +31,7 @@ public class Cliente {
     }
 
     public void setNome(String nome) {
-        validarEstado(nome, email, telefone);
+        validarEstado(nome, email, telefone, senha);
         this.nome = nome;
     }
 
@@ -38,8 +40,17 @@ public class Cliente {
     }
 
     public void setEmail(String email) {
-        validarEstado(nome, email, telefone);
+        validarEstado(nome, email, telefone, senha);
         this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        validarEstado(nome, email, telefone, senha);
+        this.senha = senha;
     }
 
     public String getTelefone() {
@@ -47,19 +58,23 @@ public class Cliente {
     }
 
     public void setTelefone(String telefone) {
-        validarEstado(nome, email, telefone);
+        validarEstado(nome, email, telefone, senha);
         this.telefone = telefone;
     }
 
-    private void validarEstado(String nome, String email, String telefone) {
+    private void validarEstado(String nome, String email, String telefone, String senha) {
         if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("Erro! O nome do cliente não pode ser vazio.");
+            throw new IllegalArgumentException("Erro! O nome não pode ser vazio.");
         }
         if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("Erro! O email do cliente não pode ser vazio.");
+            throw new IllegalArgumentException("Erro! O email não pode ser vazio.");
         }
         if (telefone == null || telefone.trim().isEmpty()) {
-            throw new IllegalArgumentException("Erro! O telefone do cliente não pode ser vazio.");
+            throw new IllegalArgumentException("Erro! O telefone não pode ser vazio.");
+        }
+
+        if (senha == null || senha.trim().isEmpty()) {
+            throw new IllegalArgumentException("Erro! A senha não pode ser vazia.");
         }
     }
 
