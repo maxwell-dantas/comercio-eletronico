@@ -52,10 +52,6 @@ public class VendaItem {
         return idProduto;
     }
 
-    public void setIdProduto(int idProduto) {
-        this.idProduto = idProduto;
-    }
-
     private void validarEstado(int quantidade, double preco) {
         if (quantidade <= 0) {
             throw new IllegalArgumentException("Erro! A quantidade de itens no carrinho deve ser maior que zero.");
