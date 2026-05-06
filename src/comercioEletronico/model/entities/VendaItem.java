@@ -48,10 +48,6 @@ public class VendaItem {
         return idVenda;
     }
 
-    public void setIdVenda(int idVenda) {
-        this.idVenda = idVenda;
-    }
-
     public int getIdProduto() {
         return idProduto;
     }
