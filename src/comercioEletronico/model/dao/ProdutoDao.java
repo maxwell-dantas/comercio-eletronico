@@ -36,13 +36,12 @@ public class ProdutoDao {
         return null;
     }
 
-    public void atualizar(int id, String descricao, double preco, int estoque, int idCategoria) {
+    public void atualizar(int id, String descricao, double preco, int estoque) {
         Produto produto = listarId(id);
         if (produto != null) {
             produto.setDescricao(descricao);
             produto.setPreco(preco);
             produto.setEstoque(estoque);
-            produto.setIdCategoria(idCategoria);
             salvar();
         }
     }
