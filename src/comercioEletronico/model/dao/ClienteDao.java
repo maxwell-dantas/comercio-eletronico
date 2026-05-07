@@ -36,6 +36,16 @@ public class ClienteDao {
         return null;
     }
 
+    public boolean isEmailDisponivel(String email) {
+        abrir();
+        for (Cliente cliente : listaClientes) {
+            if (cliente.getEmail().equalsIgnoreCase(email)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void atualizar(int id, String nome, String email, String telefone, String senha) {
         Cliente cliente = listarId(id);
         if (cliente != null) {
