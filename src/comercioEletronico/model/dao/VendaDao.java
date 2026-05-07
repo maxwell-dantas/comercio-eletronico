@@ -36,14 +36,6 @@ public class VendaDao {
         return null;
     }
 
-    public void atualizar(int id, int idCliente) {
-        Venda venda = listarId(id);
-        if (venda != null) {
-            venda.setIdCliente(idCliente);
-            salvar();
-        }
-    }
-
     public void remover(int id) {
         Venda venda = listarId(id);
         if (venda != null) {
