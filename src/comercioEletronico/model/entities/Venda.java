@@ -58,10 +58,6 @@ public class Venda {
         return idCliente;
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
-    }
-
     @Override
     public String toString() {
         String statusCarrinho = (carrinho) ? "Carrinho em aberto - " : "Carrinho finalizado - ";
