@@ -57,10 +57,6 @@ public class Produto {
         return idCategoria;
     }
 
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
-    }
-
     private void validarEstado(String descricao, double preco, int estoque) {
         if (descricao == null || descricao.trim().isEmpty()) {
             throw new IllegalArgumentException("Erro! A descrição do produto não pode ser vazia.");
