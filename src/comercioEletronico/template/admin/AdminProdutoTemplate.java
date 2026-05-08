@@ -1,8 +1,10 @@
 package comercioEletronico.template.admin;
 
-import java.util.Scanner;
-
+import comercioEletronico.model.entities.Produto;
 import comercioEletronico.view.Util;
+
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class AdminProdutoTemplate {
     private static Scanner scanner = new Scanner(System.in);
@@ -42,5 +44,17 @@ public class AdminProdutoTemplate {
         System.out.print("Digite o ID da categoria para este produto: ");
         dados[3] = scanner.nextLine();
         return dados;
+    }
+
+    public static void listarProdutos(ArrayList<Produto> listaProdutos) {
+        System.out.println("=== PRODUTOS CADASTRADOS ===\n");
+
+        if (listaProdutos.isEmpty()) {
+            System.out.println("Nenhum produto encontrado no sistema.");
+        } else {
+            for (Produto produto : listaProdutos) {
+                System.out.println(produto);
+            }
+        }
     }
 }

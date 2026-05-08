@@ -1,7 +1,9 @@
 package comercioEletronico.template.admin;
 
+import comercioEletronico.model.entities.Cliente;
 import comercioEletronico.view.Util;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AdminClienteTemplate {
@@ -43,5 +45,17 @@ public class AdminClienteTemplate {
         dados[3] = scanner.nextLine();
 
         return dados;
+    }
+
+    public static void listarClientes(ArrayList<Cliente> listaClientes) {
+        System.out.println("=== CLIENTES CADASTRADOS ===\n");
+
+        if (listaClientes.isEmpty()) {
+            System.out.println("Nenhum cliente encontrado no sistema.");
+        } else {
+            for (Cliente cliente : listaClientes) {
+                System.out.println(cliente);
+            }
+        }
     }
 }

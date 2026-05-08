@@ -1,7 +1,9 @@
 package comercioEletronico.template.admin;
 
+import comercioEletronico.model.entities.Venda;
 import comercioEletronico.view.Util;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MenuAdminTemplate {
@@ -21,5 +23,17 @@ public class MenuAdminTemplate {
                 Digite uma opção: 
                 """);
         return Util.lerInteiroSeguro(scanner.nextLine());
+    }
+
+    public static void listarVendas(ArrayList<Venda> listaVendas) {
+        System.out.println("=== VENDAS CADASTRADAS ===\n");
+
+        if (listaVendas.isEmpty()) {
+            System.out.println("Nenhuma venda encontrada no momento.");
+        } else {
+            for (Venda venda : listaVendas) {
+                System.out.println(venda);
+            }
+        }
     }
 }
