@@ -18,9 +18,8 @@ public class AdminCategoriaTemplate {
                 3. Atualizar Categoria
                 4. Remover Categoria
                 0. Sair
-                
-                Digite uma opção: 
                 """);
+        System.out.print("Digite uma opção: ");
         return Util.lerInteiroSeguro(scanner.nextLine());
     }
 

@@ -19,9 +19,8 @@ public class MenuAdminTemplate {
                 4. Reajustar Preços de Produtos
                 5. Listar Vendas
                 0. Sair
-                
-                Digite uma opção: 
                 """);
+        System.out.print("Digite uma opção: ");
         return Util.lerInteiroSeguro(scanner.nextLine());
     }
 

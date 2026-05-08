@@ -18,9 +18,8 @@ public class AdminClienteTemplate {
                 3. Atualizar Cliente
                 4. Remover Cliente
                 0. Sair
-                
-                Digite uma opção: 
                 """);
+        System.out.print("Digite uma opção: ");
         return Util.lerInteiroSeguro(scanner.nextLine());
     }
 
