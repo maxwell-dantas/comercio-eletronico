@@ -40,10 +40,10 @@ public class ClienteDao {
         abrir();
         for (Cliente cliente : listaClientes) {
             if (cliente.getEmail().equalsIgnoreCase(email)) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public void atualizar(int id, String nome, String email, String telefone, String senha) {
