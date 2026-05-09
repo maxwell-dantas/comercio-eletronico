@@ -45,7 +45,7 @@ public class AdminCategoriaTemplate {
     // MÉTODOS DE FEEDBACK
 
     public static void exibirMensagemSaida() {
-        System.out.println("\nVoltando ao Menu Principal...\n");
+        System.out.println("\nVoltando ao Menu Principal...");
     }
 
     public static void exibirMensagemListaVazia() {
