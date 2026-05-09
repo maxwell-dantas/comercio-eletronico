@@ -67,6 +67,12 @@ public class AdminClienteView {
                     }
 
                     dados = AdminClienteTemplate.obterDados();
+
+                    if (!cliente.getEmail().equalsIgnoreCase(dados[1]) && !clienteDao.isEmailDisponivel(dados[1])) {
+                        AdminClienteTemplate.exibirErroEmailEmUso();
+                        continue;
+                    }
+
                     try {
                         clienteDao.atualizar(id, dados[0], dados[1], dados[2], dados[3]);
                         AdminClienteTemplate.exibirSucesso("atualizado");
