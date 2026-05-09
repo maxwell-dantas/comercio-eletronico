@@ -8,7 +8,7 @@ public class Produto {
     private int idCategoria;
 
     public Produto(String descricao, double preco, int estoque, int idCategoria) {
-        validarEstado(descricao, preco, estoque);
+        validarEstado(descricao, preco, estoque, idCategoria);
         this.descricao = descricao;
         this.preco = preco;
         this.estoque = estoque;
@@ -31,7 +31,7 @@ public class Produto {
     }
 
     public void setDescricao(String descricao) {
-        validarEstado(descricao, preco, estoque);
+        validarEstado(descricao, preco, estoque, idCategoria);
         this.descricao = descricao;
     }
 
@@ -40,7 +40,7 @@ public class Produto {
     }
 
     public void setPreco(double preco) {
-        validarEstado(descricao, preco, estoque);
+        validarEstado(descricao, preco, estoque, idCategoria);
         this.preco = preco;
     }
 
@@ -49,7 +49,7 @@ public class Produto {
     }
 
     public void setEstoque(int estoque) {
-        validarEstado(descricao, preco, estoque);
+        validarEstado(descricao, preco, estoque, idCategoria);
         this.estoque = estoque;
     }
 
@@ -57,7 +57,12 @@ public class Produto {
         return idCategoria;
     }
 
-    private void validarEstado(String descricao, double preco, int estoque) {
+    public void setIdCategoria(int idCategoria) {
+        validarEstado(descricao, preco, estoque, idCategoria);
+        this.idCategoria = idCategoria;
+    }
+
+    private void validarEstado(String descricao, double preco, int estoque, int idCategoria) {
         if (descricao == null || descricao.trim().isEmpty()) {
             throw new IllegalArgumentException("Erro de validação: a descrição do produto não pode ser vazia.");
         }
@@ -66,6 +71,9 @@ public class Produto {
         }
         if (estoque < 0) {
             throw new IllegalArgumentException("Erro de validação: o valor do estoque não pode ser negativo.");
+        }
+        if (idCategoria <= 0) {
+            throw new IllegalArgumentException("Erro de validação: o ID da categoria deve ser um número positivo.");
         }
     }
 
