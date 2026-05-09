@@ -146,55 +146,59 @@ public class AdminProdutoView {
     }
 
     public void reajustarPreco() {
-        int opcaoReajuste;
-        double obterPorcentagem;
 
-        do {
-            opcaoReajuste = AdminProdutoTemplate.obterOpcaoReajustarPreco();
+        if (produtoDao.listar().isEmpty()) {
+            AdminProdutoTemplate.exibirMensagemListaVazia();
+        } else {
+            int opcaoReajuste;
+            double obterPorcentagem;
+            do {
+                opcaoReajuste = AdminProdutoTemplate.obterOpcaoReajustarPreco();
 
-            switch (opcaoReajuste) {
-                case 0:
-                    AdminProdutoTemplate.exibirMensagemSaida();
-                    break;
+                switch (opcaoReajuste) {
+                    case 0:
+                        AdminProdutoTemplate.exibirMensagemSaida();
+                        break;
 
-                case 1:
-                    obterPorcentagem = AdminProdutoTemplate.obterPorcentagem(1);
+                    case 1:
+                        obterPorcentagem = AdminProdutoTemplate.obterPorcentagem(1);
 
-                    if (obterPorcentagem < 0.0) {
-                        AdminProdutoTemplate.exibirMensagemErroAumento();
-                        continue;
-                    }
+                        if (obterPorcentagem < 0.0) {
+                            AdminProdutoTemplate.exibirMensagemErroAumento();
+                            continue;
+                        }
 
-                    for (Produto produto : produtoDao.listar()) {
-                        double novoPreco = produto.getPreco() * (1 + (obterPorcentagem / 100.0));
-                        produtoDao.atualizar(produto.getId(), produto.getDescricao(), novoPreco, produto.getEstoque(), produto.getIdCategoria());
-                    }
+                        for (Produto produto : produtoDao.listar()) {
+                            double novoPreco = produto.getPreco() * (1 + (obterPorcentagem / 100.0));
+                            produtoDao.atualizar(produto.getId(), produto.getDescricao(), novoPreco, produto.getEstoque(), produto.getIdCategoria());
+                        }
 
-                    AdminProdutoTemplate.exibirSucessoReajuste(1);
-                    Util.pausar();
-                    break;
+                        AdminProdutoTemplate.exibirSucessoReajuste(1);
+                        Util.pausar();
+                        break;
 
-                case 2:
-                    obterPorcentagem = AdminProdutoTemplate.obterPorcentagem(2);
+                    case 2:
+                        obterPorcentagem = AdminProdutoTemplate.obterPorcentagem(2);
 
-                    if (obterPorcentagem < 0.0 || obterPorcentagem > 100.0) {
-                        AdminProdutoTemplate.exibirMensagemErroDesconto();
-                        continue;
-                    }
+                        if (obterPorcentagem < 0.0 || obterPorcentagem > 99.99) {
+                            AdminProdutoTemplate.exibirMensagemErroDesconto();
+                            continue;
+                        }
 
-                    for (Produto produto : produtoDao.listar()) {
-                        double novoPreco = produto.getPreco() * (1 - (obterPorcentagem / 100.0));
-                        produtoDao.atualizar(produto.getId(), produto.getDescricao(), novoPreco, produto.getEstoque(), produto.getIdCategoria());
-                    }
+                        for (Produto produto : produtoDao.listar()) {
+                            double novoPreco = produto.getPreco() * (1 - (obterPorcentagem / 100.0));
+                            produtoDao.atualizar(produto.getId(), produto.getDescricao(), novoPreco, produto.getEstoque(), produto.getIdCategoria());
+                        }
 
-                    AdminProdutoTemplate.exibirSucessoReajuste(2);
-                    Util.pausar();
-                    break;
+                        AdminProdutoTemplate.exibirSucessoReajuste(2);
+                        Util.pausar();
+                        break;
 
-                default:
-                    AdminProdutoTemplate.exibirErroOpcaoInvalida();
-                    break;
-            }
-        } while (opcaoReajuste != 0);
+                    default:
+                        AdminProdutoTemplate.exibirErroOpcaoInvalida();
+                        break;
+                }
+            } while (opcaoReajuste != 0);
+        }
     }
 }
