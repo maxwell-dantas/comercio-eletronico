@@ -30,7 +30,7 @@ public class MenuAdminView {
                     adminProdutoView.exibirMenu();
                     break;
                 case 4:
-                    // módulo reajuste de preço em construção...
+                    adminProdutoView.reajustarPreco();
                     continue;
                 case 5:
                     MenuAdminTemplate.listarVendas(vendaDao.listar());
