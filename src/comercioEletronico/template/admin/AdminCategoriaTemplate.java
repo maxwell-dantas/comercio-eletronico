@@ -11,6 +11,7 @@ public class AdminCategoriaTemplate {
 
     public static int obterOpcaoCrud() {
         System.out.println("""
+                
                 === CADASTRO DE CATEGORIAS ===
                 
                 1. Listar Categorias
@@ -34,14 +35,40 @@ public class AdminCategoriaTemplate {
     }
 
     public static void listarCategorias(ArrayList<Categoria> listaCategorias) {
-        System.out.println("=== CATEGORIAS CADASTRADAS ===\n");
-
-        if (listaCategorias.isEmpty()) {
-            System.out.println("Nenhuma categoria encontrada no sistema.");
-        } else {
-            for (Categoria categoria : listaCategorias) {
-                System.out.println(categoria);
-            }
+        System.out.println("\n=== CATEGORIAS CADASTRADAS ===\n");
+        for (Categoria categoria : listaCategorias) {
+            System.out.println(categoria);
         }
+        System.out.println();
+    }
+
+    // MÉTODOS DE FEEDBACK
+
+    public static void exibirMensagemSaida() {
+        System.out.println("\nVoltando ao Menu Principal...\n");
+    }
+
+    public static void exibirMensagemListaVazia() {
+        System.out.println("\nAinda não há nenhuma categoria cadastrada na base de dados!");
+    }
+
+    public static void exibirCabecalho(String operacao) {
+        System.out.println("\n=== " + operacao.toUpperCase() + " CATEGORIA ===\n");
+    }
+
+    public static void exibirSucesso(String acao) {
+        System.out.println("\nCategoria " + acao + " com sucesso!\n");
+    }
+
+    public static void exibirErro(String erro) {
+        System.out.println("\n" + erro);
+    }
+
+    public static void exibirErroCategoriaNaoEncontrada() {
+        System.out.println("\nEsta categoria não está cadastrada na base de dados! Digite um ID válido!");
+    }
+
+    public static void exibirErroOpcaoInvalida() {
+        System.out.println("\nInsira um valor válido. Tente novamente!");
     }
 }
