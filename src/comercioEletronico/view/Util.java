@@ -11,12 +11,12 @@ public class Util {
         }
     }
 
-    public static void exibirmensagem(String mensagem) {
-        System.out.println("\n" + mensagem);
+    public static void exibirMensagem(String mensagem) {
+        System.out.println(mensagem);
     }
 
     public static void pausar() {
-        System.out.println("\nPressione ENTER para continuar...");
+        System.out.print("Pressione ENTER para continuar...");
         try {
             System.in.read();
             while (System.in.available() > 0) {
@@ -26,4 +26,3 @@ public class Util {
         }
     }
 }
-
