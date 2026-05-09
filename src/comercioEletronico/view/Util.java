@@ -11,6 +11,14 @@ public class Util {
         }
     }
 
+    public static double lerDoubleSeguro(String entrada) {
+        try {
+            return Double.parseDouble(entrada);
+        } catch (NumberFormatException e) {
+            return -1; // retorna -1 (valor para switch-case default)
+        }
+    }
+
     public static void exibirMensagem(String mensagem) {
         System.out.println(mensagem);
     }
