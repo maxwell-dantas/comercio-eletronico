@@ -11,6 +11,7 @@ public class AdminClienteTemplate {
 
     public static int obterOpcaoCrud() {
         System.out.println("""
+                
                 === CADASTRO DE CLIENTES ===
                 
                 1. Listar Clientes
@@ -47,14 +48,10 @@ public class AdminClienteTemplate {
     }
 
     public static void listarClientes(ArrayList<Cliente> listaClientes) {
-        System.out.println("=== CLIENTES CADASTRADOS ===\n");
-
-        if (listaClientes.isEmpty()) {
-            System.out.println("Nenhum cliente encontrado no sistema.");
-        } else {
-            for (Cliente cliente : listaClientes) {
-                System.out.println(cliente);
-            }
+        System.out.println("\n=== CLIENTES CADASTRADOS ===\n");
+        for (Cliente cliente : listaClientes) {
+            System.out.println(cliente);
         }
+        System.out.println();
     }
 }
