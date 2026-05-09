@@ -10,7 +10,7 @@ public class MenuAdminView {
     private AdminProdutoView adminProdutoView = new AdminProdutoView();
     private VendaDao vendaDao = new VendaDao();
 
-    public void iniciar() {
+    public void exibirMenu() {
         int opcaoPrincipal;
 
         do {
