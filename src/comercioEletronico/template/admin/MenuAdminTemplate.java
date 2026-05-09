@@ -26,20 +26,20 @@ public class MenuAdminTemplate {
 
     public static void listarVendas(ArrayList<Venda> listaVendas) {
         System.out.println("\n=== VENDAS CADASTRADAS ===\n");
-
-        if (listaVendas.isEmpty()) {
-            System.out.println("Nenhuma venda encontrada no momento.\n");
-        } else {
-            for (Venda venda : listaVendas) {
-                System.out.println(venda);
-            }
+        for (Venda venda : listaVendas) {
+            System.out.println(venda);
         }
     }
 
+
     // MÉTODOS DE FEEDBACK
 
+    public static void exibirMensagemListaVazia() {
+        System.out.println("\nAinda não há nenhuma venda cadastrada na base de dados!\n");
+    }
+
     public static void exibirErroOpcaoInvalida() {
-        System.out.println("\nInsira um valor válido. Tente novamente!");
+        System.out.println("\nInsira um valor válido. Tente novamente!\n");
     }
 
     public static void exibirMensagemSaida() {
