@@ -1,9 +1,8 @@
 package comercioEletronico.view.admin;
 
 import comercioEletronico.model.entities.Cliente;
-import comercioEletronico.template.admin.AdminClienteTemplate;
-
 import comercioEletronico.model.dao.ClienteDao;
+import comercioEletronico.template.admin.AdminClienteTemplate;
 import comercioEletronico.view.Util;
 
 public class AdminClienteView {
@@ -20,12 +19,12 @@ public class AdminClienteView {
 
             switch (opcaoCrud) {
                 case 0:
-                    Util.exibirMensagem("\nVoltando ao Menu Principal...\n");
+                    AdminClienteTemplate.exibirMensagemSaida();
                     break;
 
                 case 1:
                     if (clienteDao.listar().isEmpty()) {
-                        Util.exibirMensagem("\nAinda não há nenhum cliente cadastrado na base de dados!");
+                        AdminClienteTemplate.exibirMensagemListaVazia();
                         continue;
                     }
 
@@ -34,74 +33,71 @@ public class AdminClienteView {
                     break;
 
                 case 2:
-                    Util.exibirMensagem("\n=== CADASTRO DE CLIENTE ===\n");
+                    AdminClienteTemplate.exibirCabecalho("Cadastrar");
                     dados = AdminClienteTemplate.obterDados();
-                    boolean emailDisponivel = clienteDao.isEmailDisponivel(dados[1]);
 
-                    if (!emailDisponivel) {
-                        Util.exibirMensagem("\nEste e-mail já está em uso. Por favor, faça login ou use outro e-mail");
+                    if (!clienteDao.isEmailDisponivel(dados[1])) {
+                        AdminClienteTemplate.exibirErroEmailEmUso();
                         continue;
                     }
 
                     try {
                         cliente = new Cliente(dados[0], dados[1], dados[2], dados[3]);
                         clienteDao.inserir(cliente);
-                        Util.exibirMensagem("\nCliente cadastrado com sucesso!\n");
+                        AdminClienteTemplate.exibirSucesso("cadastrado");
                         Util.pausar();
                     } catch (IllegalArgumentException e) {
-                        Util.exibirMensagem("\n" + e.getMessage());
+                        AdminClienteTemplate.exibirErro(e.getMessage());
                     }
                     break;
 
                 case 3:
-                    Util.exibirMensagem("\n=== ATUALIZAÇÃO DE CLIENTE ===\n");
-
                     if (clienteDao.listar().isEmpty()) {
-                        Util.exibirMensagem("Ainda não há nenhum cliente cadastrado na base de dados!");
+                        AdminClienteTemplate.exibirMensagemListaVazia();
                         continue;
                     }
+                    AdminClienteTemplate.exibirCabecalho("Atualizar");
 
                     id = AdminClienteTemplate.obterId();
                     cliente = clienteDao.listarId(id);
 
                     if (cliente == null) {
-                        Util.exibirMensagem("Este cliente não está cadastrado na base de dados! Digite um ID válido!");
+                        AdminClienteTemplate.exibirErroClienteNaoEncontrado();
                         continue;
                     }
 
                     dados = AdminClienteTemplate.obterDados();
                     try {
                         clienteDao.atualizar(id, dados[0], dados[1], dados[2], dados[3]);
-                        Util.exibirMensagem("\nCliente atualizado com sucesso!\n");
+                        AdminClienteTemplate.exibirSucesso("atualizado");
                         Util.pausar();
                     } catch (IllegalArgumentException e) {
-                        Util.exibirMensagem("\n" + e.getMessage());
+                        AdminClienteTemplate.exibirErro(e.getMessage());
                     }
                     break;
 
                 case 4:
-                    Util.exibirMensagem("\n=== REMOÇÃO DE CLIENTE ===\n");
-
                     if (clienteDao.listar().isEmpty()) {
-                        Util.exibirMensagem("Ainda não há nenhum cliente cadastrado na base de dados!");
+                        AdminClienteTemplate.exibirMensagemListaVazia();
                         continue;
                     }
+                    AdminClienteTemplate.exibirCabecalho("Remover");
 
                     id = AdminClienteTemplate.obterId();
                     cliente = clienteDao.listarId(id);
 
                     if (cliente == null) {
-                        Util.exibirMensagem("Este cliente não está cadastrado na base de dados! Digite um ID válido!");
+                        AdminClienteTemplate.exibirErroClienteNaoEncontrado();
                         continue;
                     }
 
                     clienteDao.remover(id);
-                    Util.exibirMensagem("\nCliente removido com sucesso!\n");
+                    AdminClienteTemplate.exibirSucesso("removido");
                     Util.pausar();
                     break;
 
                 default:
-                    Util.exibirMensagem("\nInsira um valor válido. Tente novamente!");
+                    AdminClienteTemplate.exibirErroOpcaoInvalida();
                     break;
             }
         } while (opcaoCrud != 0);
