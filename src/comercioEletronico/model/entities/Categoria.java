@@ -31,7 +31,7 @@ public class Categoria {
 
     private void validarEstado(String descricao) {
         if (descricao == null || descricao.trim().isEmpty()) {
-            throw new IllegalArgumentException("Erro! A descrição da categoria não pode ser vazia.");
+            throw new IllegalArgumentException("Erro de validação: a descrição da categoria não pode ser vazia.");
         }
     }
 
