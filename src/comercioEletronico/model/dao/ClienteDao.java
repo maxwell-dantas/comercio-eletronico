@@ -46,6 +46,26 @@ public class ClienteDao {
         return true;
     }
 
+    public int obterIdClienteLogin(String email, String senha) {
+        abrir();
+        for (Cliente cliente : listaClientes) {
+            if (cliente.getEmail().equalsIgnoreCase(email) && cliente.getSenha().equals(senha)) {
+                return cliente.getId();
+            }
+        }
+        return 0;
+    }
+
+    public int obterAdminCliente(int id) {
+        abrir();
+        for (Cliente cliente : listaClientes) {
+            if (cliente.getEmail().equalsIgnoreCase("admin")) {
+                return 1; // 1 - significa admin
+            }
+        }
+        return 2; // 2 - significa cliente;
+    }
+
     public void atualizar(int id, String nome, String email, String telefone, String senha) {
         Cliente cliente = listarId(id);
         if (cliente != null) {
