@@ -42,7 +42,7 @@ public class AdminCategoriaView {
                         AdminCategoriaTemplate.exibirSucesso("cadastrada");
                         Util.pausar();
                     } catch (IllegalArgumentException e) {
-                        AdminCategoriaTemplate.exibirErro("Erro de validação: " + e.getMessage());
+                        AdminCategoriaTemplate.exibirErro(e.getMessage());
                     }
                     break;
 
@@ -68,7 +68,7 @@ public class AdminCategoriaView {
                         AdminCategoriaTemplate.exibirSucesso("atualizada");
                         Util.pausar();
                     } catch (IllegalArgumentException e) {
-                        AdminCategoriaTemplate.exibirErro("Erro de validação: " + e.getMessage());
+                        AdminCategoriaTemplate.exibirErro(e.getMessage());
                     }
                     break;
 
