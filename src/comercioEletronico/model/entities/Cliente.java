@@ -64,17 +64,17 @@ public class Cliente {
 
     private void validarEstado(String nome, String email, String telefone, String senha) {
         if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("Erro! O nome não pode ser vazio.");
+            throw new IllegalArgumentException("Erro de validação: o nome não pode ser vazio.");
         }
         if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("Erro! O email não pode ser vazio.");
+            throw new IllegalArgumentException("Erro de validação: o email não pode ser vazio.");
         }
         if (telefone == null || telefone.trim().isEmpty()) {
-            throw new IllegalArgumentException("Erro! O telefone não pode ser vazio.");
+            throw new IllegalArgumentException("Erro de validação: o telefone não pode ser vazio.");
         }
 
         if (senha == null || senha.trim().isEmpty()) {
-            throw new IllegalArgumentException("Erro! A senha não pode ser vazia.");
+            throw new IllegalArgumentException("Erro de validação: a senha não pode ser vazia.");
         }
     }
 
