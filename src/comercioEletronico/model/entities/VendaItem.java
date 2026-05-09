@@ -54,10 +54,10 @@ public class VendaItem {
 
     private void validarEstado(int quantidade, double preco) {
         if (quantidade <= 0) {
-            throw new IllegalArgumentException("Erro! A quantidade de itens no carrinho deve ser maior que zero.");
+            throw new IllegalArgumentException("Erro de validação: a quantidade de itens no carrinho deve ser maior que zero.");
         }
         if (preco < 0) { // Caso haja produtos com desconto (brinde), evitar que o dado seja negativo
-            throw new IllegalArgumentException("Erro! O preço do produto não pode ser negativo.");
+            throw new IllegalArgumentException("Erro de validação: o preço do produto não pode ser negativo.");
         }
     }
 

@@ -49,7 +49,7 @@ public class Venda {
 
     public void setTotal(double total) {
         if (total < 0) {
-            throw new IllegalArgumentException("Erro! O valor total da venda não pode ser negativo.");
+            throw new IllegalArgumentException("Erro de validação: o valor total da venda não pode ser negativo.");
         }
         this.total = total;
     }

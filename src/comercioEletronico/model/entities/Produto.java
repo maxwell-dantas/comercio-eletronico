@@ -59,13 +59,13 @@ public class Produto {
 
     private void validarEstado(String descricao, double preco, int estoque) {
         if (descricao == null || descricao.trim().isEmpty()) {
-            throw new IllegalArgumentException("Erro! A descrição do produto não pode ser vazia.");
+            throw new IllegalArgumentException("Erro de validação: a descrição do produto não pode ser vazia.");
         }
         if (preco <= 0) {
-            throw new IllegalArgumentException("Erro! O preço do produto deve ser maior que zero.");
+            throw new IllegalArgumentException("Erro de validação: o preço do produto deve ser maior que zero.");
         }
         if (estoque < 0) {
-            throw new IllegalArgumentException("Erro! O estoque não pode ser negativo.");
+            throw new IllegalArgumentException("Erro de validação: o valor do estoque não pode ser negativo.");
         }
     }
 
