@@ -20,81 +20,90 @@ public class AdminClienteView {
 
             switch (opcaoCrud) {
                 case 0:
-                    Util.exibirmensagem("Voltando ao Menu Principal...");
-                    Util.pausar();
+                    Util.exibirMensagem("\nVoltando ao Menu Principal...\n");
                     break;
 
                 case 1:
+                    if (clienteDao.listar().isEmpty()) {
+                        Util.exibirMensagem("\nAinda não há nenhum cliente cadastrado na base de dados!");
+                        continue;
+                    }
+
                     AdminClienteTemplate.listarClientes(clienteDao.listar());
                     Util.pausar();
                     break;
 
                 case 2:
-                    Util.exibirmensagem("=== CADASTRO DE CLIENTE ===");
+                    Util.exibirMensagem("\n=== CADASTRO DE CLIENTE ===\n");
                     dados = AdminClienteTemplate.obterDados();
                     boolean emailDisponivel = clienteDao.isEmailDisponivel(dados[1]);
 
                     if (!emailDisponivel) {
-                        Util.exibirmensagem("Este e-mail já está em uso. Por favor, faça login ou use outro e-mail");
-                        Util.pausar();
+                        Util.exibirMensagem("\nEste e-mail já está em uso. Por favor, faça login ou use outro e-mail");
                         continue;
                     }
 
                     try {
                         cliente = new Cliente(dados[0], dados[1], dados[2], dados[3]);
                         clienteDao.inserir(cliente);
-                        Util.exibirmensagem("Cliente cadastrado com sucesso!");
+                        Util.exibirMensagem("\nCliente cadastrado com sucesso!\n");
                         Util.pausar();
                     } catch (IllegalArgumentException e) {
-                        Util.exibirmensagem("Erro de validação: " + e.getMessage());
-                        Util.pausar();
+                        Util.exibirMensagem("\n" + e.getMessage());
                     }
                     break;
 
                 case 3:
-                    Util.exibirmensagem("=== ATUALIZAÇÃO DE CLIENTE ===");
+                    Util.exibirMensagem("\n=== ATUALIZAÇÃO DE CLIENTE ===\n");
+
+                    if (clienteDao.listar().isEmpty()) {
+                        Util.exibirMensagem("Ainda não há nenhum cliente cadastrado na base de dados!");
+                        continue;
+                    }
+
                     id = AdminClienteTemplate.obterId();
                     cliente = clienteDao.listarId(id);
 
                     if (cliente == null) {
-                        Util.exibirmensagem("Este cliente não está cadastrado na base de dados! Digite um ID válido!");
-                        Util.pausar();
+                        Util.exibirMensagem("Este cliente não está cadastrado na base de dados! Digite um ID válido!");
                         continue;
                     }
 
                     dados = AdminClienteTemplate.obterDados();
                     try {
                         clienteDao.atualizar(id, dados[0], dados[1], dados[2], dados[3]);
-                        Util.exibirmensagem("Cliente atualizado com sucesso!");
+                        Util.exibirMensagem("\nCliente atualizado com sucesso!\n");
                         Util.pausar();
                     } catch (IllegalArgumentException e) {
-                        Util.exibirmensagem("Erro de validação: " + e.getMessage());
-                        Util.pausar();
+                        Util.exibirMensagem("\n" + e.getMessage());
                     }
                     break;
 
                 case 4:
-                    Util.exibirmensagem("=== REMOVER CLIENTE ===");
+                    Util.exibirMensagem("\n=== REMOÇÃO DE CLIENTE ===\n");
+
+                    if (clienteDao.listar().isEmpty()) {
+                        Util.exibirMensagem("Ainda não há nenhum cliente cadastrado na base de dados!");
+                        continue;
+                    }
+
                     id = AdminClienteTemplate.obterId();
                     cliente = clienteDao.listarId(id);
 
                     if (cliente == null) {
-                        Util.exibirmensagem("Este cliente não está cadastrado na base de dados! Digite um ID válido!");
-                        Util.pausar();
+                        Util.exibirMensagem("Este cliente não está cadastrado na base de dados! Digite um ID válido!");
                         continue;
                     }
 
                     clienteDao.remover(id);
-                    Util.exibirmensagem("Cliente removido com sucesso!");
+                    Util.exibirMensagem("\nCliente removido com sucesso!\n");
                     Util.pausar();
                     break;
 
                 default:
-                    Util.exibirmensagem("Insira um valor válido. Tente novamente!");
-                    Util.pausar();
+                    Util.exibirMensagem("\nInsira um valor válido. Tente novamente!");
                     break;
             }
-
         } while (opcaoCrud != 0);
     }
 }
