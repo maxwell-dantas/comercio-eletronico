@@ -54,4 +54,38 @@ public class AdminClienteTemplate {
         }
         System.out.println();
     }
+
+    // MÉTODOS DE FEEDBACK
+
+    public static void exibirMensagemSaida() {
+        System.out.println("\nVoltando ao Menu Principal...\n");
+    }
+
+    public static void exibirMensagemListaVazia() {
+        System.out.println("\nAinda não há nenhum cliente cadastrado na base de dados!");
+    }
+
+    public static void exibirCabecalho(String operacao) {
+        System.out.println("\n=== " + operacao.toUpperCase() + " CLIENTE ===\n");
+    }
+
+    public static void exibirSucesso(String acao) {
+        System.out.println("\nCliente " + acao + " com sucesso!\n");
+    }
+
+    public static void exibirErro(String erro) {
+        System.out.println("\n" + erro);
+    }
+
+    public static void exibirErroEmailEmUso() {
+        System.out.println("\nEste e-mail já está em uso. Por favor, faça login ou use outro e-mail.");
+    }
+
+    public static void exibirErroClienteNaoEncontrado() {
+        System.out.println("\nEste cliente não está cadastrado na base de dados! Digite um ID válido!");
+    }
+
+    public static void exibirErroOpcaoInvalida() {
+        System.out.println("\nInsira um valor válido. Tente novamente!");
+    }
 }
