@@ -80,7 +80,7 @@ public class AdminProdutoTemplate {
     // MÉTODOS DE FEEDBACK
 
     public static void exibirMensagemSaida() {
-        System.out.println("\nVoltando ao Menu Principal...\n");
+        System.out.println("\nVoltando ao Menu Principal...");
     }
 
     public static void exibirMensagemListaVazia() {
@@ -116,7 +116,7 @@ public class AdminProdutoTemplate {
     }
 
     public static void exibirMensagemErroDesconto() {
-        System.out.println("\nO valor do desconto precisa estar entre 0 e 100%.");
+        System.out.println("\nO valor do desconto precisa estar entre 0 e 99.99%.");
     }
 
     public static void exibirMensagemErroAumento() {
