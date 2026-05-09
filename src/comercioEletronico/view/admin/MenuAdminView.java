@@ -5,10 +5,10 @@ import comercioEletronico.template.admin.MenuAdminTemplate;
 import comercioEletronico.view.Util;
 
 public class MenuAdminView {
-    AdminClienteView adminClienteView = new AdminClienteView();
-    AdminCategoriaView adminCategoriaView = new AdminCategoriaView();
-    AdminProdutoView adminProdutoView = new AdminProdutoView();
-    VendaDao vendaDao = new VendaDao();
+    private AdminClienteView adminClienteView = new AdminClienteView();
+    private AdminCategoriaView adminCategoriaView = new AdminCategoriaView();
+    private AdminProdutoView adminProdutoView = new AdminProdutoView();
+    private VendaDao vendaDao = new VendaDao();
 
     public void iniciar() {
         int opcaoPrincipal;

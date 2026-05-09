@@ -6,7 +6,7 @@ import comercioEletronico.template.admin.AdminClienteTemplate;
 import comercioEletronico.view.Util;
 
 public class AdminClienteView {
-    ClienteDao clienteDao = new ClienteDao();
+    private ClienteDao clienteDao = new ClienteDao();
 
     public void exibirMenu() {
         Cliente cliente;
