@@ -18,6 +18,11 @@ public class VisitanteView {
         int idVisitante;
         int opcaoMenuLogin;
 
+        if (clienteDao.listar().isEmpty()) {
+            cliente = new Cliente("admin", "admin", "admin", "admin");
+            clienteDao.inserir(cliente);
+        }
+
         do {
             opcaoMenuLogin = VisitanteTemplate.obterOpcaoMenuLogin();
 
