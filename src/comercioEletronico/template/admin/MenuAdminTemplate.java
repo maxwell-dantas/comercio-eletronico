@@ -1,6 +1,7 @@
 package comercioEletronico.template.admin;
 
 import comercioEletronico.model.entities.Venda;
+import comercioEletronico.model.entities.VendaItem;
 import comercioEletronico.view.Util;
 
 import java.util.ArrayList;
@@ -25,10 +26,17 @@ public class MenuAdminTemplate {
         return Util.lerInteiroSeguro(scanner.nextLine());
     }
 
-    public static void listarVendas(ArrayList<Venda> listaVendas) {
+    public static void listarVendas(ArrayList<Venda> listaVendas, ArrayList<VendaItem> vendaItems) {
         System.out.println("\n=== VENDAS CADASTRADAS ===\n");
         for (Venda venda : listaVendas) {
-            System.out.println(venda);
+            System.out.println("ID venda: " + venda.getId() + " - " + venda + " - ID cliente: " + venda.getIdCliente());
+
+            int contadorItem = 1;
+            for (VendaItem vendaItem : vendaItems) {
+                System.out.println("    "+ contadorItem + " - " + vendaItem);
+                contadorItem++;
+            }
+            System.out.println();
         }
     }
 
@@ -43,6 +51,6 @@ public class MenuAdminTemplate {
     }
 
     public static void exibirMensagemSaida() {
-        System.out.println("\nVoltando ao Sistema de Login...\n");
+        System.out.println("\nVoltando ao Sistema de Login...");
     }
 }
