@@ -78,11 +78,19 @@ public class AdminClienteTemplate {
     }
 
     public static void exibirErroEmailEmUso() {
-        System.out.println("\nEste e-mail já está em uso. Por favor, faça login ou use outro e-mail.");
+        System.out.println("\nEste e-mail já está em uso. Por favor, use outro e-mail.");
     }
 
     public static void exibirErroClienteNaoEncontrado() {
         System.out.println("\nEste cliente não está cadastrado na base de dados! Digite um ID válido!");
+    }
+
+    public static void exibirErroAtualizarAdmin() {
+        System.out.println("\nOs valores do administrador não podem ser alterados!");
+    }
+
+    public static void exibirErroRemoverAdmin() {
+        System.out.println("\nNão é possível remover o cadastro do administrador!");
     }
 
     public static void exibirErroOpcaoInvalida() {
