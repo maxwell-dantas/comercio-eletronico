@@ -1,6 +1,7 @@
 package comercioEletronico.view.admin;
 
 import comercioEletronico.model.dao.VendaDao;
+import comercioEletronico.model.dao.VendaItemDao;
 import comercioEletronico.template.admin.MenuAdminTemplate;
 import comercioEletronico.view.Util;
 
@@ -9,6 +10,7 @@ public class MenuAdminView {
     private AdminCategoriaView adminCategoriaView = new AdminCategoriaView();
     private AdminProdutoView adminProdutoView = new AdminProdutoView();
     private VendaDao vendaDao = new VendaDao();
+    private VendaItemDao vendaItemDao = new VendaItemDao();
 
     public void exibirMenu() {
         int opcaoPrincipal;
@@ -44,7 +46,7 @@ public class MenuAdminView {
                         continue;
                     }
 
-                    MenuAdminTemplate.listarVendas(vendaDao.listar());
+                    MenuAdminTemplate.listarVendas(vendaDao.listar(), vendaItemDao.listar());
                     Util.pausar();
                     break;
 
