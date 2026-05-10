@@ -58,6 +58,23 @@ public class VendaItemDao {
         return listaVendaItens;
     }
 
+    public void limparCarrinho(int idVenda) {
+        abrir();
+        listaVendaItens.removeIf(item -> item.getIdVenda() == idVenda);
+        salvar();
+    }
+
+    public VendaItem obterVendaItemProduto(int idVenda, int idProduto) {
+        abrir();
+        for (VendaItem item : listaVendaItens) {
+            // verifica se o item pertence ao carrinho atual (idVenda) e é o produto que o cliente está tentando adicionar
+            if (item.getIdVenda() == idVenda && item.getIdProduto() == idProduto) {
+                return item;
+            }
+        }
+        return null;
+    }
+
     public void abrir() {
         try {
             // 1. Abre o leitor para o caminho onde o arquivo foi salvo
