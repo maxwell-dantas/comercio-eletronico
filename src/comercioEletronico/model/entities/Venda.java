@@ -60,7 +60,6 @@ public class Venda {
 
     @Override
     public String toString() {
-        String statusCarrinho = (carrinho) ? "Carrinho em aberto - " : "Carrinho finalizado - ";
-        return statusCarrinho + id + " - R$ " + String.format("%.2f", total) + " - Data da compra: " + data + " - ID cliente: " + idCliente;
+        return "Total: R$ " + String.format("%.2f", total) + " - Data da compra: " + data;
     }
 }
