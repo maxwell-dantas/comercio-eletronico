@@ -47,6 +47,14 @@ public class ProdutoDao {
         }
     }
 
+    public void atualizarEstoque(int idProduto, int estoque) {
+        Produto produto = listarId(idProduto);
+        if (produto!= null) {
+            produto.setEstoque(produto.getEstoque() - estoque);
+            salvar();
+        }
+    }
+
     public void remover(int id) {
         Produto produto = listarId(id);
         if (produto != null) {
