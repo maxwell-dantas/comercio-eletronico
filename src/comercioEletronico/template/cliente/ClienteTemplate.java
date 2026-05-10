@@ -29,7 +29,7 @@ public class ClienteTemplate {
 
     public static String[] obterDados() {
         String[] dados = new String[2];
-        System.out.print("Digite o ID do produto: ");
+        System.out.print("\nDigite o ID do produto: ");
         dados[0] = scanner.nextLine();
         System.out.print("Digite a quantidade: ");
         dados[1] = scanner.nextLine();
@@ -37,18 +37,24 @@ public class ClienteTemplate {
     }
 
     public static void visualizarCarrinho(ArrayList<VendaItem> vendaItems, int idVenda) {
-        System.out.println("\n=== SEU CARRINHO ===");
+        System.out.println("\n=== SEU CARRINHO ===\n");
         boolean temItens = false;
+        int contador = 1;
+        double totalCarrinho = 0.0;
 
         for (VendaItem vendaItem : vendaItems) {
             if (vendaItem.getIdVenda() == idVenda) {
-                System.out.println(vendaItem);
+                System.out.println(contador + " - " + vendaItem + " - Total: R$ " + String.format("%.2f", vendaItem.getQuantidade() * vendaItem.getPreco()));
+                totalCarrinho += vendaItem.getQuantidade() * vendaItem.getPreco();
+                contador++;
                 temItens = true;
             }
         }
 
         if (!temItens) {
             System.out.println("Seu carrinho está vazio.");
+        } else {
+            System.out.printf("\nTotal Carrinho: R$ %.2f\n", totalCarrinho);
         }
         System.out.println();
     }
