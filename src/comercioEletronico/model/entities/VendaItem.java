@@ -63,7 +63,6 @@ public class VendaItem {
 
     @Override
     public String toString() {
-        return id + " - " + quantidade + " unidades - R$ " + String.format("%.2f", preco)
-                + " - ID venda: " + idVenda + " - ID produto: " + idProduto;
+        return "ID produto: " + idProduto + " - " + quantidade + " unidades " + "- Preço unitário: " + String.format("%.2f", preco);
     }
 }
