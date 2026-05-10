@@ -1,4 +1,4 @@
-package comercioEletronico.view;
+package comercioEletronico;
 
 import comercioEletronico.view.visitante.VisitanteView;
 
