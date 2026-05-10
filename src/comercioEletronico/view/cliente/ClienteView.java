@@ -32,7 +32,14 @@ public class ClienteView {
 
             switch (opcaoMenu) {
                 case 0:
-                    vendaItemDao.limparCarrinho(idVenda);
+                    venda = vendaDao.listarId(idVenda);
+
+                    // para compras não finalizadas, a venda e os itens desta venda são removidas para não acumular sujeira nos arquivos json
+                    if (venda != null && venda.getCarrinho()) {
+                        vendaItemDao.limparCarrinho(idVenda);
+                        vendaDao.remover(idVenda);
+                    }
+
                     ClienteTemplate.exibirMensagemSaida();
                     break;
 
@@ -127,7 +134,7 @@ public class ClienteView {
                     break;
 
                 case 6:
-                    ClienteTemplate.listarCompras(vendaDao.listar(), idClienteLogado);
+                    ClienteTemplate.listarCompras(vendaDao.listar(), idClienteLogado, vendaItemDao.listar());
                     Util.pausar();
                     break;
 
