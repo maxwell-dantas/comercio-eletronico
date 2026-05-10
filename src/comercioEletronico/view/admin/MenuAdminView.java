@@ -20,19 +20,30 @@ public class MenuAdminView {
                 case 0:
                     MenuAdminTemplate.exibirMensagemSaida();
                     break;
+
                 case 1:
                     adminClienteView.exibirMenu();
                     break;
+
                 case 2:
                     adminCategoriaView.exibirMenu();
                     break;
+
                 case 3:
                     adminProdutoView.exibirMenu();
                     break;
+
                 case 4:
                     adminProdutoView.reajustarPreco();
-                    continue;
+                    break;
+
                 case 5:
+                    if (vendaDao.listar().isEmpty()) {
+                        MenuAdminTemplate.exibirMensagemListaVazia();
+                        Util.pausar();
+                        continue;
+                    }
+
                     MenuAdminTemplate.listarVendas(vendaDao.listar());
                     Util.pausar();
                     break;
