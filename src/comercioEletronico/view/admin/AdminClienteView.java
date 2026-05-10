@@ -66,6 +66,11 @@ public class AdminClienteView {
                         continue;
                     }
 
+                    if (cliente.getEmail().equalsIgnoreCase("admin")) {
+                        AdminClienteTemplate.exibirErroAtualizarAdmin();
+                        continue;
+                    }
+
                     dados = AdminClienteTemplate.obterDados();
 
                     if (!cliente.getEmail().equalsIgnoreCase(dados[1]) && !clienteDao.isEmailDisponivel(dados[1])) {
@@ -94,6 +99,11 @@ public class AdminClienteView {
 
                     if (cliente == null) {
                         AdminClienteTemplate.exibirErroClienteNaoEncontrado();
+                        continue;
+                    }
+
+                    if (cliente.getEmail().equalsIgnoreCase("admin")) {
+                        AdminClienteTemplate.exibirErroAtualizarAdmin();
                         continue;
                     }
 
