@@ -23,7 +23,7 @@ public class VisitanteTemplate {
     public static String[] obterDados() {
         String[] dados = new String[4];
 
-        System.out.print("Digite o seu nome: ");
+        System.out.print("\nDigite o seu nome: ");
         dados[0] = scanner.nextLine();
 
         System.out.print("Digite o seu e-mail: ");
@@ -41,7 +41,7 @@ public class VisitanteTemplate {
     public static String[] obterDadosLogin() {
         String[] dados = new String[2];
 
-        System.out.print("Digite o seu e-mail: ");
+        System.out.print("\nDigite o seu e-mail: ");
         dados[0] = scanner.nextLine();
 
         System.out.print("Digite a sua senha: ");
@@ -65,7 +65,7 @@ public class VisitanteTemplate {
     }
 
     public static void exibirErroEmailEmUso() {
-        System.out.println("\nEste e-mail já está em uso. Por favor, faça login ou use outro e-mail.");
+        System.out.println("\nEste e-mail já está em uso. Por favor, faça login ou use outro e-mail.\n");
     }
 
     public static void exibirErroOpcaoInvalida() {
@@ -73,6 +73,6 @@ public class VisitanteTemplate {
     }
 
     public static void exibirMensagemSaida() {
-        System.out.println("\nSistema encerrado! Até logo...\n");
+        System.out.println("\nSistema encerrado! Até logo...");
     }
 }
