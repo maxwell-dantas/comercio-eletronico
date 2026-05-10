@@ -11,6 +11,7 @@ public class MenuAdminTemplate {
 
     public static int obterOpcaoPrincipal() {
         System.out.println("""
+                
                 === MENU ADMINISTRADOR ===
                 
                 1. Cadastro de Clientes
@@ -30,7 +31,6 @@ public class MenuAdminTemplate {
             System.out.println(venda);
         }
     }
-
 
     // MÉTODOS DE FEEDBACK
 
