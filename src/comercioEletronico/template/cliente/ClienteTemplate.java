@@ -92,7 +92,7 @@ public class ClienteTemplate {
     // MÉTODOS FEEDBACK
 
     public static void exibirSucessoAdicionado() {
-        System.out.println("\nProduto adicionado ao carrinho!\n");
+        System.out.println("\nProduto adicionado ao carrinho!");
     }
 
     public static void exibirSucessoCompra() {
