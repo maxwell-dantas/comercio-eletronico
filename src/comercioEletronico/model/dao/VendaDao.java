@@ -36,6 +36,15 @@ public class VendaDao {
         return null;
     }
 
+    public void atualizar(int id, boolean carrinho, double total) {
+        Venda venda = listarId(id);
+        if (venda != null) {
+            venda.setCarrinho(carrinho);
+            venda.setTotal(total);
+            salvar();
+        }
+    }
+
     public void remover(int id) {
         Venda venda = listarId(id);
         if (venda != null) {
