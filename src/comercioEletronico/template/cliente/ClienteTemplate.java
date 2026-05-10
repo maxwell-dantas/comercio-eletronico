@@ -59,22 +59,34 @@ public class ClienteTemplate {
         System.out.println();
     }
 
-    public static void listarCompras(ArrayList<Venda> listaVendas, int idCliente) {
-        System.out.println("\n=== SEU HISTÓRICO DE COMPRAS ===");
+    public static void listarCompras(ArrayList<Venda> listaVendas, int idCliente, ArrayList<VendaItem> vendaItems) {
+        System.out.println("\n=== SEU HISTÓRICO DE COMPRAS ===\n");
         boolean temCompras = false;
+        int contadorVenda = 1;
 
         for (Venda venda : listaVendas) {
-            // lista apenas as vendas concluídas de um cliente específico
+            // lista apenas as vendas concluídas de um cliente específico e seus itens
             if (venda.getIdCliente() == idCliente && !venda.getCarrinho()) {
-                System.out.println(venda);
+                System.out.println(contadorVenda + " - " + venda);
+                contadorVenda++;
+
+                int contadorItem = 1;
+                for (VendaItem vendaItem : vendaItems) {
+                    if (vendaItem.getIdVenda() == venda.getId()) {
+                        System.out.println("    "+ contadorItem + " - " + vendaItem);
+                        contadorItem++;
+                    }
+                }
+
+                System.out.println();
+
                 temCompras = true;
             }
         }
 
         if (!temCompras) {
-            System.out.println("Você ainda não realizou nenhuma compra finalizada.");
+            System.out.println("Você ainda não realizou nenhuma compra.");
         }
-        System.out.println();
     }
 
     // MÉTODOS FEEDBACK
@@ -92,7 +104,7 @@ public class ClienteTemplate {
     }
 
     public static void exibirMensagemCarrinhoVazio() {
-        System.out.println("\nNão é possível finalizar: Seu carrinho está vazio!\n");
+        System.out.println("\nNão é possível finalizar: Seu carrinho está vazio!");
     }
 
     public static void exibirErro(String erro) {
@@ -100,7 +112,7 @@ public class ClienteTemplate {
     }
 
     public static void exibirErroProdutoNaoEncontrado() {
-        System.out.println("\nEste produto não está cadastrado! Digite um ID válido.\n");
+        System.out.println("\nEste produto não está cadastrado! Digite um ID válido.");
     }
 
     public static void exibirErroQuantidadeItens() {
@@ -112,7 +124,7 @@ public class ClienteTemplate {
     }
 
     public static void exibirMensagemSaida() {
-        System.out.println("\nSaindo da loja e voltando ao Menu Principal...\n");
+        System.out.println("\nSaindo da loja e voltando ao Menu Principal...");
     }
 
 }
