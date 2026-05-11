@@ -7,12 +7,11 @@ public class Cliente {
     private String telefone;
     private String senha;
 
-    public Cliente(String nome, String email, String telefone, String senha) {
-        validarEstado(nome, email, telefone, senha);
-        this.nome = nome;
-        this.email = email;
-        this.telefone = telefone;
-        this.senha = senha;
+    public Cliente(String nome, String telefone, String email, String senha) {
+        setNome(nome);
+        setTelefone(telefone);
+        setEmail(email);
+        setSenha(senha);
     }
 
     public int getId() {
@@ -31,8 +30,21 @@ public class Cliente {
     }
 
     public void setNome(String nome) {
-        validarEstado(nome, email, telefone, senha);
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("Erro de validação: o nome não pode ser vazio.");
+        }
         this.nome = nome;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        if (telefone == null || telefone.trim().isEmpty()) {
+            throw new IllegalArgumentException("Erro de validação: o telefone não pode ser vazio.");
+        }
+        this.telefone = telefone;
     }
 
     public String getEmail() {
@@ -40,7 +52,9 @@ public class Cliente {
     }
 
     public void setEmail(String email) {
-        validarEstado(nome, email, telefone, senha);
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Erro de validação: o email não pode ser vazio.");
+        }
         this.email = email;
     }
 
@@ -49,37 +63,14 @@ public class Cliente {
     }
 
     public void setSenha(String senha) {
-        validarEstado(nome, email, telefone, senha);
-        this.senha = senha;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        validarEstado(nome, email, telefone, senha);
-        this.telefone = telefone;
-    }
-
-    private void validarEstado(String nome, String email, String telefone, String senha) {
-        if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("Erro de validação: o nome não pode ser vazio.");
-        }
-        if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("Erro de validação: o email não pode ser vazio.");
-        }
-        if (telefone == null || telefone.trim().isEmpty()) {
-            throw new IllegalArgumentException("Erro de validação: o telefone não pode ser vazio.");
-        }
-
         if (senha == null || senha.trim().isEmpty()) {
             throw new IllegalArgumentException("Erro de validação: a senha não pode ser vazia.");
         }
+        this.senha = senha;
     }
 
     @Override
     public String toString() {
-        return id + " - " + nome + " - " + email + " - " + telefone;
+        return "ID cliente: " + id + " - " + nome + " - " + telefone + " - " + email;
     }
 }
