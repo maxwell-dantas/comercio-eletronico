@@ -2,87 +2,40 @@ package comercioEletronico.view.visitante;
 
 import comercioEletronico.model.dao.ClienteDao;
 import comercioEletronico.model.entities.Cliente;
-import comercioEletronico.template.visitante.VisitanteTemplate;
-import comercioEletronico.view.Util;
-import comercioEletronico.view.admin.MenuAdminView;
-import comercioEletronico.view.cliente.ClienteView;
 
 public class VisitanteView {
-    private ClienteDao clienteDao = new ClienteDao();
-    private MenuAdminView menuAdminView = new MenuAdminView();
-    private ClienteView clienteView = new ClienteView();
+    private static ClienteDao clienteDao = new ClienteDao();
 
-    public void exibirMenu() {
-        Cliente cliente;
-        String[] dados;
-        int idVisitante;
-        int opcaoMenuLogin;
-
+    public static void inicializarSistema() {
+        // inicializa a aplicação com um cadastro admin caso a lista de clientes seja vazia
         if (clienteDao.listar().isEmpty()) {
-            cliente = new Cliente("admin", "admin", "admin", "admin");
+            Cliente cliente = new Cliente("admin", "admin", "admin", "admin");
             clienteDao.inserir(cliente);
         }
+    }
 
-        do {
-            opcaoMenuLogin = VisitanteTemplate.obterOpcaoMenuLogin();
+    public static int entrar(String email, String senha) {
+        int idUsuario = clienteDao.obterIdUsuarioLogin(email, senha);
 
-            switch (opcaoMenuLogin) {
-                case 0:
-                    VisitanteTemplate.exibirMensagemSaida();
-                    break;
+        if (idUsuario == 0) { // não existe usuário com o ID informado
+            return 0;
+        }
 
-                case 1:
-                    // [0] email, [1] senha
-                    dados = VisitanteTemplate.obterDadosLogin();
-                    idVisitante = clienteDao.obterIdVisitanteLogin(dados[0], dados[1]);
+        return idUsuario;
+    }
 
-                    if (idVisitante == 0) {
-                        VisitanteTemplate.exibirErroLogin();
-                        Util.pausar();
-                        continue;
-                    }
+    public static void criarConta(String nome, String telefone, String email, String senha) {
+        Cliente cliente;
 
-                    // 1 - admin, 2 - cliente
-                    int adminCliente = clienteDao.obterAdminCliente(idVisitante);
+        if (!clienteDao.isEmailDisponivel(email)) {
+            throw new IllegalArgumentException("Este e-mail já está em uso. Por favor, faça login ou use outro e-mail.");
+        }
 
-                    switch (adminCliente) {
-                        case 1:
-                            menuAdminView.exibirMenu();
-                            continue;
+        cliente = new Cliente(nome, telefone, email, senha);
+        clienteDao.inserir(cliente);
+    }
 
-                        case 2:
-                            // Passando o ID do cliente para a View do Cliente
-                            clienteView.exibirMenu(idVisitante);
-                            continue;
-                    }
-                    break;
-
-                case 2:
-                    // [0] nome, [1] email, [2] telefone, [3] senha
-                    dados = VisitanteTemplate.obterDados();
-
-                    if (!clienteDao.isEmailDisponivel(dados[1])) {
-                        VisitanteTemplate.exibirErroEmailEmUso();
-                        Util.pausar();
-                        continue;
-                    }
-
-                    try {
-                        cliente = new Cliente(dados[0], dados[1], dados[2], dados[3]);
-                        clienteDao.inserir(cliente); // salva o cliente no banco de dados (arquivo json)
-                        VisitanteTemplate.exibirSucessoCadastro();
-                        Util.pausar();
-                    } catch (IllegalArgumentException e) {
-                        VisitanteTemplate.exibirErro(e.getMessage());
-                        Util.pausar();
-                    }
-                    break;
-
-                default:
-                    VisitanteTemplate.exibirErroOpcaoInvalida();
-                    break;
-            }
-
-        } while (opcaoMenuLogin != 0);
+    public static Cliente obterUsuario(int id) {
+        return clienteDao.listarId(id);
     }
 }
