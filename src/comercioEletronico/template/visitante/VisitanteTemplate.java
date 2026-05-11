@@ -1,78 +1,88 @@
 package comercioEletronico.template.visitante;
 
-import comercioEletronico.view.Util;
+import comercioEletronico.template.admin.AdminTemplate;
+import comercioEletronico.template.cliente.ClienteTemplate;
+import comercioEletronico.util.Util;
+import comercioEletronico.view.visitante.VisitanteView;
 
 import java.util.Scanner;
 
 public class VisitanteTemplate {
     private static Scanner scanner = new Scanner(System.in);
 
-    public static int obterOpcaoMenuLogin() {
-        System.out.println("""
-                
-                === SISTEMA DE LOGIN ===
-                
-                1. Entrar
-                2. Criar conta
-                0. Sair
-                """);
-        System.out.print("Digite uma opção: ");
-        return Util.lerInteiroSeguro(scanner.nextLine());
-    }
+    public static void menuLogin() {
+        String nome;
+        String telefone;
+        String email;
+        String senha;
 
-    public static String[] obterDados() {
-        String[] dados = new String[4];
+        int opcaoMenuLogin = -1;
+        while (opcaoMenuLogin != 0) {
+            System.out.println("""
+                    
+                    === SISTEMA DE LOGIN ===
+                    
+                    1. Entrar
+                    2. Criar conta
+                    0. Sair
+                    """);
+            System.out.print("Digite uma opção: ");
+            opcaoMenuLogin = Util.lerInteiroSeguro(scanner.nextLine());
 
-        System.out.print("\nDigite o seu nome: ");
-        dados[0] = scanner.nextLine();
+            try {
+                switch (opcaoMenuLogin) {
+                    case 0:
+                        System.out.println("\nSistema encerrado! Até logo...");
+                        break;
 
-        System.out.print("Digite o seu e-mail: ");
-        dados[1] = scanner.nextLine();
+                    case 1:
+                        System.out.print("\nDigite o seu e-mail: ");
+                        email = scanner.nextLine();
 
-        System.out.print("Digite o seu número de telefone: ");
-        dados[2] = scanner.nextLine();
+                        System.out.print("Digite a sua senha: ");
+                        senha = scanner.nextLine();
 
-        System.out.print("Digite a sua senha: ");
-        dados[3] = scanner.nextLine();
+                        int idUsuario = VisitanteView.entrar(email, senha);
 
-        return dados;
-    }
+                        if (idUsuario == 0) {
+                            System.out.println("\nE-mail ou senha inválidos!\n");
+                            continue;
+                        }
 
-    public static String[] obterDadosLogin() {
-        String[] dados = new String[2];
+                        System.out.println("\nBem vindo(a), " + VisitanteView.obterUsuario(idUsuario).getNome() +"!");
 
-        System.out.print("\nDigite o seu e-mail: ");
-        dados[0] = scanner.nextLine();
+                        if (idUsuario == 1) { // ID do admin sempre é 1, pois nasce com a aplicação
+                            AdminTemplate.menu();
+                            continue;
+                        }
 
-        System.out.print("Digite a sua senha: ");
-        dados[1] = scanner.nextLine();
+                        ClienteTemplate.menu(idUsuario);
+                        break;
 
-        return dados;
-    }
+                    case 2:
+                        System.out.print("\nDigite o seu nome: ");
+                        nome = scanner.nextLine();
 
-    // MÉTODOS DE FEEDBACK
+                        System.out.print("Digite o seu número de telefone: ");
+                        telefone = scanner.nextLine();
 
-    public static void exibirSucessoCadastro() {
-        System.out.println("\nConta cadastrada com sucesso!\n");
-    }
+                        System.out.print("Digite o seu e-mail: ");
+                        email = scanner.nextLine();
 
-    public static void exibirErroLogin() {
-        System.out.println("\nE-mail ou senha inválidos!\n");
-    }
+                        System.out.print("Digite a sua senha: ");
+                        senha = scanner.nextLine();
 
-    public static void exibirErro(String erro) {
-        System.out.println("\n" + erro);
-    }
+                        VisitanteView.criarConta(nome, telefone, email, senha);
+                        System.out.println("\nConta cadastrada com sucesso!\n");
+                        break;
 
-    public static void exibirErroEmailEmUso() {
-        System.out.println("\nEste e-mail já está em uso. Por favor, faça login ou use outro e-mail.\n");
-    }
-
-    public static void exibirErroOpcaoInvalida() {
-        System.out.println("\nInsira um valor válido. Tente novamente!");
-    }
-
-    public static void exibirMensagemSaida() {
-        System.out.println("\nSistema encerrado! Até logo...");
+                    default:
+                        System.out.println("\nInsira um valor válido. Tente novamente!");
+                        break;
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }
