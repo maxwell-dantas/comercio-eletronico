@@ -56,20 +56,6 @@ public class ClienteDao {
         return 0; // 0 --> não existe usuário
     }
 
-    public int obterAdminCliente(int id) {
-       Cliente cliente = listarId(id);
-
-       if (cliente == null) {
-           return 0; // 0 --> usuário não encontrado (camada de segurança)
-       }
-
-       if (cliente.getEmail().equalsIgnoreCase("admin")) {
-           return 1; // 1 --> significa admin
-       }
-
-        return 2; // 2 --> significa cliente;
-    }
-
     public void atualizar(int id, String nome, String telefone, String email, String senha) {
         Cliente cliente = listarId(id);
         if (cliente != null) {
