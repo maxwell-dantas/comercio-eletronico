@@ -46,36 +46,36 @@ public class ClienteDao {
         return true;
     }
 
-    public int obterIdVisitanteLogin(String email, String senha) {
+    public int obterIdUsuarioLogin(String email, String senha) {
         abrir();
         for (Cliente cliente : listaClientes) {
             if (cliente.getEmail().equalsIgnoreCase(email) && cliente.getSenha().equals(senha)) {
                 return cliente.getId();
             }
         }
-        return 0;
+        return 0; // 0 --> não existe usuário
     }
 
     public int obterAdminCliente(int id) {
        Cliente cliente = listarId(id);
 
        if (cliente == null) {
-           return 0; // camada de segurança
+           return 0; // 0 --> usuário não encontrado (camada de segurança)
        }
 
        if (cliente.getEmail().equalsIgnoreCase("admin")) {
-           return 1; // 1 - significa admin
+           return 1; // 1 --> significa admin
        }
 
-        return 2; // 2 - significa cliente;
+        return 2; // 2 --> significa cliente;
     }
 
-    public void atualizar(int id, String nome, String email, String telefone, String senha) {
+    public void atualizar(int id, String nome, String telefone, String email, String senha) {
         Cliente cliente = listarId(id);
         if (cliente != null) {
             cliente.setNome(nome);
-            cliente.setEmail(email);
             cliente.setTelefone(telefone);
+            cliente.setEmail(email);
             cliente.setSenha(senha);
             salvar();
         }
