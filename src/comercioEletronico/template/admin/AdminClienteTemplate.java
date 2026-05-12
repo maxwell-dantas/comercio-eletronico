@@ -63,10 +63,7 @@ public class AdminClienteTemplate {
                         break;
 
                     case 3:
-                        if (AdminClienteView.obterClientes().isEmpty()) {
-                            System.out.println("\nAinda não há nenhum cliente cadastrado no sistema!");
-                            continue;
-                        }
+                        AdminClienteView.obterClientes(); // retorna erro caso a lista seja vazia
 
                         System.out.println("\n=== ATUALIZAR CLIENTE ===\n");
 
@@ -102,10 +99,7 @@ public class AdminClienteTemplate {
                         break;
 
                     case 4:
-                        if (AdminClienteView.obterClientes().isEmpty()) {
-                            System.out.println("\nAinda não há nenhum cliente cadastrado no sistema!");
-                            continue;
-                        }
+                        AdminClienteView.obterClientes(); // retorna erro caso a lista seja vazia
 
                         System.out.println("\n=== REMOVER CLIENTE ===\n");
 

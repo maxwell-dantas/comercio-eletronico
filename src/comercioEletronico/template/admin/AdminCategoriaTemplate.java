@@ -51,10 +51,7 @@ public class AdminCategoriaTemplate {
                         break;
 
                     case 3:
-                        if (AdminCategoriaView.obterCategorias().isEmpty()) {
-                            System.out.println("\nAinda não há nenhuma categoria cadastrada no sistema!");
-                            continue;
-                        }
+                        AdminCategoriaView.obterCategorias(); // retorna erro caso a lista seja vazia
 
                         System.out.println("\n=== ATUALIZAR CATEGORIA ===\n");
 
@@ -76,10 +73,7 @@ public class AdminCategoriaTemplate {
                         break;
 
                     case 4:
-                        if (AdminCategoriaView.obterCategorias().isEmpty()) {
-                            System.out.println("\nAinda não há nenhuma categoria cadastrada no sistema!");
-                            continue;
-                        }
+                        AdminCategoriaView.obterCategorias(); // retorna erro caso a lista seja vazia
 
                         System.out.println("\n=== REMOVER CATEGORIA ===\n");
 
