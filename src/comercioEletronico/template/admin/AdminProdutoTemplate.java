@@ -1,7 +1,8 @@
 package comercioEletronico.template.admin;
 
 import comercioEletronico.model.entities.Produto;
-import comercioEletronico.view.Util;
+import comercioEletronico.util.Util;
+import comercioEletronico.view.admin.AdminProdutoView;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -9,121 +10,187 @@ import java.util.Scanner;
 public class AdminProdutoTemplate {
     private static Scanner scanner = new Scanner(System.in);
 
-    public static int obterOpcaoCrud() {
-        System.out.println("""
-                
-                === CADASTRO DE PRODUTOS ===
-                
-                1. Listar Produtos
-                2. Inserir Produto
-                3. Atualizar Produto
-                4. Remover Produto
-                0. Sair
-                """);
-        System.out.print("Digite uma opção: ");
-        return Util.lerInteiroSeguro(scanner.nextLine());
-    }
+    public static void menu() {
+        int id;
+        Produto produto;
+        String descricao;
+        double preco;
+        int estoque;
+        int idCategoria;
 
-    public static int obterOpcaoReajustarPreco() {
-        System.out.println("""
-                
-                === REAJUSTE DE PREÇO PARA TODOS OS PRODUTOS ===
-                
-                1. Aumento
-                2. Desconto
-                0. Sair
-                """);
-        System.out.print("Digite uma opção: ");
-        return Util.lerInteiroSeguro(scanner.nextLine());
-    }
+        int opcaoMenuAdminProduto = -1;
+        while (opcaoMenuAdminProduto != 0) {
+            System.out.println("""
+                    
+                    === CADASTRO DE PRODUTOS ===
+                    
+                    1. Listar Produtos
+                    2. Inserir Produto
+                    3. Atualizar Produto
+                    4. Remover Produto
+                    0. Sair
+                    """);
+            System.out.print("Digite uma opção: ");
+            opcaoMenuAdminProduto = Util.lerInteiroSeguro(scanner.nextLine());
 
-    public static double obterPorcentagem(int opcaoReajuste) {
-        if (opcaoReajuste == 1) {
-            System.out.print("\nEm quantos % você deseja aumentar o valor dos produtos? ");
-            return Util.lerDoubleSeguro(scanner.nextLine());
+            try {
+                switch (opcaoMenuAdminProduto) {
+                    case 0:
+                        System.out.println("\nVoltando ao Menu Principal...");
+                        break;
+
+                    case 1:
+                        listarProdutos();
+                        break;
+
+                    case 2:
+                        System.out.println("\n=== CADASTRAR PRODUTO ===\n");
+
+                        System.out.print("Digite a descrição do produto: ");
+                        descricao = scanner.nextLine();
+
+                        System.out.print("Digite o preço do produto: ");
+                        preco = Util.lerDoubleSeguro(scanner.nextLine());
+
+                        System.out.print("Digite a quantidade em estoque do produto: ");
+                        estoque = Util.lerInteiroSeguro(scanner.nextLine());
+
+                        System.out.print("Digite o ID da categoria para este produto: ");
+                        idCategoria = Util.lerInteiroSeguro(scanner.nextLine());
+
+                        AdminProdutoView.inserir(descricao, preco, estoque, idCategoria);
+                        System.out.println("\nProduto cadastrado com sucesso!\n");
+                        break;
+
+                    case 3:
+                        AdminProdutoView.obterProdutos(); // retorna erro caso a lista seja vazia
+
+                        System.out.println("\n=== ATUALIZAR PRODUTO ===\n");
+
+                        System.out.print("Digite o ID do produto: ");
+                        id = Util.lerInteiroSeguro(scanner.nextLine());
+
+                        produto = AdminProdutoView.listarId(id);
+
+                        if (produto == null) {
+                            System.out.println("\nEste produto não está cadastrado no sistema! Digite um ID válido!");
+                            continue;
+                        }
+
+                        System.out.print("Digite a nova descrição do produto: ");
+                        descricao = scanner.nextLine();
+
+                        System.out.print("Digite o novo preço do produto: ");
+                        preco = Util.lerDoubleSeguro(scanner.nextLine());
+
+                        System.out.print("Digite a nova quantidade em estoque do produto: ");
+                        estoque = Util.lerInteiroSeguro(scanner.nextLine());
+
+                        System.out.print("Digite o novo ID da categoria para este produto: ");
+                        idCategoria = Util.lerInteiroSeguro(scanner.nextLine());
+
+                        AdminProdutoView.atualizar(produto, descricao, preco, estoque, idCategoria);
+                        System.out.println("\nProduto atualizado com sucesso!\n");
+                        break;
+
+                    case 4:
+                        AdminProdutoView.obterProdutos(); // retorna erro caso a lista seja vazia
+
+                        System.out.println("\n=== REMOVER PRODUTO ===\n");
+
+                        System.out.print("Digite o ID do produto: ");
+                        id = Util.lerInteiroSeguro(scanner.nextLine());
+
+                        produto = AdminProdutoView.listarId(id);
+
+                        if (produto == null) {
+                            System.out.println("\nEste produto não está cadastrado no sistema! Digite um ID válido!");
+                            continue;
+                        }
+
+                        AdminProdutoView.remover(produto);
+                        System.out.println("\nProduto removido com sucesso!\n");
+                        break;
+
+                    default:
+                        System.out.println("\nInsira um valor válido. Tente novamente!");
+                        break;
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
         }
-        System.out.print("\nEm quantos % você deseja dar desconto para o valor dos produtos? ");
-        return Util.lerDoubleSeguro(scanner.nextLine());
     }
 
-    public static int obterId() {
-        System.out.print("Digite o ID do produto: ");
-        return Util.lerInteiroSeguro(scanner.nextLine());
-    }
+    public static void menuReajustePreco() {
+        double porcentagem;
 
-    public static String[] obterDados() {
-        String[] dados = new String[4];
+        int opcaoReajuste = -1;
+        while (opcaoReajuste != 0) {
+            System.out.println("""
+                    
+                    === REAJUSTE DE PREÇO PARA TODOS OS PRODUTOS ===
+                    
+                    1. Aumento
+                    2. Desconto
+                    3. Listar Produtos
+                    0. Sair
+                    """);
+            System.out.print("Digite uma opção: ");
+            opcaoReajuste = Util.lerInteiroSeguro(scanner.nextLine());
 
-        System.out.print("Digite a descrição do produto: ");
-        dados[0] = scanner.nextLine();
+            try {
+                switch (opcaoReajuste) {
+                    case 0:
+                        System.out.println("\nVoltando ao Menu Principal...");
+                        break;
 
-        System.out.print("Digite o preço do produto: ");
-        dados[1] = scanner.nextLine();
+                    case 1:
+                        AdminProdutoView.obterProdutos(); // retorna erro caso a lista seja vazia
 
-        System.out.print("Digite a quantidade em estoque do produto: ");
-        dados[2] = scanner.nextLine();
+                        System.out.print("\nEm quantos % você deseja aumentar o valor dos produtos? ");
+                        porcentagem = Util.lerDoubleSeguro(scanner.nextLine());
 
-        System.out.print("Digite o ID da categoria para este produto: ");
-        dados[3] = scanner.nextLine();
+                        AdminProdutoView.aplicarAumento(porcentagem);
+                        System.out.println("\nAumento aplicado a todos os produtos com sucesso!\n");
+                        break;
 
-        return dados;
-    }
+                    case 2:
+                        AdminProdutoView.obterProdutos(); // retorna erro caso a lista seja vazia
 
-    public static void listarProdutos(ArrayList<Produto> listaProdutos) {
-        System.out.println("\n=== PRODUTOS CADASTRADOS ===\n");
-        for (Produto produto : listaProdutos) {
-            System.out.println(produto);
-        }
-        System.out.println();
-    }
+                        System.out.print("\nEm quantos % você deseja dar desconto para o valor dos produtos? ");
+                        porcentagem = Util.lerDoubleSeguro(scanner.nextLine());
 
-    // MÉTODOS DE FEEDBACK
+                        AdminProdutoView.aplicarDesconto(porcentagem);
+                        System.out.println("\nDesconto aplicado a todos os produtos com sucesso!\n");
+                        break;
 
-    public static void exibirMensagemSaida() {
-        System.out.println("\nVoltando ao Menu Principal...");
-    }
+                    case 3:
+                        listarProdutos();
+                        break;
 
-    public static void exibirMensagemListaVazia() {
-        System.out.println("\nAinda não há nenhum produto cadastrado na base de dados!");
-    }
-
-    public static void exibirCabecalho(String operacao) {
-        System.out.println("\n=== " + operacao.toUpperCase() + " DE PRODUTO ===\n");
-    }
-
-    public static void exibirSucesso(String acao) {
-        System.out.println("\nProduto " + acao + " com sucesso!\n");
-    }
-
-    public static void exibirSucessoReajuste(int opcao) {
-        if (opcao == 1) {
-            System.out.println("\nAumento aplicado a todos os produtos com sucesso!\n");
-        } else {
-            System.out.println("\nDesconto aplicado a todos os produtos com sucesso!\n");
+                    default:
+                        System.out.println("\nInsira um valor válido. Tente novamente!");
+                        break;
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
-    public static void exibirErro(String erro) {
-        System.out.println("\n" + erro);
-    }
+    public static void listarProdutos() {
+        try {
+            ArrayList<Produto> listaProdutos = AdminProdutoView.obterProdutos();
+            System.out.println("\n=== PRODUTOS CADASTRADOS ===\n");
 
-    public static void exibirErroCategoriaVazia() {
-        System.out.println("\nPrimeiro insira uma categoria no banco de dados antes de inserir um produto!\n");
-    }
+            for (Produto produto : listaProdutos) {
+                System.out.println(produto);
+            }
 
-    public static void exibirErroProdutoNaoEncontrado() {
-        System.out.println("\nEste produto não está cadastrado na base de dados! Digite um ID válido!\n");
-    }
-
-    public static void exibirMensagemErroDesconto() {
-        System.out.println("\nO valor do desconto precisa estar entre 0 e 99.99%.");
-    }
-
-    public static void exibirMensagemErroAumento() {
-        System.out.println("\nO valor do aumento precisa ser positivo.");
-    }
-
-    public static void exibirErroOpcaoInvalida() {
-        System.out.println("\nInsira um valor válido. Tente novamente!");
+            System.out.println();
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
