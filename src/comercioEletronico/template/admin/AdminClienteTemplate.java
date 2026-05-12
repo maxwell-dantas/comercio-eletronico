@@ -139,8 +139,8 @@ public class AdminClienteTemplate {
     }
 
     public static void listarClientes() {
-        ArrayList<Cliente> listaClientes = AdminClienteView.obterClientes();
         try {
+            ArrayList<Cliente> listaClientes = AdminClienteView.obterClientes();
             System.out.println("\n=== CLIENTES CADASTRADOS ===\n");
 
             for (Cliente cliente : listaClientes) {
