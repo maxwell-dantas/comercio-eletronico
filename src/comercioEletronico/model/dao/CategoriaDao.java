@@ -36,6 +36,16 @@ public class CategoriaDao {
         return null;
     }
 
+    public boolean isDescricaoDisponivel(String descricao) {
+        abrir();
+        for (Categoria categoria : listaCategorias) {
+            if (categoria.getDescricao().equalsIgnoreCase(descricao)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void atualizar(int id, String descricao) {
         Categoria categoria = listarId(id);
         if (categoria != null) {
