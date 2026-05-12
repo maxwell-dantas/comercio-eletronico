@@ -2,120 +2,40 @@ package comercioEletronico.view.admin;
 
 import comercioEletronico.model.entities.Cliente;
 import comercioEletronico.model.dao.ClienteDao;
-import comercioEletronico.template.admin.AdminClienteTemplate;
-import comercioEletronico.view.Util;
+
+import java.util.ArrayList;
 
 public class AdminClienteView {
-    private ClienteDao clienteDao = new ClienteDao();
+    private static ClienteDao clienteDao = new ClienteDao();
 
-    public void exibirMenu() {
-        Cliente cliente;
-        int opcaoCrud;
-        int id;
-        String[] dados;
+    public static ArrayList<Cliente> obterClientes() {
+        if (clienteDao.listar().isEmpty()) {
+            throw new IllegalArgumentException("\nAinda não há nenhum cliente cadastrado no sistema!\n");
+        }
+        return clienteDao.listar();
+    }
 
-        do {
-            opcaoCrud = AdminClienteTemplate.obterOpcaoCrud();
+    public static void inserirCliente(String nome, String telefone, String email, String senha) {
+        if (!clienteDao.isEmailDisponivel(email)) {
+            throw new IllegalArgumentException("Este e-mail já está cadastrado no sistema.");
+        }
 
-            switch (opcaoCrud) {
-                case 0:
-                    AdminClienteTemplate.exibirMensagemSaida();
-                    break;
+        Cliente cliente = new Cliente(nome, telefone, email, senha);
+        clienteDao.inserir(cliente);
+    }
 
-                case 1:
-                    if (clienteDao.listar().isEmpty()) {
-                        AdminClienteTemplate.exibirMensagemListaVazia();
-                        continue;
-                    }
+    public static Cliente listarId(int id) {
+        return clienteDao.listarId(id);
+    }
 
-                    AdminClienteTemplate.listarClientes(clienteDao.listar());
-                    Util.pausar();
-                    break;
+    public static void atualizarCliente(Cliente cliente, String nome, String telefone, String email, String senha) {
+        if (!cliente.getEmail().equalsIgnoreCase(email) && !clienteDao.isEmailDisponivel(email)) {
+            throw new IllegalArgumentException("Este e-mail já está cadastrado no sistema.");
+        }
+        clienteDao.atualizar(cliente.getId(), nome, telefone, email, senha);
+    }
 
-                case 2:
-                    AdminClienteTemplate.exibirCabecalho("Cadastrar");
-                    dados = AdminClienteTemplate.obterDados();
-
-                    if (!clienteDao.isEmailDisponivel(dados[1])) {
-                        AdminClienteTemplate.exibirErroEmailEmUso();
-                        continue;
-                    }
-
-                    try {
-                        cliente = new Cliente(dados[0], dados[1], dados[2], dados[3]);
-                        clienteDao.inserir(cliente);
-                        AdminClienteTemplate.exibirSucesso("cadastrado");
-                        Util.pausar();
-                    } catch (IllegalArgumentException e) {
-                        AdminClienteTemplate.exibirErro(e.getMessage());
-                    }
-                    break;
-
-                case 3:
-                    if (clienteDao.listar().isEmpty()) {
-                        AdminClienteTemplate.exibirMensagemListaVazia();
-                        continue;
-                    }
-                    AdminClienteTemplate.exibirCabecalho("Atualizar");
-
-                    id = AdminClienteTemplate.obterId();
-                    cliente = clienteDao.listarId(id);
-
-                    if (cliente == null) {
-                        AdminClienteTemplate.exibirErroClienteNaoEncontrado();
-                        continue;
-                    }
-
-                    if (cliente.getEmail().equalsIgnoreCase("admin")) {
-                        AdminClienteTemplate.exibirErroAtualizarAdmin();
-                        continue;
-                    }
-
-                    dados = AdminClienteTemplate.obterDados();
-
-                    if (!cliente.getEmail().equalsIgnoreCase(dados[1]) && !clienteDao.isEmailDisponivel(dados[1])) {
-                        AdminClienteTemplate.exibirErroEmailEmUso();
-                        continue;
-                    }
-
-                    try {
-                        clienteDao.atualizar(id, dados[0], dados[1], dados[2], dados[3]);
-                        AdminClienteTemplate.exibirSucesso("atualizado");
-                        Util.pausar();
-                    } catch (IllegalArgumentException e) {
-                        AdminClienteTemplate.exibirErro(e.getMessage());
-                    }
-                    break;
-
-                case 4:
-                    if (clienteDao.listar().isEmpty()) {
-                        AdminClienteTemplate.exibirMensagemListaVazia();
-                        continue;
-                    }
-                    AdminClienteTemplate.exibirCabecalho("Remover");
-
-                    id = AdminClienteTemplate.obterId();
-                    cliente = clienteDao.listarId(id);
-
-                    if (cliente == null) {
-                        AdminClienteTemplate.exibirErroClienteNaoEncontrado();
-                        continue;
-                    }
-
-                    if (cliente.getEmail().equalsIgnoreCase("admin")) {
-                        AdminClienteTemplate.exibirErroAtualizarAdmin();
-                        continue;
-                    }
-
-                    clienteDao.remover(id);
-                    AdminClienteTemplate.exibirSucesso("removido");
-                    Util.pausar();
-                    break;
-
-                default:
-                    AdminClienteTemplate.exibirErroOpcaoInvalida();
-                    break;
-            }
-        } while (opcaoCrud != 0);
+    public static void removerCliente(Cliente cliente) {
+        clienteDao.remover(cliente.getId());
     }
 }
