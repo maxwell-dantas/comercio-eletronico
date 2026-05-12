@@ -56,6 +56,7 @@ public class ClienteDao {
         return 0; // 0 --> não existe usuário
     }
 
+    // O parâmetro deve ser o ID, pois o objeto que vem da View possui uma referência de memória diferente dos objetos recém-criados pelo GSON ao ler o arquivo JSON.
     public void atualizar(int id, String nome, String telefone, String email, String senha) {
         Cliente cliente = listarId(id);
         if (cliente != null) {
@@ -67,6 +68,7 @@ public class ClienteDao {
         }
     }
 
+    // O parâmetro deve ser o ID, pois o objeto que vem da View possui uma referência de memória diferente dos objetos recém-criados pelo GSON ao ler o arquivo JSON.
     public void remover(int id) {
         Cliente cliente = listarId(id);
         if (cliente != null) {
