@@ -2,101 +2,40 @@ package comercioEletronico.view.admin;
 
 import comercioEletronico.model.entities.Categoria;
 import comercioEletronico.model.dao.CategoriaDao;
-import comercioEletronico.template.admin.AdminCategoriaTemplate;
-import comercioEletronico.view.Util;
+
+import java.util.ArrayList;
 
 public class AdminCategoriaView {
-    private CategoriaDao categoriaDao = new CategoriaDao();
+    private static CategoriaDao categoriaDao = new CategoriaDao();
 
-    public void exibirMenu() {
-        Categoria categoria;
-        int opcaoCrud;
-        int id;
-        String dados;
+    public static ArrayList<Categoria> obterCategorias() {
+        if (categoriaDao.listar().isEmpty()) {
+            throw new IllegalArgumentException("\nAinda não há nenhuma categoria cadastrada no sistema!\n");
+        }
+        return categoriaDao.listar();
+    }
 
-        do {
-            opcaoCrud = AdminCategoriaTemplate.obterOpcaoCrud();
+    public static void inserir(String descricao) {
+        if (!categoriaDao.isDescricaoDisponivel(descricao)) {
+            throw new IllegalArgumentException("Esta categoria já está cadastrada no sistema.");
+        }
 
-            switch (opcaoCrud) {
-                case 0:
-                    AdminCategoriaTemplate.exibirMensagemSaida();
-                    break;
+        Categoria categoria = new Categoria(descricao);
+        categoriaDao.inserir(categoria);
+    }
 
-                case 1:
-                    if (categoriaDao.listar().isEmpty()) {
-                        AdminCategoriaTemplate.exibirMensagemListaVazia();
-                        continue;
-                    }
+    public static Categoria listarId(int id) {
+        return categoriaDao.listarId(id);
+    }
 
-                    AdminCategoriaTemplate.listarCategorias(categoriaDao.listar());
-                    Util.pausar();
-                    break;
+    public static void atualizar(Categoria categoria, String descricao) {
+        if (!categoria.getDescricao().equalsIgnoreCase(descricao) && !categoriaDao.isDescricaoDisponivel(descricao)) {
+            throw new IllegalArgumentException("Esta categoria já está cadastrada no sistema.");
+        }
+        categoriaDao.atualizar(categoria.getId(), descricao);
+    }
 
-                case 2:
-                    AdminCategoriaTemplate.exibirCabecalho("Cadastrar");
-                    dados = AdminCategoriaTemplate.obterDados();
-
-                    try {
-                        categoria = new Categoria(dados);
-                        categoriaDao.inserir(categoria);
-                        AdminCategoriaTemplate.exibirSucesso("cadastrada");
-                        Util.pausar();
-                    } catch (IllegalArgumentException e) {
-                        AdminCategoriaTemplate.exibirErro(e.getMessage());
-                    }
-                    break;
-
-                case 3:
-
-                    if (categoriaDao.listar().isEmpty()) {
-                        AdminCategoriaTemplate.exibirMensagemListaVazia();
-                        continue;
-                    }
-                    AdminCategoriaTemplate.exibirCabecalho("Atualizar");
-
-                    id = AdminCategoriaTemplate.obterId();
-                    categoria = categoriaDao.listarId(id);
-
-                    if (categoria == null) {
-                        AdminCategoriaTemplate.exibirErroCategoriaNaoEncontrada();
-                        continue;
-                    }
-
-                    dados = AdminCategoriaTemplate.obterDados();
-                    try {
-                        categoriaDao.atualizar(id, dados);
-                        AdminCategoriaTemplate.exibirSucesso("atualizada");
-                        Util.pausar();
-                    } catch (IllegalArgumentException e) {
-                        AdminCategoriaTemplate.exibirErro(e.getMessage());
-                    }
-                    break;
-
-                case 4:
-
-                    if (categoriaDao.listar().isEmpty()) {
-                        AdminCategoriaTemplate.exibirMensagemListaVazia();
-                        continue;
-                    }
-                    AdminCategoriaTemplate.exibirCabecalho("Remover");
-
-                    id = AdminCategoriaTemplate.obterId();
-                    categoria = categoriaDao.listarId(id);
-
-                    if (categoria == null) {
-                        AdminCategoriaTemplate.exibirErroCategoriaNaoEncontrada();
-                        continue;
-                    }
-
-                    categoriaDao.remover(id);
-                    AdminCategoriaTemplate.exibirSucesso("removida");
-                    Util.pausar();
-                    break;
-
-                default:
-                    AdminCategoriaTemplate.exibirErroOpcaoInvalida();
-                    break;
-            }
-        } while (opcaoCrud != 0);
+    public static void remover(Categoria categoria) {
+        categoriaDao.remover(categoria.getId());
     }
 }
