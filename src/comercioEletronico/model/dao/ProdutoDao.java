@@ -47,6 +47,16 @@ public class ProdutoDao {
         }
     }
 
+    public boolean isDescricaoDisponivel(String descricao) {
+        abrir();
+        for (Produto produto : listaProdutos) {
+            if (produto.getDescricao().equalsIgnoreCase(descricao)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void atualizarEstoque(int idProduto, int estoque) {
         Produto produto = listarId(idProduto);
         if (produto!= null) {
