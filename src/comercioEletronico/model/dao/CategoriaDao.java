@@ -46,6 +46,7 @@ public class CategoriaDao {
         return true;
     }
 
+    // O parâmetro deve ser o ID, pois o objeto que vem da View possui uma referência de memória diferente dos objetos recém-criados pelo GSON ao ler o arquivo JSON.
     public void atualizar(int id, String descricao) {
         Categoria categoria = listarId(id);
         if (categoria != null) {
@@ -54,6 +55,7 @@ public class CategoriaDao {
         salvar();
     }
 
+    // O parâmetro deve ser o ID, pois o objeto que vem da View possui uma referência de memória diferente dos objetos recém-criados pelo GSON ao ler o arquivo JSON.
     public void remover(int id) {
         Categoria categoria = listarId(id);
         if (categoria != null) {

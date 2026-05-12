@@ -36,6 +36,17 @@ public class ProdutoDao {
         return null;
     }
 
+    public boolean isDescricaoDisponivel(String descricao) {
+        abrir();
+        for (Produto produto : listaProdutos) {
+            if (produto.getDescricao().equalsIgnoreCase(descricao)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // O parâmetro deve ser o ID, pois o objeto que vem da View possui uma referência de memória diferente dos objetos recém-criados pelo GSON ao ler o arquivo JSON.
     public void atualizar(int id, String descricao, double preco, int estoque, int idCategoria) {
         Produto produto = listarId(id);
         if (produto != null) {
@@ -47,16 +58,7 @@ public class ProdutoDao {
         }
     }
 
-    public boolean isDescricaoDisponivel(String descricao) {
-        abrir();
-        for (Produto produto : listaProdutos) {
-            if (produto.getDescricao().equalsIgnoreCase(descricao)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
+    // O parâmetro deve ser o ID, pois o objeto que vem da View possui uma referência de memória diferente dos objetos recém-criados pelo GSON ao ler o arquivo JSON.
     public void atualizarEstoque(int idProduto, int estoque) {
         Produto produto = listarId(idProduto);
         if (produto!= null) {
@@ -65,6 +67,7 @@ public class ProdutoDao {
         }
     }
 
+    // O parâmetro deve ser o ID, pois o objeto que vem da View possui uma referência de memória diferente dos objetos recém-criados pelo GSON ao ler o arquivo JSON.
     public void remover(int id) {
         Produto produto = listarId(id);
         if (produto != null) {

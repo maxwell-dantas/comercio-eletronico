@@ -36,6 +36,7 @@ public class VendaDao {
         return null;
     }
 
+    // O parâmetro deve ser o ID, pois o objeto que vem da View possui uma referência de memória diferente dos objetos recém-criados pelo GSON ao ler o arquivo JSON.
     public void atualizar(int id, boolean carrinho, double total) {
         Venda venda = listarId(id);
         if (venda != null) {
@@ -45,6 +46,7 @@ public class VendaDao {
         }
     }
 
+    // O parâmetro deve ser o ID, pois o objeto que vem da View possui uma referência de memória diferente dos objetos recém-criados pelo GSON ao ler o arquivo JSON.
     public void remover(int id) {
         Venda venda = listarId(id);
         if (venda != null) {
