@@ -58,7 +58,7 @@ public class AdminClienteTemplate {
                         System.out.print("Digite a senha do cliente: ");
                         senha = scanner.nextLine();
 
-                        AdminClienteView.inserirCliente(nome, telefone, email, senha);
+                        AdminClienteView.inserir(nome, telefone, email, senha);
                         System.out.println("\nCliente cadastrado com sucesso!\n");
                         break;
 
@@ -97,7 +97,7 @@ public class AdminClienteTemplate {
                         System.out.print("Digite a nova senha do cliente: ");
                         senha = scanner.nextLine();
 
-                        AdminClienteView.atualizarCliente(cliente, nome, telefone, email, senha);
+                        AdminClienteView.atualizar(cliente, nome, telefone, email, senha);
                         System.out.println("\nCliente atualizado com sucesso!\n");
                         break;
 
@@ -124,7 +124,7 @@ public class AdminClienteTemplate {
                             continue;
                         }
 
-                        AdminClienteView.removerCliente(cliente);
+                        AdminClienteView.remover(cliente);
                         System.out.println("\nCliente removido com sucesso!\n");
                         break;
 
