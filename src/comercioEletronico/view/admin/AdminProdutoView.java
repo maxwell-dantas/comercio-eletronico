@@ -12,20 +12,20 @@ public class AdminProdutoView {
 
     public static ArrayList<Produto> obterProdutos() {
         if (produtoDao.listar().isEmpty()) {
-            throw new IllegalArgumentException("\nAinda não há nenhum produto cadastrado no sistema!\n");
+            throw new IllegalArgumentException("\nAinda não há nenhum produto cadastrado no sistema!");
         }
         return produtoDao.listar();
     }
 
     public static void inserir(String descricao, double preco, int estoque, int idCategoria) {
         if (categoriaDao.listar().isEmpty()) {
-            throw new IllegalArgumentException("\nPrimeiro insira uma categoria no sistema antes de inserir um produto!\n");
+            throw new IllegalArgumentException("\nPrimeiro insira uma categoria no sistema antes de inserir um produto!");
         }
         if (categoriaDao.listarId(idCategoria) == null) {
-            throw new IllegalArgumentException("\nEsta categoria não está cadastrada no sistema! Digite um ID válido!\n");
+            throw new IllegalArgumentException("\nEsta categoria não está cadastrada no sistema! Digite um ID válido!");
         }
         if (!produtoDao.isDescricaoDisponivel(descricao)) {
-            throw new IllegalArgumentException("\nEste produto já está cadastrado no sistema.\n");
+            throw new IllegalArgumentException("\nEste produto já está cadastrado no sistema.");
         }
 
         Produto produto = new Produto(descricao, preco, estoque, idCategoria);
@@ -38,10 +38,10 @@ public class AdminProdutoView {
 
     public static void atualizar(Produto produto, String descricao, double preco, int estoque, int idCategoria) {
         if (categoriaDao.listarId(idCategoria) == null) {
-            throw new IllegalArgumentException("\nEsta categoria não está cadastrada no sistema! Digite um ID válido!\n");
+            throw new IllegalArgumentException("\nEsta categoria não está cadastrada no sistema! Digite um ID válido!");
         }
         if (!produto.getDescricao().equalsIgnoreCase(descricao) && !produtoDao.isDescricaoDisponivel(descricao)) {
-            throw new IllegalArgumentException("\nEste produto já está cadastrado no sistema.\n");
+            throw new IllegalArgumentException("\nEste produto já está cadastrado no sistema.");
         }
 
         produtoDao.atualizar(produto.getId(), descricao, preco, estoque, idCategoria);
@@ -53,7 +53,7 @@ public class AdminProdutoView {
 
     public static void aplicarAumento(double porcentagem) {
         if (porcentagem < 0.0) {
-            throw new IllegalArgumentException("\nO valor do aumento precisa ser positivo.\n");
+            throw new IllegalArgumentException("\nO valor do aumento precisa ser positivo.");
         }
         for (Produto produto : produtoDao.listar()) {
             double novoPreco = produto.getPreco() * (1 + (porcentagem / 100.0));
@@ -63,7 +63,7 @@ public class AdminProdutoView {
 
     public static void aplicarDesconto(double porcentagem) {
         if (porcentagem < 0.0 || porcentagem > 99.99) {
-            throw new IllegalArgumentException("\nO valor do desconto precisa estar entre 0 e 99.99%.\n");
+            throw new IllegalArgumentException("\nO valor do desconto precisa estar entre 0 e 99.99%.");
         }
         for (Produto produto : produtoDao.listar()) {
             double novoPreco = produto.getPreco() * (1 - (porcentagem / 100.0));

@@ -2,8 +2,8 @@ package comercioEletronico.template.visitante;
 
 import comercioEletronico.template.admin.AdminTemplate;
 import comercioEletronico.template.cliente.ClienteTemplate;
-import comercioEletronico.util.Util;
 import comercioEletronico.view.visitante.VisitanteView;
+import comercioEletronico.util.Util;
 
 import java.util.Scanner;
 
@@ -45,11 +45,12 @@ public class VisitanteTemplate {
                         int idUsuario = VisitanteView.entrar(email, senha);
 
                         if (idUsuario == 0) {
-                            System.out.println("\nE-mail ou senha inválidos!\n");
+                            System.out.println("\nE-mail ou senha inválidos!");
                             continue;
                         }
 
                         System.out.println("\nBem vindo(a), " + VisitanteView.obterUsuario(idUsuario).getNome() +"!");
+                        Util.pausar();
 
                         if (idUsuario == 1) { // ID do admin sempre é 1, pois nasce com a aplicação
                             AdminTemplate.menu();
@@ -73,7 +74,7 @@ public class VisitanteTemplate {
                         senha = scanner.nextLine();
 
                         VisitanteView.criarConta(nome, telefone, email, senha);
-                        System.out.println("\nConta cadastrada com sucesso!\n");
+                        System.out.println("\nConta cadastrada com sucesso!");
                         break;
 
                     default:

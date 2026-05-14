@@ -28,7 +28,7 @@ public class VisitanteView {
         Cliente cliente;
 
         if (!clienteDao.isEmailDisponivel(email)) {
-            throw new IllegalArgumentException("Este e-mail já está em uso. Por favor, faça login ou use outro e-mail.");
+            throw new IllegalArgumentException("\nEste e-mail já está em uso. Por favor, faça login ou use outro e-mail.");
         }
 
         cliente = new Cliente(nome, telefone, email, senha);

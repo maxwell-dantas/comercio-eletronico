@@ -2,8 +2,10 @@ package comercioEletronico.template.admin;
 
 import comercioEletronico.model.entities.Venda;
 import comercioEletronico.model.entities.VendaItem;
-import comercioEletronico.util.Util;
+import comercioEletronico.view.admin.AdminCategoriaView;
+import comercioEletronico.view.admin.AdminProdutoView;
 import comercioEletronico.view.admin.AdminView;
+import comercioEletronico.util.Util;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -53,10 +55,11 @@ public class AdminTemplate {
 
                     case 5:
                         listarVendas();
+                        Util.pausar();
                         break;
 
                     default:
-                        System.out.println("\nInsira um valor válido. Tente novamente!\n");
+                        System.out.println("\nInsira um valor válido. Tente novamente!");
                         break;
                 }
             } catch (IllegalArgumentException e) {
@@ -81,7 +84,8 @@ public class AdminTemplate {
                     int contadorItem = 1;
                     for (VendaItem vendaItem : listaItems) {
                         if (vendaItem.getIdVenda() == venda.getId()) {
-                            System.out.println("    " + contadorItem + " - " + vendaItem);
+                            System.out.println("    " + contadorItem + " - ID Produto: " + AdminProdutoView.listarId(vendaItem.getIdProduto()) +
+                                    AdminCategoriaView.listarId(AdminProdutoView.listarId(vendaItem.getIdProduto()).getIdCategoria()) + " - " + vendaItem);
                             contadorItem++;
                         }
                     }
@@ -89,7 +93,6 @@ public class AdminTemplate {
                     System.out.println();
                 }
             }
-            System.out.println();
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }

@@ -10,14 +10,14 @@ public class AdminCategoriaView {
 
     public static ArrayList<Categoria> obterCategorias() {
         if (categoriaDao.listar().isEmpty()) {
-            throw new IllegalArgumentException("\nAinda não há nenhuma categoria cadastrada no sistema!\n");
+            throw new IllegalArgumentException("\nAinda não há nenhuma categoria cadastrada no sistema!");
         }
         return categoriaDao.listar();
     }
 
     public static void inserir(String descricao) {
         if (!categoriaDao.isDescricaoDisponivel(descricao)) {
-            throw new IllegalArgumentException("Esta categoria já está cadastrada no sistema.");
+            throw new IllegalArgumentException("\nEsta categoria já está cadastrada no sistema.");
         }
 
         Categoria categoria = new Categoria(descricao);
@@ -30,7 +30,7 @@ public class AdminCategoriaView {
 
     public static void atualizar(Categoria categoria, String descricao) {
         if (!categoria.getDescricao().equalsIgnoreCase(descricao) && !categoriaDao.isDescricaoDisponivel(descricao)) {
-            throw new IllegalArgumentException("Esta categoria já está cadastrada no sistema.");
+            throw new IllegalArgumentException("\nEsta categoria já está cadastrada no sistema.");
         }
         categoriaDao.atualizar(categoria.getId(), descricao);
     }

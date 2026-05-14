@@ -41,6 +41,8 @@ public class AdminProdutoTemplate {
 
                     case 1:
                         listarProdutos();
+                        System.out.println();
+                        Util.pausar();
                         break;
 
                     case 2:
@@ -59,7 +61,7 @@ public class AdminProdutoTemplate {
                         idCategoria = Util.lerInteiroSeguro(scanner.nextLine());
 
                         AdminProdutoView.inserir(descricao, preco, estoque, idCategoria);
-                        System.out.println("\nProduto cadastrado com sucesso!\n");
+                        System.out.println("\nProduto cadastrado com sucesso!");
                         break;
 
                     case 3:
@@ -90,7 +92,7 @@ public class AdminProdutoTemplate {
                         idCategoria = Util.lerInteiroSeguro(scanner.nextLine());
 
                         AdminProdutoView.atualizar(produto, descricao, preco, estoque, idCategoria);
-                        System.out.println("\nProduto atualizado com sucesso!\n");
+                        System.out.println("\nProduto atualizado com sucesso!");
                         break;
 
                     case 4:
@@ -109,7 +111,7 @@ public class AdminProdutoTemplate {
                         }
 
                         AdminProdutoView.remover(produto);
-                        System.out.println("\nProduto removido com sucesso!\n");
+                        System.out.println("\nProduto removido com sucesso!");
                         break;
 
                     default:
@@ -152,7 +154,7 @@ public class AdminProdutoTemplate {
                         porcentagem = Util.lerDoubleSeguro(scanner.nextLine());
 
                         AdminProdutoView.aplicarAumento(porcentagem);
-                        System.out.println("\nAumento aplicado a todos os produtos com sucesso!\n");
+                        System.out.println("\nAumento aplicado a todos os produtos com sucesso!");
                         break;
 
                     case 2:
@@ -162,11 +164,13 @@ public class AdminProdutoTemplate {
                         porcentagem = Util.lerDoubleSeguro(scanner.nextLine());
 
                         AdminProdutoView.aplicarDesconto(porcentagem);
-                        System.out.println("\nDesconto aplicado a todos os produtos com sucesso!\n");
+                        System.out.println("\nDesconto aplicado a todos os produtos com sucesso!");
                         break;
 
                     case 3:
                         listarProdutos();
+                        System.out.println();
+                        Util.pausar();
                         break;
 
                     default:
@@ -187,8 +191,6 @@ public class AdminProdutoTemplate {
             for (Produto produto : listaProdutos) {
                 System.out.println(produto);
             }
-
-            System.out.println();
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }

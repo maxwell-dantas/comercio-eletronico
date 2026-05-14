@@ -1,8 +1,8 @@
 package comercioEletronico.template.admin;
 
 import comercioEletronico.model.entities.Categoria;
-import comercioEletronico.util.Util;
 import comercioEletronico.view.admin.AdminCategoriaView;
+import comercioEletronico.util.Util;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -38,6 +38,8 @@ public class AdminCategoriaTemplate {
 
                     case 1:
                         listarCategorias();
+                        System.out.println();
+                        Util.pausar();
                         break;
 
                     case 2:
@@ -47,7 +49,7 @@ public class AdminCategoriaTemplate {
                         descricao = scanner.nextLine();
 
                         AdminCategoriaView.inserir(descricao);
-                        System.out.println("\nCategoria cadastrada com sucesso!\n");
+                        System.out.println("\nCategoria cadastrada com sucesso!");
                         break;
 
                     case 3:
@@ -69,7 +71,7 @@ public class AdminCategoriaTemplate {
                         descricao = scanner.nextLine();
 
                         AdminCategoriaView.atualizar(categoria, descricao);
-                        System.out.println("\nCategoria atualizada com sucesso!\n");
+                        System.out.println("\nCategoria atualizada com sucesso!");
                         break;
 
                     case 4:
@@ -88,7 +90,7 @@ public class AdminCategoriaTemplate {
                         }
 
                         AdminCategoriaView.remover(categoria);
-                        System.out.println("\nCategoria removida com sucesso!\n");
+                        System.out.println("\nCategoria removida com sucesso!");
                         break;
 
                     default:
@@ -109,8 +111,6 @@ public class AdminCategoriaTemplate {
             for (Categoria categoria : listaCategorias) {
                 System.out.println(categoria);
             }
-
-            System.out.println();
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }

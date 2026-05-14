@@ -10,14 +10,14 @@ public class AdminClienteView {
 
     public static ArrayList<Cliente> obterClientes() {
         if (clienteDao.listar().isEmpty()) {
-            throw new IllegalArgumentException("\nAinda não há nenhum cliente cadastrado no sistema!\n");
+            throw new IllegalArgumentException("\nAinda não há nenhum cliente cadastrado no sistema!");
         }
         return clienteDao.listar();
     }
 
     public static void inserir(String nome, String telefone, String email, String senha) {
         if (!clienteDao.isEmailDisponivel(email)) {
-            throw new IllegalArgumentException("Este e-mail já está cadastrado no sistema.");
+            throw new IllegalArgumentException("\nEste e-mail já está cadastrado no sistema.");
         }
 
         Cliente cliente = new Cliente(nome, telefone, email, senha);
@@ -30,7 +30,7 @@ public class AdminClienteView {
 
     public static void atualizar(Cliente cliente, String nome, String telefone, String email, String senha) {
         if (!cliente.getEmail().equalsIgnoreCase(email) && !clienteDao.isEmailDisponivel(email)) {
-            throw new IllegalArgumentException("Este e-mail já está cadastrado no sistema.");
+            throw new IllegalArgumentException("\nEste e-mail já está cadastrado no sistema.");
         }
         clienteDao.atualizar(cliente.getId(), nome, telefone, email, senha);
     }

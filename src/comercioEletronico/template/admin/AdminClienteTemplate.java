@@ -1,8 +1,8 @@
 package comercioEletronico.template.admin;
 
 import comercioEletronico.model.entities.Cliente;
-import comercioEletronico.util.Util;
 import comercioEletronico.view.admin.AdminClienteView;
+import comercioEletronico.util.Util;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -41,6 +41,8 @@ public class AdminClienteTemplate {
 
                     case 1:
                         listarClientes();
+                        System.out.println();
+                        Util.pausar();
                         break;
 
                     case 2:
@@ -59,7 +61,7 @@ public class AdminClienteTemplate {
                         senha = scanner.nextLine();
 
                         AdminClienteView.inserir(nome, telefone, email, senha);
-                        System.out.println("\nCliente cadastrado com sucesso!\n");
+                        System.out.println("\nCliente cadastrado com sucesso!");
                         break;
 
                     case 3:
@@ -95,7 +97,7 @@ public class AdminClienteTemplate {
                         senha = scanner.nextLine();
 
                         AdminClienteView.atualizar(cliente, nome, telefone, email, senha);
-                        System.out.println("\nCliente atualizado com sucesso!\n");
+                        System.out.println("\nCliente atualizado com sucesso!");
                         break;
 
                     case 4:
@@ -119,7 +121,7 @@ public class AdminClienteTemplate {
                         }
 
                         AdminClienteView.remover(cliente);
-                        System.out.println("\nCliente removido com sucesso!\n");
+                        System.out.println("\nCliente removido com sucesso!");
                         break;
 
                     default:
@@ -140,8 +142,6 @@ public class AdminClienteTemplate {
             for (Cliente cliente : listaClientes) {
                 System.out.println(cliente);
             }
-
-            System.out.println();
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
