@@ -8,9 +8,8 @@ public class VendaItem {
     private int idProduto;
 
     public VendaItem(int quantidade, double preco, int idVenda, int idProduto) {
-        validarEstado(quantidade, preco);
-        this.quantidade = quantidade;
-        this.preco = preco;
+        setQuantidade(quantidade);
+        setPreco(preco);
         this.idVenda = idVenda;
         this.idProduto = idProduto;
     }
@@ -31,7 +30,9 @@ public class VendaItem {
     }
 
     public void setQuantidade(int quantidade) {
-        validarEstado(quantidade, preco);
+        if (quantidade <= 0) {
+            throw new IllegalArgumentException("Erro de validação: a quantidade de itens no carrinho deve ser maior que zero.");
+        }
         this.quantidade = quantidade;
     }
 
@@ -40,7 +41,9 @@ public class VendaItem {
     }
 
     public void setPreco(double preco) {
-        validarEstado(quantidade, preco);
+        if (preco < 0) { // Caso haja produtos com desconto (brinde), evitar que o dado seja negativo
+            throw new IllegalArgumentException("Erro de validação: o preço do produto não pode ser negativo.");
+        }
         this.preco = preco;
     }
 
@@ -52,17 +55,9 @@ public class VendaItem {
         return idProduto;
     }
 
-    private void validarEstado(int quantidade, double preco) {
-        if (quantidade <= 0) {
-            throw new IllegalArgumentException("Erro de validação: a quantidade de itens no carrinho deve ser maior que zero.");
-        }
-        if (preco < 0) { // Caso haja produtos com desconto (brinde), evitar que o dado seja negativo
-            throw new IllegalArgumentException("Erro de validação: o preço do produto não pode ser negativo.");
-        }
-    }
-
     @Override
     public String toString() {
-        return "ID produto: " + idProduto + " - " + quantidade + " unidades " + "- Preço unitário: " + String.format("%.2f", preco);
+        String unidade = (quantidade > 1) ? " unidades" : " unidade";
+        return quantidade + unidade + " - Preço unitário: " + String.format("R$ %.2f", preco);
     }
 }
