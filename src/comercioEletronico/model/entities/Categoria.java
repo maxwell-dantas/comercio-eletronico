@@ -5,8 +5,7 @@ public class Categoria {
     private String descricao;
 
     public Categoria(String descricao) {
-        validarEstado(descricao);
-        this.descricao = descricao;
+        setDescricao(descricao);
     }
 
     public String getDescricao() {
@@ -14,7 +13,9 @@ public class Categoria {
     }
 
     public void setDescricao(String descricao) {
-        validarEstado(descricao);
+        if (descricao == null || descricao.trim().isEmpty()) {
+            throw new IllegalArgumentException("Erro de validação: a descrição da categoria não pode ser vazia.");
+        }
         this.descricao = descricao;
     }
 
@@ -27,12 +28,6 @@ public class Categoria {
             throw new IllegalStateException("Violação de Segurança: O ID de uma categoria não pode ser modificado após ser gerado!");
         }
         this.id = id;
-    }
-
-    private void validarEstado(String descricao) {
-        if (descricao == null || descricao.trim().isEmpty()) {
-            throw new IllegalArgumentException("Erro de validação: a descrição da categoria não pode ser vazia.");
-        }
     }
 
     @Override
