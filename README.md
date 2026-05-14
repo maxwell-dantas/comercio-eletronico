@@ -1,74 +1,81 @@
 # 🛒 Sistema de Comércio Eletrônico - Java Console App
 
-Este é um Sistema de Comércio Eletrônico desenvolvido em Java. A aplicação funciona inteiramente via terminal (console) e implementa uma separação clara de responsabilidades através de uma arquitetura baseada em camadas, garantindo código limpo, manutenibilidade e persistência de dados utilizando arquivos JSON.
+Este é um Sistema de Comércio Eletrônico desenvolvido em Java, funcionando inteiramente via terminal (console). O projeto implementa uma separação rigorosa de responsabilidades através de uma arquitetura baseada em camadas, garantindo código limpo, manutenibilidade e persistência de dados utilizando arquivos JSON.
 
-O sistema foi projetado para atender a dois perfis distintos de usuários: **Administradores** e **Clientes**, cada um com seus respectivos menus e permissões de acesso.
+O sistema foi projetado para atender a dois perfis distintos de usuários: **Administradores** e **Clientes**, com fluxos de navegação e permissões de acesso independentes.
 
 ## ✨ Funcionalidades Principais
 
-**Visitantes e Segurança:**
-* Criação de conta para novos clientes.
-* Autenticação de usuários (Login).
-* Geração automática (Bootstrap) do usuário Administrador mestre na primeira execução do sistema.
-* Validação rigorosa de dados (*Fail-Fast*) nas Entidades, impedindo instâncias inválidas (ex: estoque negativo, e-mail duplicado).
+**Segurança e Inicialização:**
+* **Autenticação:** Sistema de login para usuários cadastrados.
+* **Bootstrap:** Geração automática do usuário Administrador mestre e da estrutura de arquivos na primeira execução.
+* **Validação Fail-Fast:** Proteção nas Entidades via encapsulamento, impedindo estados inválidos (estoque negativo, e-mail duplicado ou campos vazios).
 
 **Painel do Administrador:**
-* CRUD completo (Listar, Inserir, Atualizar, Remover) para Clientes, Categorias e Produtos.
-* Ferramenta de reajuste de preços em lote (Aumentos e Descontos percentuais para todos os produtos).
-* Visão global para listar as compras de todos os clientes da loja.
+* **Gestão Completa (CRUD):** Controle total sobre Clientes, Categorias e Produtos.
+* **Gestão de Preços:** Ferramenta para aplicação de reajustes (aumentos ou descontos) em lote por porcentagem.
+* **Auditoria:** Listagem global de todas as vendas e itens comercializados na plataforma.
 
 **Área do Cliente:**
-* Visualização da vitrine de produtos disponíveis.
-* Sistema inteligente de Carrinho de Compras, que agrupa quantidades de um mesmo produto.
-* Controle de sessão: carrinhos abandonados são limpos automaticamente para evitar lixo no banco de dados.
-* Opção de finalizar a compra, debitando automaticamente os itens do estoque e gerando a nota fiscal.
-* Acesso ao histórico pessoal detalhado de compras finalizadas.
+* **Vitrine Virtual:** Listagem de produtos com informações em tempo real.
+* **Carrinho Inteligente:** Agrupamento automático de itens e cálculo dinâmico de subtotais.
+* **Gestão de Sessão:** Limpeza automática de carrinhos e vendas não finalizadas para garantir a integridade dos dados (limpeza de "lixo" no JSON).
+* **Histórico:** Acesso detalhado a compras concluídas, incluindo data, total e categorias dos produtos.
 
 ## 🏗️ Arquitetura do Sistema (MVT)
 
-O projeto foi estruturado seguindo uma adaptação do padrão **Model-View-Template**, isolando a regra de negócio, o roteamento e a interface de texto.
+O projeto utiliza uma adaptação do padrão **Model-View-Template**, isolando a lógica de persistência, as regras de negócio e a interface de usuário.
 
-![Arquitetura Geral](docs/diagrama-pacotes-arquitetura-geral.png)
+![Arquitetura Geral](docs/diagramas/diagrama-arquitetura-pacotes.png)
 
-A arquitetura está dividida em:
-1. **Model (Entities & DAO):** Contém as classes estruturais do sistema (Cliente, Categoria, Produto, Venda, VendaItem) e as classes de Persistência (Data Access Object), responsáveis por ler e gravar os dados nos arquivos JSON utilizando a biblioteca Google GSON.
-2. **Template:** Camada de visualização *stateless*. Responsável exclusivamente por desenhar os menus na tela, solicitar inputs do usuário e exibir mensagens de erro/sucesso.
-3. **View:** Camada controladora. Faz o roteamento lógico, conecta os inputs recebidos do Template com as regras de negócio do DAO e gerencia as sessões dos usuários.
+**Divisão de Camadas:**
 
-## 📊 Diagramas de Classes
+1. **Model (Entities & DAO):** O núcleo de dados. As **Entities** contêm os dados e regras de validação interna. Os **DAOs** (Data Access Object) são responsáveis pela persistência atômica, realizando a leitura e gravação dos arquivos JSON via biblioteca Google GSON.
+2. **View:** A camada de serviços e lógica de negócio. Atua como intermediária: recebe requisições, processa validações complexas (como cálculos de estoque e regras de unicidade) e devolve os resultados processados. **A View é independente da interface e não possui conhecimento da existência do Template.**
+3. **Template:** O motor de navegação e interface (CLI). É a camada responsável por ditar o fluxo do sistema, capturar entradas do usuário, invocar os métodos da View e apresentar os dados ou mensagens de erro na tela.
+
+![Arquitetura Simplificada](docs/diagramas/diagrama-arquitetura-simplificada.png)
+
+## 📊 Diagramas de Classes (UML)
 
 ### Entidades do Banco de Dados
-![Entidades](docs/diagrama-classes-entidades.png)
+Mapeamento das classes de domínio e seus relacionamentos estruturais.
+![Entidades](docs/diagramas/diagrama-classes-entidades.png)
+
+*Visão de dependências independentes do Model:*
+![Dependências Model](docs/diagramas/diagrama-dependencias-model.png)
 
 ### Camada de Persistência (DAO)
-![Data Access Object](docs/diagrama-classes-dao.png)
+Interface de comunicação com os arquivos de dados.
+![Data Access Object](docs/diagramas/diagrama-classes-dao.png)
 
-### Camada de Roteamento (View)
-![View](docs/diagrama-classes-view.png)
+### Camada de Negócio e Serviços (View)
+Processamento lógico e intermediação de dados.
+![View](docs/diagramas/diagrama-classes-view.png)
 
-### Camada de Interface (Template)
-![Template](docs/diagrama-classes-template.png)
+### Interface de Usuário e Utilitários (Template & Util)
+Gerenciamento de menus e métodos auxiliares de entrada segura.
+![Template](docs/diagramas/diagrama-classes-template-util.png)
 
 ## 🚀 Tecnologias Utilizadas
 
-* **Java (JDK 21+)**: Linguagem principal do projeto.
-* **Google GSON**: Biblioteca utilizada para a serialização e desserialização de objetos Java para arquivos JSON de forma atômica.
-* **Git & GitHub**: Versionamento de código.
+* **Java (JDK 21+)**: Utilização de recursos modernos da linguagem e forte tipagem.
+* **Google GSON**: Serialização e desserialização eficiente de objetos para JSON.
+* **Astah Professional**: Modelagem técnica seguindo padrões UML.
+* **Git & GitHub**: Versionamento de código com foco em *Semantic Commits*.
 
 ## 🛠️ Como Executar o Projeto
 
-1. Clone este repositório em sua máquina local:
+1. Clone este repositório:
    ```bash
    git clone https://github.com/maxwell-dantas/comercio-eletronico.git
-   ```
-
-2. Abra o projeto em sua IDE preferida (IntelliJ IDEA, Eclipse, VS Code).
-3. Certifique-se de adicionar a biblioteca **GSON** ao `classpath` do seu projeto.
-4. Execute a classe principal `Main.java` localizada no pacote `comercioEletronico`.
-5. **Nota:** Na primeira execução, o sistema criará automaticamente a pasta `data` com os arquivos JSON na raiz de `src/comercioEletronico/` e criará um usuário de acesso com as credenciais `admin` / `admin`.
+2.  Importe o projeto em sua IDE (IntelliJ, Eclipse ou VS Code).
+3.  Adicione a biblioteca **GSON** ao seu `classpath`.
+4.  Execute a classe `Main.java` na raiz do pacote `comercioEletronico`.
+5.  **Credenciais Iniciais:** O sistema cria um administrador padrão com login `admin` e senha `admin`.
 
 ## 👨‍💻 Autor e Contexto
 
 Desenvolvido por **Maxwell Dantas**, estudante de Análise e Desenvolvimento de Sistemas no IFRN (Campus Natal Central, RN).
 
-Este projeto foi construído como parte prática da disciplina de Programação Orientada a Objetos, sob a orientação do **Prof. Gilbert Azevedo da Silva**. O foco principal foi dominar o controle de estado de objetos, persistência de dados não-relacionais, e os fundamentos de código limpo em arquiteturas robustas.
+Este projeto foi construído sob a orientação do **Prof. Gilbert Azevedo da Silva** na disciplina de Programação Orientada a Objetos. O objetivo principal foi aplicar padrões de projeto robustos e garantir a integridade de dados em sistemas complexos.
