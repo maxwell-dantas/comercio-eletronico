@@ -6,143 +6,92 @@ import comercioEletronico.model.dao.VendaItemDao;
 import comercioEletronico.model.entities.Produto;
 import comercioEletronico.model.entities.Venda;
 import comercioEletronico.model.entities.VendaItem;
-import comercioEletronico.template.admin.AdminProdutoTemplate;
-import comercioEletronico.template.cliente.ClienteTemplate;
-import comercioEletronico.view.Util;
+
+import java.util.ArrayList;
 
 public class ClienteView {
-    private ProdutoDao produtoDao = new ProdutoDao();
-    private VendaDao vendaDao = new VendaDao();
-    private VendaItemDao vendaItemDao = new VendaItemDao();
+    private static ProdutoDao produtoDao = new ProdutoDao();
+    private static VendaDao vendaDao = new VendaDao();
+    private static VendaItemDao vendaItemDao = new VendaItemDao();
 
-    public void exibirMenu(int idClienteLogado) {
-        Venda venda = new Venda(idClienteLogado);
+    public static void sair(int idVenda) {
+        Venda venda = vendaDao.listarId(idVenda);
+
+        // para compras não finalizadas, a venda e os itens desta venda são removidas para não acumular sujeira nos arquivos json
+        if (venda != null && venda.getCarrinho()) {
+            vendaItemDao.limparCarrinho(idVenda);
+            vendaDao.remover(idVenda);
+        }
+    }
+
+    public static void adicionarVenda(Venda venda) {
         vendaDao.inserir(venda);
-        int idVenda = venda.getId();
+    }
 
-        VendaItem vendaItem;
-        Produto produto;
-        int idProduto;
-        int quantidadeItens;
-        String[] dados;
-        int opcaoMenu;
+    public static void adicionarProduto(int idVenda, int idProduto, int quantidadeItems) {
 
-        do {
-            opcaoMenu = ClienteTemplate.obterOpcaoMenu();
+        if (produtoDao.listar().isEmpty()) {
+            throw new IllegalArgumentException("\nAinda não há nenhum produto cadastrado no sistema, sentimos muito!");
+        }
 
-            switch (opcaoMenu) {
-                case 0:
-                    venda = vendaDao.listarId(idVenda);
+        Produto produto = produtoDao.listarId(idProduto); // retorna um produto
 
-                    // para compras não finalizadas, a venda e os itens desta venda são removidas para não acumular sujeira nos arquivos json
-                    if (venda != null && venda.getCarrinho()) {
-                        vendaItemDao.limparCarrinho(idVenda);
-                        vendaDao.remover(idVenda);
-                    }
+        if (produto == null) {
+            throw new IllegalArgumentException("\nEste produto não está cadastrado! Digite um ID válido.");
+        }
 
-                    ClienteTemplate.exibirMensagemSaida();
-                    break;
+        // retorna null caso o item ainda não esteja no carrinho
+        VendaItem vendaItem = vendaItemDao.obterVendaItemProduto(idVenda, idProduto);
 
-                case 1:
-                    AdminProdutoTemplate.listarProdutos(produtoDao.listar());
-                    Util.pausar();
-                    break;
+        if (vendaItem != null) { // se o item já está no carrinho
 
-                case 2:
-                    dados = ClienteTemplate.obterDados();
-
-                    try {
-                        idProduto = Integer.parseInt(dados[0]);
-                        quantidadeItens = Integer.parseInt(dados[1]);
-                    } catch (NumberFormatException e) {
-                        ClienteTemplate.exibirErro("Formatação inválida: Digite apenas números.");
-                        continue;
-                    }
-
-                    produto = produtoDao.listarId(idProduto);
-
-                    if (produto == null) {
-                        ClienteTemplate.exibirErroProdutoNaoEncontrado();
-                        continue;
-                    }
-
-                    vendaItem = vendaItemDao.obterVendaItemProduto(idVenda, idProduto);
-
-                    if (vendaItem != null) { // Se o item já está no carrinho
-                        if (quantidadeItens + vendaItem.getQuantidade() > produto.getEstoque()) {
-                            ClienteTemplate.exibirErroQuantidadeItens();
-                            continue;
-                        }
-
-                        vendaItemDao.atualizar(vendaItem.getId(), (vendaItem.getQuantidade() + quantidadeItens), produto.getPreco());
-                        ClienteTemplate.exibirSucessoAdicionado();
-                        continue;
-                    }
-
-                    // Se o item é novo no carrinho
-                    if (quantidadeItens > produto.getEstoque()) {
-                        ClienteTemplate.exibirErroQuantidadeItens();
-                        continue;
-                    }
-
-                    vendaItem = new VendaItem(quantidadeItens, produto.getPreco(), idVenda, idProduto);
-                    vendaItemDao.inserir(vendaItem);
-                    ClienteTemplate.exibirSucessoAdicionado();
-                    break;
-
-                case 3:
-                    ClienteTemplate.visualizarCarrinho(vendaItemDao.listar(), idVenda);
-                    Util.pausar();
-                    break;
-
-                case 4:
-                    vendaItemDao.limparCarrinho(idVenda);
-                    ClienteTemplate.exibirMensagemCarrinhoLimpo();
-                    Util.pausar();
-                    break;
-
-                case 5:
-                    boolean temItens = false;
-                    double totalDaCompra = 0.0;
-
-                    for (VendaItem item : vendaItemDao.listar()) {
-                        if (item.getIdVenda() == idVenda) {
-                            temItens = true;
-                            // cacula preço x quantidade e soma ao total
-                            totalDaCompra += (item.getPreco() * item.getQuantidade());
-
-                            // baixa no estoque
-                            produtoDao.atualizarEstoque(item.getIdProduto(), item.getQuantidade());
-                        }
-                    }
-
-                    if (!temItens) {
-                        ClienteTemplate.exibirMensagemCarrinhoVazio();
-                        continue;
-                    }
-
-                    // fecha o carrinho e passa o total da compra
-                    vendaDao.atualizar(idVenda, false, totalDaCompra);
-                    ClienteTemplate.exibirSucessoCompra();
-
-                    // prepara um novo carrinho caso o cliente queira continuar comprando sem precisar deslogar e logar novamente
-                    venda = new Venda(idClienteLogado);
-                    vendaDao.inserir(venda);
-                    idVenda = venda.getId();
-
-                    Util.pausar();
-                    break;
-
-                case 6:
-                    ClienteTemplate.listarCompras(vendaDao.listar(), idClienteLogado, vendaItemDao.listar());
-                    Util.pausar();
-                    break;
-
-                default:
-                    ClienteTemplate.exibirErroOpcaoInvalida();
-                    break;
+            // verifica se a quantidade adicionada ultrapassa o valor do estoque
+            if (quantidadeItems + vendaItem.getQuantidade() > produto.getEstoque()) {
+                throw new IllegalArgumentException("\nQuantidade indisponível no estoque no momento!");
             }
 
-        } while (opcaoMenu != 0);
+            vendaItemDao.atualizar(vendaItem.getId(), (vendaItem.getQuantidade() + quantidadeItems), produto.getPreco());
+
+        } else { // se o item é novo no carrinho
+
+            // verifica se a quantidade pedida ultrapassa o valor do estoque
+            if (quantidadeItems > produto.getEstoque()) {
+                throw new IllegalArgumentException("\nQuantidade indisponível no estoque no momento!");
+            }
+
+            vendaItem = new VendaItem(quantidadeItems, produto.getPreco(), idVenda, idProduto);
+            vendaItemDao.inserir(vendaItem);
+        }
+    }
+
+    public static ArrayList<VendaItem> obterCarrinho() {
+        if (vendaItemDao.listar().isEmpty()) {
+            throw new IllegalArgumentException("\nAinda não há nenhuma venda cadastrada no sistema!");
+        }
+        return vendaItemDao.listar();
+    }
+
+    public static void limparCarrinho(int idVenda) {
+        vendaItemDao.limparCarrinho(idVenda);
+    }
+
+    public static void finalizarCompra(int idVenda) {
+        boolean temItens = false;
+        double totalDaCompra = 0.0;
+
+        for (VendaItem item : vendaItemDao.listar()) {
+            if (item.getIdVenda() == idVenda) {
+                temItens = true;
+                totalDaCompra += (item.getPreco() * item.getQuantidade()); // cacula preço x quantidade e soma ao total
+                produtoDao.atualizarEstoque(item.getIdProduto(), item.getQuantidade()); // baixa no estoque
+            }
+        }
+
+        if (!temItens) {
+            throw new IllegalArgumentException("\nNão é possível finalizar: Seu carrinho está vazio!");
+        }
+
+        // fecha o carrinho e passa o total da compra
+        vendaDao.atualizar(idVenda, false, totalDaCompra);
     }
 }
