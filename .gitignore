@@ -47,3 +47,7 @@ bin/
 
 ### Logs ###
 *.log
+
+### venv ###
+.venv
+venv
