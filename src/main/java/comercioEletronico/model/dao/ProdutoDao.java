@@ -84,7 +84,7 @@ public class ProdutoDao {
     public void abrir() {
         try {
             // 1. Abre o leitor para o caminho onde o arquivo foi salvo
-            FileReader leitor = new FileReader("src/comercioEletronico/data/produtos.json");
+            FileReader leitor = new FileReader("data/produtos.json");
 
             // 2. Verifica o tipo da lista
             Type listaTipo = new TypeToken<ArrayList<Produto>>() {
@@ -107,7 +107,7 @@ public class ProdutoDao {
     public void salvar() {
         try {
             // 1. Abertura de arquivo
-            FileWriter escritor = new FileWriter("src/comercioEletronico/data/produtos.json");
+            FileWriter escritor = new FileWriter("data/produtos.json");
 
             // 2. Converte a lista de objetos em texto Json
             String textoJson = gson.toJson(listaProdutos);
