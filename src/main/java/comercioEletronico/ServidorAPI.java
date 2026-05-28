@@ -5,11 +5,16 @@ import io.javalin.Javalin;
 import comercioEletronico.model.entities.Categoria;
 import comercioEletronico.model.entities.Cliente;
 import comercioEletronico.model.entities.Produto;
+import comercioEletronico.model.entities.Venda;
+import comercioEletronico.model.entities.VendaItem;
 import comercioEletronico.view.admin.AdminCategoriaView;
 import comercioEletronico.view.admin.AdminClienteView;
 import comercioEletronico.view.admin.AdminProdutoView;
 import comercioEletronico.view.admin.AdminView;
 import comercioEletronico.view.visitante.VisitanteView;
+import comercioEletronico.view.cliente.ClienteView;
+
+import java.util.ArrayList;
 
 public class ServidorAPI {
     public static void main(String[] args) {
@@ -263,10 +268,89 @@ public class ServidorAPI {
         });
 
         // ====================================================================
-        // ROTAS DE VENDAS E ITENS (HISTÓRICO / LEITURA)
+        // ROTAS DO CARRINHO DE COMPRAS (SESSÃO DO CLIENTE)
         // ====================================================================
 
-        // Retorna arquivo JSON (Vendas gerais)
+        // 1. Iniciar ou Resgatar Carrinho Pendente
+        app.get("/carrinho/{idCliente}", contexto -> {
+            try {
+                int idCliente = Integer.parseInt(contexto.pathParam("idCliente"));
+
+                Venda venda = ClienteView.buscarCarrinhoAberto(idCliente);
+
+                if (venda == null) {
+                    venda = new Venda(idCliente);
+                    ClienteView.adicionarVenda(venda);
+                }
+
+                // Devolve a venda
+                contexto.status(200).json(venda);
+            } catch (Exception e) {
+                contexto.status(500).result("Erro ao processar o carrinho: " + e.getMessage());
+            }
+        });
+
+        // 2. Adicionar Produto ao Carrinho
+        app.post("/carrinho/{idVenda}/itens", contexto -> {
+            try {
+                int idVenda = Integer.parseInt(contexto.pathParam("idVenda"));
+
+                VendaItem requisicao = contexto.bodyAsClass(VendaItem.class);
+
+                ClienteView.adicionarProduto(idVenda, requisicao.getIdProduto(), requisicao.getQuantidade());
+                contexto.status(201).result("Produto adicionado ao carrinho com sucesso!");
+            } catch (IllegalArgumentException e) {
+                contexto.status(400).result(e.getMessage());
+            }
+        });
+
+        // 3. Visualizar Apenas os Itens do Carrinho Aberto
+        app.get("/carrinho/{idVenda}/itens", contexto -> {
+            try {
+                int idVenda = Integer.parseInt(contexto.pathParam("idVenda"));
+                ArrayList<VendaItem> todosItens = ClienteView.obterCarrinho();
+
+                // Filtra para mandar para o Python APENAS os itens da venda atual
+                ArrayList<VendaItem> itensDesteCarrinho = new ArrayList<>();
+                for (VendaItem item : todosItens) {
+                    if (item.getIdVenda() == idVenda) {
+                        itensDesteCarrinho.add(item);
+                    }
+                }
+
+                contexto.status(200).json(itensDesteCarrinho);
+            } catch (IllegalArgumentException e) {
+                contexto.status(200).json(new ArrayList<VendaItem>()); // retorna lista vazia
+            }
+        });
+
+        // 4. Limpar o Carrinho
+        app.delete("/carrinho/{idVenda}/limpar", contexto -> {
+            try {
+                int idVenda = Integer.parseInt(contexto.pathParam("idVenda"));
+                ClienteView.limparCarrinho(idVenda);
+                contexto.status(200).result("Seu carrinho foi esvaziado.");
+            } catch (Exception e) {
+                contexto.status(400).result(e.getMessage());
+            }
+        });
+
+        // 5. Finalizar a Compra
+        app.post("/carrinho/{idVenda}/finalizar", contexto -> {
+            try {
+                int idVenda = Integer.parseInt(contexto.pathParam("idVenda"));
+                ClienteView.finalizarCompra(idVenda);
+                contexto.status(200).result("Compra finalizada com sucesso! Agradecemos a preferência.");
+            } catch (IllegalArgumentException e) {
+                contexto.status(400).result(e.getMessage());
+            }
+        });
+
+        // ====================================================================
+        // ROTAS DE VENDAS (HISTÓRICO GERAL PARA O ADMIN)
+        // ====================================================================
+
+        // Retorna arquivo JSON (Vendas)
         app.get("/vendas", contexto -> {
             try {
                 contexto.json(AdminView.obterVendas());
