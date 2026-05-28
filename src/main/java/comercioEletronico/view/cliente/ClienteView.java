@@ -14,18 +14,17 @@ public class ClienteView {
     private static VendaDao vendaDao = new VendaDao();
     private static VendaItemDao vendaItemDao = new VendaItemDao();
 
-    public static void sair(int idVenda) {
-        Venda venda = vendaDao.listarId(idVenda);
-
-        // para compras não finalizadas, a venda e os itens desta venda são removidas para não acumular sujeira nos arquivos json
-        if (venda != null && venda.getCarrinho()) {
-            vendaItemDao.limparCarrinho(idVenda);
-            vendaDao.remover(idVenda);
-        }
-    }
-
     public static void adicionarVenda(Venda venda) {
         vendaDao.inserir(venda);
+    }
+
+    public static Venda buscarCarrinhoAberto(int idCliente) {
+        for (Venda venda : vendaDao.listar()) {
+            if (venda.getIdCliente() == idCliente && venda.getCarrinho()) {
+                return venda;
+            }
+        }
+        return null;
     }
 
     public static void adicionarProduto(int idVenda, int idProduto, int quantidadeItems) {
