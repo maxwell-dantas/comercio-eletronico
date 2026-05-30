@@ -188,7 +188,7 @@ public class ServidorAPI {
                         cliente.getEmail(),
                         cliente.getSenha()
                 );
-                contexto.status(201).result("Cliente cadastrado com sucesso!");
+                contexto.status(201).result("Cadastrado concluído com sucesso!");
             } catch (IllegalArgumentException e) {
                 contexto.status(400).result(e.getMessage());
             }
