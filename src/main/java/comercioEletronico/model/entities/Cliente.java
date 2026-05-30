@@ -7,6 +7,8 @@ public class Cliente {
     private String telefone;
     private String senha;
 
+    public Cliente(){}
+
     public Cliente(String nome, String telefone, String email, String senha) {
         setNome(nome);
         setTelefone(telefone);
