@@ -5,8 +5,7 @@ import requests
 st.set_page_config(page_title="Comércio Eletrônico", layout="wide")
 
 # 2. Configuração da API (A URL Base)
-# Substitua pela sua URL real, mas DEIXE SEM A BARRA NO FINAL!
-URL_BASE = "https://fuzzy-space-enigma-q7qxrgrprx4x3676-8080.app.github.dev"
+URL_BASE = "http://localhost:8080"
 
 # 3. Criando o Menu Lateral interativo
 with st.sidebar:
