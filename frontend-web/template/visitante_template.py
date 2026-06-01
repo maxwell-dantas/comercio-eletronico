@@ -43,8 +43,8 @@ class VisitanteTemplate:
 
             st.divider()  # linha divisória
 
-            entrar = st.button("Fazer Login", on_click=VisitanteTemplate.ir_para_login, use_container_width=True)
-            criar_conta = st.button("Criar Conta", on_click=VisitanteTemplate.ir_para_cadastro, use_container_width=True)
+            st.button("Fazer Login", on_click=VisitanteTemplate.ir_para_login, use_container_width=True)
+            st.button("Criar Conta", on_click=VisitanteTemplate.ir_para_cadastro, use_container_width=True)
 
         if (st.session_state.pagina_atual == "visitante-login"):
             st.title("Faça Login com sua conta Caju")
