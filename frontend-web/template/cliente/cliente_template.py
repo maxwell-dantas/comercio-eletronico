@@ -19,7 +19,7 @@ def pagina_historico():
 
 def redirecionar_para_produtos():
     # Esta função só serve para jogar o usuário para a URL /produtos
-    st.switch_page(pg_carrinho)
+    st.switch_page(pg_produtos)
 
 
 # DEFININDO ROTAS PERSONALIZADAS
@@ -31,7 +31,6 @@ pg_raiz = st.Page(
     default=True 
 )
 
-# Agora a página de produtos NÃO é mais a default, então o url_path vai funcionar!
 pg_produtos = st.Page(
     "catalogo_produtos.py", 
     title="Produtos Disponíveis", 
@@ -57,13 +56,13 @@ pg_historico = st.Page(
 # NAVEGAÇÃO E SIDEBAR
 
 
-menu_navegacao = st.navigation([pg_raiz, pg_carrinho,pg_produtos, pg_historico], position="hidden")
+menu_navegacao = st.navigation([pg_raiz, pg_produtos,  pg_carrinho, pg_historico], position="hidden")
 
 with st.sidebar:
     st.header("Seja bem-vindo!")
     
-    st.page_link(pg_carrinho)
     st.page_link(pg_produtos)
+    st.page_link(pg_carrinho)
     st.page_link(pg_historico)
 
 menu_navegacao.run()
