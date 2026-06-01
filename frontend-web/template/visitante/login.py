@@ -1,0 +1,23 @@
+import streamlit as st
+import requests
+
+URL_BASE = "http://localhost:8080"
+
+st.title("Faça Login com sua conta Caju")
+
+with st.form("login"):
+    email = st.text_input("E-mail")
+    senha = st.text_input("Senha", type="password")
+    btn_entrar = st.form_submit_button("Entrar")
+
+    if (btn_entrar):
+        dados_login = {
+            "email": email,
+            "senha": senha
+        }
+
+        validacao = requests.post(f"{URL_BASE}/login", json=dados_login)
+
+        if (validacao.status_code == 200):
+            st.session_state.id_usuario_logado = validacao.json()["idUsuario"]
+            st.rerun() # servirá para carregar a página referente ao usuário
