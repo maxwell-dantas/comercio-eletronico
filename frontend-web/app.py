@@ -1,67 +1,19 @@
 import streamlit as st
-import requests
 
-# 1. Configuração da página
-st.set_page_config(page_title="Comércio Eletrônico", layout="wide")
+from template.admin_template import AdminTemplate
+from template.visitante_template import VisitanteTemplate
 
-# 2. Configuração da API (A URL Base)
-URL_BASE = "http://localhost:8080"
+st.set_page_config(page_title="Comércio Eletrônico", layout="centered")
 
-# 3. Criando o Menu Lateral interativo
-with st.sidebar:
-    # --- NOVO: Verificador de Health Check ---
-    st.subheader("Status do Sistema")
-    try:
-        # Bate na rota /health e espera no máximo 2 segundos
-        verificacao = requests.get(f"{URL_BASE}/health", timeout=2)
-        
-        if verificacao.status_code == 200:
-            st.success("🟢 Back-end Online")
-        else:
-            st.warning("🟡 API instável")
-    except Exception:
-        # Se der erro de conexão (ex: você esqueceu de rodar o Java)
-        st.error("🔴 Back-end Offline")
-        
-    st.divider() # Cria uma linha divisória visual
-    
-    # --- O Menu de Navegação Original ---
-    st.header("Navegação")
-    menu_selecionado = st.radio(
-        "Selecione a página:",
-        ["📦 Produtos", "👥 Clientes", "🏷️ Categorias"]
-    )
+# verificação de sessões
+if "pagina_atual" not in st.session_state:
+    VisitanteTemplate.ir_para_login()
 
-# 4. Lógica de Navegação e Consumo da API
-st.title("Gestão do Sistema")
+if (st.session_state.pagina_atual in ["visitante-login", "visitante-cadastro"]):
+    VisitanteTemplate.menu()
 
-if menu_selecionado == "📦 Produtos":
-    st.subheader("Lista de Produtos em Estoque")
-    
-    # Monta a URL completa juntando a base com a rota específica
-    resposta = requests.get(f"{URL_BASE}/produtos")
-    
-    if resposta.status_code == 200:
-        st.dataframe(resposta.json(), use_container_width=True)
-    else:
-        st.error("Erro ao buscar produtos.")
+elif (st.session_state.pagina_atual in ["admin-clientes", "admin-categorias", "admin-produtos", "admin-vendas"]):
+    AdminTemplate.menu()
 
-elif menu_selecionado == "👥 Clientes":
-    st.subheader("Cadastro de Clientes")
-    
-    resposta = requests.get(f"{URL_BASE}/clientes")
-    
-    if resposta.status_code == 200:
-        st.dataframe(resposta.json(), use_container_width=True)
-    else:
-        st.error("Erro ao buscar clientes.")
-
-elif menu_selecionado == "🏷️ Categorias":
-    st.subheader("Categorias do Sistema")
-    
-    resposta = requests.get(f"{URL_BASE}/categorias")
-    
-    if resposta.status_code == 200:
-        st.dataframe(resposta.json(), use_container_width=True)
-    else:
-        st.error("Erro ao buscar categorias.")
+elif (st.session_state.pagina_atual in ["cliente-produtos", "cliente-carrinho", "cliente-historico-de-compras"]):
+    pass
