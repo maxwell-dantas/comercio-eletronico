@@ -16,8 +16,12 @@ public class ClienteTemplate {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void menu(int idCliente) {
-        Venda venda = new Venda(idCliente);
-        ClienteView.adicionarVenda(venda);
+        Venda venda = ClienteView.buscarCarrinhoAberto(idCliente);
+
+        if (venda == null) {
+            venda = new Venda(idCliente);
+            ClienteView.adicionarVenda(venda);
+        }
 
         int opcaoMenuCliente = -1;
         while (opcaoMenuCliente != 0) {
@@ -39,7 +43,6 @@ public class ClienteTemplate {
             try {
                 switch (opcaoMenuCliente) {
                     case 0:
-                        ClienteView.sair(venda.getId());
                         System.out.println("\nSaindo da loja e voltando ao Menu Principal...");
                         break;
 
