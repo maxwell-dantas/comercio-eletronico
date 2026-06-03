@@ -3,21 +3,25 @@ package comercioEletronico.model.entities;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Venda {
+public class Venda implements Identificavel {
     private int id;
     private String data = "pendente";
     private boolean carrinho = true;
     private double total;
     private int idCliente;
 
+    public Venda() {}
+
     public Venda(int idCliente) {
         this.idCliente = idCliente;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         if (this.id != 0) {
             throw new IllegalStateException("Violação de Segurança: O ID de uma venda não pode ser modificado após ser gerado!");
