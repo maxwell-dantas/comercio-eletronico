@@ -1,11 +1,10 @@
 package comercioEletronico.model.entities;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class Venda implements Identificavel {
     private int id;
-    private String data = "pendente";
+    private LocalDateTime data = null;
     private boolean carrinho = true;
     private double total;
     private int idCliente;
@@ -29,13 +28,8 @@ public class Venda implements Identificavel {
         this.id = id;
     }
 
-    public String getData() {
+    public LocalDateTime getData() {
         return data;
-    }
-
-    private void setData() {
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        data = LocalDateTime.now().format(formato);
     }
 
     public boolean getCarrinho() {
@@ -44,7 +38,10 @@ public class Venda implements Identificavel {
 
     public void setCarrinho(boolean carrinho) {
         this.carrinho = carrinho;
-        setData();
+
+        if (!carrinho) {
+            this.data = LocalDateTime.now();
+        }
     }
 
     public double getTotal() {
@@ -64,6 +61,6 @@ public class Venda implements Identificavel {
 
     @Override
     public String toString() {
-        return "Total: R$ " + String.format("%.2f", total) + " - Data da compra: " + data;
+        return "Total: R$ " + String.format("%.2f", total) + " - Data: " + data;
     }
 }
