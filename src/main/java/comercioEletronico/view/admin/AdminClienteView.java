@@ -15,12 +15,12 @@ public class AdminClienteView {
         return clienteDao.listar();
     }
 
-    public static void inserir(String nome, String telefone, String email, String senha) {
+    public static void inserir(String nome, String telefone, String email, String senha, int idFuncao) {
         if (!clienteDao.isEmailDisponivel(email)) {
             throw new IllegalArgumentException("\nEste e-mail já está cadastrado no sistema.");
         }
 
-        Cliente cliente = new Cliente(nome, telefone, email, senha);
+        Cliente cliente = new Cliente(nome, telefone, email, senha, idFuncao);
         clienteDao.inserir(cliente);
     }
 
@@ -28,11 +28,16 @@ public class AdminClienteView {
         return clienteDao.listarId(id);
     }
 
-    public static void atualizar(Cliente cliente, String nome, String telefone, String email, String senha) {
+    public static void atualizar(Cliente cliente, String nome, String telefone, String email, String senha, int idFuncao) {
         if (!cliente.getEmail().equalsIgnoreCase(email) && !clienteDao.isEmailDisponivel(email)) {
             throw new IllegalArgumentException("\nEste e-mail já está cadastrado no sistema.");
         }
-        clienteDao.atualizar(cliente.getId(), nome, telefone, email, senha);
+        cliente.setNome(nome);
+        cliente.setTelefone(telefone);
+        cliente.setEmail(email);
+        cliente.setSenha(senha);
+        cliente.setIdFuncao(idFuncao);
+        clienteDao.atualizar(cliente);
     }
 
     public static void remover(Cliente cliente) {
