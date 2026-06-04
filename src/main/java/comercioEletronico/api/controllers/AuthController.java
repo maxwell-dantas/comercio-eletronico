@@ -14,9 +14,19 @@ public class AuthController {
                 Cliente credenciais = contexto.bodyAsClass(Cliente.class);
                 Cliente clienteLogado = VisitanteView.entrar(credenciais.getEmail(), credenciais.getSenha());
                 contexto.status(200).json(clienteLogado);
+
             } catch (IllegalArgumentException e) {
                 contexto.status(401).result(e.getMessage());
+
             } catch (Exception e) {
+                Throwable causa = e;
+                while (causa != null) {
+                    if (causa instanceof IllegalArgumentException) {
+                        contexto.status(400).result(causa.getMessage());
+                        return;
+                    }
+                    causa = causa.getCause();
+                }
                 contexto.status(500).result("Erro no servidor ao processar o login.");
             }
         });
@@ -33,8 +43,20 @@ public class AuthController {
                         novoCliente.getIdFuncao()
                 );
                 contexto.status(201).result("Conta criada com sucesso!");
+
             } catch (IllegalArgumentException e) {
                 contexto.status(400).result(e.getMessage());
+
+            } catch (Exception e) {
+                Throwable causa = e;
+                while (causa != null) {
+                    if (causa instanceof IllegalArgumentException) {
+                        contexto.status(400).result(causa.getMessage());
+                        return;
+                    }
+                    causa = causa.getCause();
+                }
+                contexto.status(500).result("Erro interno no servidor: " + e.getMessage());
             }
         });
     }
