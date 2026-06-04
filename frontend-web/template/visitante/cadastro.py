@@ -11,17 +11,22 @@ with st.form("cadastro"):
     telefone = st.text_input("Telefone")
     email = st.text_input("E-mail")
     senha = st.text_input("Senha", type="password")
+
+    tipo_conta = st.radio("Deseja criar conta como:", ["Cliente", "Entregador"], horizontal=True)
     btn_criar_conta = st.form_submit_button("Criar Conta")
 
     if (btn_criar_conta):
+        id_funcao = 2 if tipo_conta == "Cliente" else 3
+
         dados_cadastro = {
             "nome": nome,
             "telefone": telefone,
             "email": email,
-            "senha": senha
+            "senha": senha,
+            "idFuncao": id_funcao
         }
 
-        resposta = requests.post(f"{URL_BASE}/clientes", json=dados_cadastro)
+        resposta = requests.post(f"{URL_BASE}/cadastro", json=dados_cadastro)
         resposta.encoding = "utf-8"
 
         if (resposta.status_code == 201):
