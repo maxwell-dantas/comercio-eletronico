@@ -1,12 +1,16 @@
 package comercioEletronico.view.admin;
 
+import comercioEletronico.model.dao.VendaDao;
 import comercioEletronico.model.entities.Cliente;
 import comercioEletronico.model.dao.ClienteDao;
+import comercioEletronico.model.entities.Venda;
+import comercioEletronico.view.cliente.ClienteView;
 
 import java.util.ArrayList;
 
 public class AdminClienteView {
     private static ClienteDao clienteDao = new ClienteDao();
+    private static VendaDao vendaDao = new VendaDao();
 
     public static ArrayList<Cliente> obterClientes() {
         if (clienteDao.listar().isEmpty()) {
@@ -29,6 +33,10 @@ public class AdminClienteView {
     }
 
     public static void atualizar(Cliente cliente, String nome, String telefone, String email, String senha, int idFuncao) {
+        if (cliente.getId() == 1 && idFuncao != 1) {
+            throw new IllegalArgumentException("\nNão é possível alterar a função do ADMIN principal!");
+        }
+
         if (!cliente.getEmail().equalsIgnoreCase(email) && !clienteDao.isEmailDisponivel(email)) {
             throw new IllegalArgumentException("\nEste e-mail já está cadastrado no sistema.");
         }
