@@ -1,5 +1,6 @@
 package comercioEletronico.template.visitante;
 
+import comercioEletronico.model.entities.Cliente;
 import comercioEletronico.template.admin.AdminTemplate;
 import comercioEletronico.template.cliente.ClienteTemplate;
 import comercioEletronico.view.visitante.VisitanteView;
@@ -11,6 +12,7 @@ public class VisitanteTemplate {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void menuLogin() {
+        int func;
         String nome;
         String telefone;
         String email;
@@ -42,22 +44,22 @@ public class VisitanteTemplate {
                         System.out.print("Digite a sua senha: ");
                         senha = scanner.nextLine();
 
-                        int idUsuario = VisitanteView.entrar(email, senha);
+                        Cliente cliente = VisitanteView.entrar(email, senha);
 
-                        if (idUsuario == 0) {
+                        if (cliente == null) {
                             System.out.println("\nE-mail ou senha inválidos!");
                             continue;
                         }
 
-                        System.out.println("\nBem vindo(a), " + VisitanteView.obterUsuario(idUsuario).getNome() +"!");
+                        System.out.println("\nBem vindo(a), " + VisitanteView.obterUsuario(cliente.getId()).getNome() +"!");
                         Util.pausar();
 
-                        if (idUsuario == 1) { // ID do admin sempre é 1, pois nasce com a aplicação
+                        if (cliente.getIdFuncao() == 1) { // ID do admin sempre é 1, pois nasce com a aplicação
                             AdminTemplate.menu();
                             continue;
                         }
 
-                        ClienteTemplate.menu(idUsuario);
+                        ClienteTemplate.menu(cliente.getId());
                         break;
 
                     case 2:
@@ -73,7 +75,10 @@ public class VisitanteTemplate {
                         System.out.print("Digite a sua senha: ");
                         senha = scanner.nextLine();
 
-                        VisitanteView.criarConta(nome, telefone, email, senha);
+                        System.out.print("Digite a nova função do cliente: ");
+                        func = Util.lerInteiroSeguro(scanner.nextLine());
+
+                        VisitanteView.criarConta(nome, telefone, email, senha, func);
                         System.out.println("\nConta cadastrada com sucesso!");
                         break;
 

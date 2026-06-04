@@ -12,6 +12,7 @@ public class AdminClienteTemplate {
 
     public static void menu() {
         int id;
+        int func;
         Cliente cliente;
         String nome;
         String telefone;
@@ -60,7 +61,10 @@ public class AdminClienteTemplate {
                         System.out.print("Digite a senha do cliente: ");
                         senha = scanner.nextLine();
 
-                        AdminClienteView.inserir(nome, telefone, email, senha);
+                        System.out.print("Digite a função do cliente: ");
+                        func = Util.lerInteiroSeguro(scanner.nextLine());
+
+                        AdminClienteView.inserir(nome, telefone, email, senha, func);
                         System.out.println("\nCliente cadastrado com sucesso!");
                         break;
 
@@ -71,11 +75,6 @@ public class AdminClienteTemplate {
 
                         System.out.print("Digite o ID do cliente: ");
                         id = Util.lerInteiroSeguro(scanner.nextLine());
-
-                        if (id == 1) {
-                            System.out.println("\nOs valores do administrador não podem ser alterados!");
-                            continue;
-                        }
 
                         cliente = AdminClienteView.listarId(id);
 
@@ -96,7 +95,10 @@ public class AdminClienteTemplate {
                         System.out.print("Digite a nova senha do cliente: ");
                         senha = scanner.nextLine();
 
-                        AdminClienteView.atualizar(cliente, nome, telefone, email, senha);
+                        System.out.print("Digite a nova função do cliente: ");
+                        func = Util.lerInteiroSeguro(scanner.nextLine());
+
+                        AdminClienteView.atualizar(cliente, nome, telefone, email, senha, func);
                         System.out.println("\nCliente atualizado com sucesso!");
                         break;
 

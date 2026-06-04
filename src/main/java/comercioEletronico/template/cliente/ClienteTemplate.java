@@ -100,29 +100,23 @@ public class ClienteTemplate {
 
     public static void visualizarCarrinho(int idVenda) {
         try { // caso não existam vendas registradas evita o programa de gastar processamento (obs.: vendas geral, ainda não esta implementado apenas para o cliente)
-            ArrayList<VendaItem> vendaItems = ClienteView.obterCarrinho();
+            ArrayList<VendaItem> vendaItems = ClienteView.obterCarrinho(idVenda);
 
             System.out.println("\n=== SEU CARRINHO ===\n");
 
-            boolean temItens = false;
             int contador = 1;
             double totalCarrinho = 0.0;
 
             for (VendaItem vendaItem : vendaItems) {
-                if (vendaItem.getIdVenda() == idVenda) {
-                    System.out.println(contador + " - " + AdminProdutoView.listarId(vendaItem.getIdProduto()).getDescricao() + " - " + vendaItem
-                            + " - Total: R$ " + String.format("%.2f", vendaItem.getQuantidade() * vendaItem.getPreco()));
-                    totalCarrinho += vendaItem.getQuantidade() * vendaItem.getPreco();
-                    contador++;
-                    temItens = true;
-                }
+                System.out.println(contador + " - " + AdminProdutoView.listarId(vendaItem.getIdProduto()).getDescricao() + " - " + vendaItem
+                        + " - Total: R$ " + String.format("%.2f", vendaItem.getQuantidade() * vendaItem.getPreco()));
+                totalCarrinho += vendaItem.getQuantidade() * vendaItem.getPreco();
+                contador++;
             }
 
-            if (!temItens) {
-                System.out.println("Seu carrinho está vazio.");
-            } else {
-                System.out.printf("\nTotal Carrinho: R$ %.2f\n", totalCarrinho);
-            }
+
+            System.out.printf("\nTotal Carrinho: R$ %.2f\n", totalCarrinho);
+
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
@@ -131,11 +125,10 @@ public class ClienteTemplate {
     public static void listarCompras(int idCliente) {
         try {
             ArrayList<Venda> listaVendas = AdminView.obterVendas();
-            ArrayList<VendaItem> vendaItems = ClienteView.obterCarrinho();
+            ArrayList<VendaItem> vendaItems = AdminView.obterVendaItems();
 
             System.out.println("\n=== SEU HISTÓRICO DE COMPRAS ===\n");
 
-            boolean temCompras = false;
             int contadorVenda = 1;
 
             for (Venda venda : listaVendas) {
@@ -155,13 +148,10 @@ public class ClienteTemplate {
 
                     System.out.println();
 
-                    temCompras = true;
+
                 }
             }
 
-            if (!temCompras) {
-                System.out.println("Você ainda não realizou nenhuma compra.");
-            }
 
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
