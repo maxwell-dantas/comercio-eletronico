@@ -19,5 +19,9 @@ with st.form("login"):
         validacao = requests.post(f"{URL_BASE}/login", json=dados_login)
 
         if (validacao.status_code == 200):
-            st.session_state.id_usuario_logado = validacao.json()["idUsuario"]
+            st.session_state.id_usuario = validacao.json()["id"] # captura o ID do usuário
+            st.session_state.id_funcao = validacao.json()["idFuncao"] # captura o ID da funcão do usuário
+            st.session_state.nome_usuario = validacao.json()["nome"] # captura o nome do usuário
             st.rerun() # servirá para carregar a página referente ao usuário
+        else:
+            st.error(validacao.text)
