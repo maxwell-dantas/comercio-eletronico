@@ -8,9 +8,9 @@ public class Cliente implements Identificavel {
     private String telefone;
     private String senha;
 
-    public Cliente(){}
+    public Cliente() {}
 
-    public Cliente(String nome, String telefone, String email, String senha) {
+    public Cliente(String nome, String telefone, String email, String senha, int idFuncao) {
         setNome(nome);
         setTelefone(telefone);
         setEmail(email);
