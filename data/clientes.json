@@ -1,5 +1,5 @@
 [
-  { "id": 1, "idFuncao": 1, "nome": "admin", "email": "admin", "telefone": "admin", "senha": "123" },
+  { "id": 1, "idFuncao": 1, "nome": "admin", "email": "admin", "telefone": "admin", "senha": "admin" },
   { "id": 2, "idFuncao": 2, "nome": "Maxwell Dantas", "email": "maxwell@email.com", "telefone": "(84) 99999-1111", "senha": "123" },
   { "id": 3, "idFuncao": 2, "nome": "Cazuí Souto", "email": "cazui@email.com", "telefone": "(84) 98888-2222", "senha": "123" },
   { "id": 4, "idFuncao": 2, "nome": "Jorgiano Vidal", "email": "jorgiano@email.com", "telefone": "(84) 97777-3333", "senha": "123" },
