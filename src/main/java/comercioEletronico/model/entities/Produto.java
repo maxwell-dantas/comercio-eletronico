@@ -1,11 +1,13 @@
 package comercioEletronico.model.entities;
 
-public class Produto {
+public class Produto implements Identificavel {
     private int id;
     private String descricao;
     private double preco;
     private int estoque;
     private int idCategoria;
+
+    public Produto() {}
 
     public Produto(String descricao, double preco, int estoque, int idCategoria) {
         setDescricao(descricao);
@@ -14,10 +16,12 @@ public class Produto {
         setIdCategoria(idCategoria);
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         if (this.id != 0) {
             throw new IllegalStateException("Violação de Segurança: O ID de um produto não pode ser modificado após ser gerado!");

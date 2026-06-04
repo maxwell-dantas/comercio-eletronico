@@ -1,23 +1,26 @@
 package comercioEletronico.model.entities;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
-public class Venda {
+public class Venda implements Identificavel {
     private int id;
-    private String data = "pendente";
+    private LocalDateTime data = null;
     private boolean carrinho = true;
     private double total;
     private int idCliente;
+
+    public Venda() {}
 
     public Venda(int idCliente) {
         this.idCliente = idCliente;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         if (this.id != 0) {
             throw new IllegalStateException("Violação de Segurança: O ID de uma venda não pode ser modificado após ser gerado!");
@@ -25,13 +28,8 @@ public class Venda {
         this.id = id;
     }
 
-    public String getData() {
+    public LocalDateTime getData() {
         return data;
-    }
-
-    private void setData() {
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        data = LocalDateTime.now().format(formato);
     }
 
     public boolean getCarrinho() {
@@ -40,7 +38,10 @@ public class Venda {
 
     public void setCarrinho(boolean carrinho) {
         this.carrinho = carrinho;
-        setData();
+
+        if (!carrinho) {
+            this.data = LocalDateTime.now();
+        }
     }
 
     public double getTotal() {
@@ -60,6 +61,6 @@ public class Venda {
 
     @Override
     public String toString() {
-        return "Total: R$ " + String.format("%.2f", total) + " - Data da compra: " + data;
+        return "Total: R$ " + String.format("%.2f", total) + " - Data: " + data;
     }
 }
