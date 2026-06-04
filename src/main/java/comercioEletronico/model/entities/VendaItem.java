@@ -1,11 +1,13 @@
 package comercioEletronico.model.entities;
 
-public class VendaItem {
+public class VendaItem implements Identificavel {
     private int id;
     private int quantidade;
     private double preco;
     private int idVenda;
     private int idProduto;
+
+    public VendaItem() {}
 
     public VendaItem(int quantidade, double preco, int idVenda, int idProduto) {
         setQuantidade(quantidade);
@@ -14,10 +16,12 @@ public class VendaItem {
         this.idProduto = idProduto;
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         if (this.id != 0) {
             throw new IllegalStateException("Violação de Segurança: O ID de um item não pode ser modificado após ser gerado!");
@@ -41,7 +45,7 @@ public class VendaItem {
     }
 
     public void setPreco(double preco) {
-        if (preco < 0) { // Caso haja produtos com desconto (brinde), evitar que o dado seja negativo
+        if (preco < 0) {
             throw new IllegalArgumentException("Erro de validação: o preço do produto não pode ser negativo.");
         }
         this.preco = preco;

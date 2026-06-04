@@ -49,7 +49,9 @@ public class ClienteView {
                 throw new IllegalArgumentException("\nQuantidade indisponível no estoque no momento!");
             }
 
-            vendaItemDao.atualizar(vendaItem.getId(), (vendaItem.getQuantidade() + quantidadeItems), produto.getPreco());
+            vendaItem.setQuantidade(vendaItem.getQuantidade() + quantidadeItems);
+            vendaItem.setPreco(produto.getPreco());
+            vendaItemDao.atualizar(vendaItem);
 
         } else { // se o item é novo no carrinho
 
@@ -63,11 +65,21 @@ public class ClienteView {
         }
     }
 
-    public static ArrayList<VendaItem> obterCarrinho() {
-        if (vendaItemDao.listar().isEmpty()) {
-            throw new IllegalArgumentException("\nAinda não há nenhuma venda cadastrada no sistema!");
+    // passa o idVenda para buscar apenas os itens do carrinho atual
+    public static ArrayList<VendaItem> obterCarrinho(int idVenda) {
+        ArrayList<VendaItem> itensDoCarrinho = new ArrayList<>();
+
+        for (VendaItem item : vendaItemDao.listar()) {
+            if (item.getIdVenda() == idVenda) {
+                itensDoCarrinho.add(item);
+            }
         }
-        return vendaItemDao.listar();
+
+        if (itensDoCarrinho.isEmpty()) {
+            throw new IllegalArgumentException("\nSeu carrinho está vazio!");
+        }
+
+        return itensDoCarrinho;
     }
 
     public static void limparCarrinho(int idVenda) {
@@ -90,7 +102,12 @@ public class ClienteView {
             throw new IllegalArgumentException("\nNão é possível finalizar: Seu carrinho está vazio!");
         }
 
-        // fecha o carrinho e passa o total da compra
-        vendaDao.atualizar(idVenda, false, totalDaCompra);
+        // atualiza o preço final e finaliza o carrinho
+        Venda venda = vendaDao.listarId(idVenda);
+        if (venda != null) {
+            venda.setTotal(totalDaCompra);
+            venda.setCarrinho(false);
+            vendaDao.atualizar(venda);
+        }
     }
 }

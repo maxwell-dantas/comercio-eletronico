@@ -32,7 +32,8 @@ public class AdminCategoriaView {
         if (!categoria.getDescricao().equalsIgnoreCase(descricao) && !categoriaDao.isDescricaoDisponivel(descricao)) {
             throw new IllegalArgumentException("\nEsta categoria já está cadastrada no sistema.");
         }
-        categoriaDao.atualizar(categoria.getId(), descricao);
+        categoria.setDescricao(descricao);
+        categoriaDao.atualizar(categoria);
     }
 
     public static void remover(Categoria categoria) {
