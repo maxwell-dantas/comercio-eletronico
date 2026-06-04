@@ -40,6 +40,16 @@ public class AdminClienteView {
         if (!cliente.getEmail().equalsIgnoreCase(email) && !clienteDao.isEmailDisponivel(email)) {
             throw new IllegalArgumentException("\nEste e-mail já está cadastrado no sistema.");
         }
+
+        if (cliente.getIdFuncao() != 1 && idFuncao == 1) {
+            Venda venda = ClienteView.buscarCarrinhoAberto(cliente.getId());
+
+            if (venda != null) {
+                ClienteView.limparCarrinho(venda.getId());
+                vendaDao.remover(venda.getId());
+            }
+        }
+
         cliente.setNome(nome);
         cliente.setTelefone(telefone);
         cliente.setEmail(email);
