@@ -1,12 +1,12 @@
 [
-  { "id": 1, "nome": "admin", "email": "admin", "telefone": "admin", "senha": "admin" },
-  { "id": 2, "nome": "Maxwell Dantas", "email": "maxwell@email.com", "telefone": "(84) 99999-1111", "senha": "123" },
-  { "id": 3, "nome": "Cazuí Souto", "email": "cazui@email.com", "telefone": "(84) 98888-2222", "senha": "123" },
-  { "id": 4, "nome": "Jorgiano Vidal", "email": "jorgiano@email.com", "telefone": "(84) 97777-3333", "senha": "123" },
-  { "id": 5, "nome": "Eduardo Wanderley", "email": "eduardo@email.com", "telefone": "(84) 96666-4444", "senha": "123" },
-  { "id": 6, "nome": "Silvia Matos", "email": "silvia@email.com", "telefone": "(84) 95555-5555", "senha": "123" },
-  { "id": 7, "nome": "Alfredo Gama", "email": "alfredo@email.com", "telefone": "(84) 94444-6666", "senha": "123" },
-  { "id": 8, "nome": "Gilbert Silva", "email": "gilbert@email.com", "telefone": "(84) 93333-7777", "senha": "123" },
-  { "id": 9, "nome": "Leonardo Lucena", "email": "lucena@email.com", "telefone": "(84) 92222-8888", "senha": "123" },
-  { "id": 10, "nome": "Leonardo Minora", "email": "minora@email.com", "telefone": "(84) 91111-9999", "senha": "123" }
+  { "id": 1, "idFuncao": 1, "nome": "admin", "email": "admin", "telefone": "admin", "senha": "123" },
+  { "id": 2, "idFuncao": 2, "nome": "Maxwell Dantas", "email": "maxwell@email.com", "telefone": "(84) 99999-1111", "senha": "123" },
+  { "id": 3, "idFuncao": 2, "nome": "Cazuí Souto", "email": "cazui@email.com", "telefone": "(84) 98888-2222", "senha": "123" },
+  { "id": 4, "idFuncao": 2, "nome": "Jorgiano Vidal", "email": "jorgiano@email.com", "telefone": "(84) 97777-3333", "senha": "123" },
+  { "id": 5, "idFuncao": 2, "nome": "Eduardo Wanderley", "email": "eduardo@email.com", "telefone": "(84) 96666-4444", "senha": "123" },
+  { "id": 6, "idFuncao": 2, "nome": "Silvia Matos", "email": "silvia@email.com", "telefone": "(84) 95555-5555", "senha": "123" },
+  { "id": 7, "idFuncao": 2, "nome": "Alfredo Gama", "email": "alfredo@email.com", "telefone": "(84) 94444-6666", "senha": "123" },
+  { "id": 8, "idFuncao": 2, "nome": "Gilbert Silva", "email": "gilbert@email.com", "telefone": "(84) 93333-7777", "senha": "123" },
+  { "id": 9, "idFuncao": 2, "nome": "Leonardo Lucena", "email": "lucena@email.com", "telefone": "(84) 92222-8888", "senha": "123" },
+  { "id": 10, "idFuncao": 2, "nome": "Leonardo Minora", "email": "minora@email.com", "telefone": "(84) 91111-9999", "senha": "123" }
 ]
