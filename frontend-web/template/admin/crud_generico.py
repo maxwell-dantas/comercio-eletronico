@@ -45,16 +45,19 @@ class CrudGenerico(ABC):
                 dados_cadastro = self.inserir() # obtem dados em formato .json
 
                 if st.form_submit_button("Cadastrar"):
+                    # verifica se a classe filha retornou dados não nulos
+                    if dados_cadastro:
+                        resposta_inserir = requests.post(self._rota, json=dados_cadastro)
+                        resposta_inserir.encoding = "utf-8"
 
-                    resposta_inserir = requests.post(self._rota, json=dados_cadastro)
-                    resposta_inserir.encoding = "utf-8"
-
-                    if resposta_inserir.status_code == 201:
-                        st.success(resposta_inserir.text)
-                        time.sleep(2)
-                        st.rerun()
+                        if resposta_inserir.status_code == 201:
+                            st.success(resposta_inserir.text)
+                            time.sleep(2)
+                            st.rerun()
+                        else:
+                            st.error(resposta_inserir.text)
                     else:
-                        st.error(resposta_inserir.text)
+                        st.error("Ação bloqueada: resolva as pendências acima antes de cadastrar.")
 
         # ATUALIZAR
         with aba_atualizar:
@@ -77,15 +80,19 @@ class CrudGenerico(ABC):
                     dados_atualizados = self.atualizar(entidade_selecionada)
 
                     if st.form_submit_button("Atualizar"):
-                        resposta_up = requests.put(f"{self._rota}/{entidade_selecionada['id']}", json=dados_atualizados)
-                        resposta_up.encoding = "utf-8"
+                        # verifica se a classe filha retornou dados não nulos
+                        if dados_atualizados:
+                            resposta_up = requests.put(f"{self._rota}/{entidade_selecionada['id']}", json=dados_atualizados)
+                            resposta_up.encoding = "utf-8"
 
-                        if resposta_up.status_code == 200:
-                            st.success(resposta_up.text)
-                            time.sleep(2)
-                            st.rerun() # recarrega a página para atualizar a lista do selectbox e a tabela
+                            if resposta_up.status_code == 200:
+                                st.success(resposta_up.text)
+                                time.sleep(2)
+                                st.rerun() # recarrega a página para atualizar a lista do selectbox e a tabela
+                            else:
+                                st.error(resposta_up.text)
                         else:
-                            st.error(resposta_up.text)
+                            st.error("Ação bloqueada: resolva as pendências acima antes de atualizar.")
             else:
                 st.warning(resposta_atualizar.text)
 
