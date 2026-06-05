@@ -1,8 +1,12 @@
 package comercioEletronico.api;
 
 import io.javalin.Javalin;
-import comercioEletronico.view.visitante.VisitanteView;
+import io.javalin.json.JavalinJackson;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import comercioEletronico.view.visitante.VisitanteView;
 import comercioEletronico.api.controllers.CategoriaController;
 import comercioEletronico.api.controllers.ProdutoController;
 import comercioEletronico.api.controllers.ClienteController;
@@ -15,8 +19,15 @@ public class ServidorAPI {
         // garante que o servidor sempre inicializará com uma conta admin padrão caso a lista de usuários esteja vazia
         VisitanteView.inicializarSistema();
 
-        // INICIANDO O SERVIDOR
-        Javalin app = Javalin.create().start(8080);
+        // configurando o Jackson para suportar LocalDateTime
+        ObjectMapper formatadorJson = new ObjectMapper();
+        formatadorJson.registerModule(new JavaTimeModule());
+        formatadorJson.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        // iniciando o servidor e injetando o formatador customizado
+        Javalin app = Javalin.create(config -> {
+            config.jsonMapper(new JavalinJackson(formatadorJson, false));
+        }).start(8080);
 
         // HEALTH CHECK
         app.get("/health", contexto -> {
@@ -24,6 +35,7 @@ public class ServidorAPI {
             contexto.result("{\"status\": \"online\", \"servico\": \"API Comercio Eletronico\"}");
         });
 
+        // REGISTRO DE ROTAS
         CategoriaController.registrarRotas(app);
         ProdutoController.registrarRotas(app);
         ClienteController.registrarRotas(app);
