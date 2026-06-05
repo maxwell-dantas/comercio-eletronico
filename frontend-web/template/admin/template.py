@@ -49,7 +49,7 @@ class AdminTemplate:
 
             # Botão de sair destacado no final da sidebar
             if (st.button("Sair", icon="🚪")):
-                del st.session_state.id_usuario_logado # deleta variável para voltar à tela de login
+                del st.session_state.id_usuario # deleta usuário do cache para voltar à tela de login
                 st.rerun()
 
         # roda a tela selecionada da navegação
