@@ -8,7 +8,7 @@ class AdminClienteTemplate(CrudGenerico):
 
     # Override
     def formatar_selectbox(self, content):
-        return f"{content['id']} - {content['nome']} - {content['email']}"
+        return f"{content['nome']} - {content['email']}"
 
     # Override
     def inserir(self):
