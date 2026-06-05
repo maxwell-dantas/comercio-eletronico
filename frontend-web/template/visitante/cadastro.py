@@ -16,7 +16,8 @@ with st.form("cadastro"):
     btn_criar_conta = st.form_submit_button("Criar Conta")
 
     if (btn_criar_conta):
-        id_funcao = 2 if tipo_conta == "Cliente" else 3
+        mapeamento_funcao = {"Cliente": 2, "Entregador": 3}
+        id_funcao = mapeamento_funcao[tipo_conta]
 
         dados_cadastro = {
             "nome": nome,
@@ -31,7 +32,9 @@ with st.form("cadastro"):
 
         if (resposta.status_code == 201):
             st.success(resposta.text)
-            time.sleep(3)
+            time.sleep(2)
             st.switch_page("template/visitante/login.py")
         else:
             st.error(resposta.text)
+            time.sleep(2)
+            st.rerun()
