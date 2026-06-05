@@ -51,11 +51,6 @@ public class ClienteController {
             try {
                 int id = Integer.parseInt(contexto.pathParam("id"));
 
-                if (id == 1) {
-                    contexto.status(403).result("Os valores do administrador não podem ser alterados!");
-                    return;
-                }
-
                 Cliente clienteAntigo = AdminClienteView.listarId(id);
                 if (clienteAntigo == null) {
                     contexto.status(404).result("Cliente não encontrado.");
