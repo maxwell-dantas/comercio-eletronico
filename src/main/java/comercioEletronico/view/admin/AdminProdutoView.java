@@ -1,14 +1,20 @@
 package comercioEletronico.view.admin;
 
+import comercioEletronico.model.dao.VendaDao;
+import comercioEletronico.model.dao.VendaItemDao;
 import comercioEletronico.model.entities.Produto;
 import comercioEletronico.model.dao.ProdutoDao;
 import comercioEletronico.model.dao.CategoriaDao;
+import comercioEletronico.model.entities.Venda;
+import comercioEletronico.model.entities.VendaItem;
 
 import java.util.ArrayList;
 
 public class AdminProdutoView {
     private static ProdutoDao produtoDao = new ProdutoDao();
     private static CategoriaDao categoriaDao = new CategoriaDao();
+    private static VendaDao vendaDao = new VendaDao();
+    private static VendaItemDao vendaItemDao = new VendaItemDao();
 
     public static ArrayList<Produto> obterProdutos() {
         if (produtoDao.listar().isEmpty()) {
@@ -51,6 +57,15 @@ public class AdminProdutoView {
     }
 
     public static void remover(Produto produto) {
+        for (VendaItem item : vendaItemDao.listar()) {
+            if (item.getIdProduto() == produto.getId()) {
+                Venda venda = vendaDao.listarId(item.getIdVenda());
+
+                if (venda != null && !venda.getCarrinho()) {
+                    throw new IllegalArgumentException("Erro de validação: O produto não pode ser removido pois já faz parte de uma venda finalizada.");
+                }
+            }
+        }
         produtoDao.remover(produto.getId());
     }
 
