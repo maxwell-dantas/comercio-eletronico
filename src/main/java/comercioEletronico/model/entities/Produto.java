@@ -6,14 +6,16 @@ public class Produto implements Identificavel {
     private double preco;
     private int estoque;
     private int idCategoria;
+    private String imagemBase64 = null;
 
     public Produto() {}
 
-    public Produto(String descricao, double preco, int estoque, int idCategoria) {
+    public Produto(String descricao, double preco, int estoque, int idCategoria, String imagemBase64) {
         setDescricao(descricao);
         setPreco(preco);
         setEstoque(estoque);
         setIdCategoria(idCategoria);
+        setImagemBase64(imagemBase64);
     }
 
     @Override
@@ -71,6 +73,14 @@ public class Produto implements Identificavel {
             throw new IllegalArgumentException("Erro de validação: o ID da categoria deve ser um número positivo.");
         }
         this.idCategoria = idCategoria;
+    }
+    
+    public String getImagemBase64() {
+        return imagemBase64;
+    }
+
+    public void setImagemBase64(String imagemBase64) {
+        this.imagemBase64 = imagemBase64;
     }
 
     @Override

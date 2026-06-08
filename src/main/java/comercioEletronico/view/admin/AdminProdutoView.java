@@ -23,7 +23,7 @@ public class AdminProdutoView {
         return produtoDao.listar();
     }
 
-    public static void inserir(String descricao, double preco, int estoque, int idCategoria) {
+    public static void inserir(String descricao, double preco, int estoque, int idCategoria, String imagemBase64) {
         if (categoriaDao.listar().isEmpty()) {
             throw new IllegalArgumentException("\nPrimeiro insira uma categoria no sistema antes de inserir um produto!");
         }
@@ -34,7 +34,7 @@ public class AdminProdutoView {
             throw new IllegalArgumentException("\nEste produto já está cadastrado no sistema.");
         }
 
-        Produto produto = new Produto(descricao, preco, estoque, idCategoria);
+        Produto produto = new Produto(descricao, preco, estoque, idCategoria, imagemBase64);
         produtoDao.inserir(produto);
     }
 
@@ -42,7 +42,7 @@ public class AdminProdutoView {
         return produtoDao.listarId(id);
     }
 
-    public static void atualizar(Produto produto, String descricao, double preco, int estoque, int idCategoria) {
+    public static void atualizar(Produto produto, String descricao, double preco, int estoque, int idCategoria, String imagemBase64) {
         if (categoriaDao.listarId(idCategoria) == null) {
             throw new IllegalArgumentException("\nEsta categoria não está cadastrada no sistema! Digite um ID válido!");
         }
@@ -53,6 +53,7 @@ public class AdminProdutoView {
         produto.setPreco(preco);
         produto.setEstoque(estoque);
         produto.setIdCategoria(idCategoria);
+        produto.setImagemBase64(imagemBase64);
         produtoDao.atualizar(produto);
     }
 

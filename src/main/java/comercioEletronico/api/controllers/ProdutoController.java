@@ -25,7 +25,8 @@ public class ProdutoController {
                         produto.getDescricao(),
                         produto.getPreco(),
                         produto.getEstoque(),
-                        produto.getIdCategoria()
+                        produto.getIdCategoria(),
+                        produto.getImagemBase64()
                 );
                 contexto.status(201).result("Produto cadastrado com sucesso!");
 
@@ -62,7 +63,8 @@ public class ProdutoController {
                         dadosNovos.getDescricao(),
                         dadosNovos.getPreco(),
                         dadosNovos.getEstoque(),
-                        dadosNovos.getIdCategoria()
+                        dadosNovos.getIdCategoria(),
+                        dadosNovos.getImagemBase64()
                 );
                 contexto.status(200).result("Produto atualizado com sucesso!");
 
