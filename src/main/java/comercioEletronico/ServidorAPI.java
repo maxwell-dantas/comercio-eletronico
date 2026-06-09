@@ -1,4 +1,4 @@
-package comercioEletronico.api;
+package comercioEletronico;
 
 import io.javalin.Javalin;
 import comercioEletronico.view.visitante.VisitanteView;
