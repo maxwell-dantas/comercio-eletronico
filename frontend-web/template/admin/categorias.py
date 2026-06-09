@@ -2,6 +2,8 @@ import streamlit as st
 
 from template.admin.crud_generico import CrudGenerico
 
+st.set_page_config(page_title="Mercadinho Caju", page_icon="🛒", layout="wide")
+
 class AdminCategoriaTemplate(CrudGenerico):
     def __init__(self):
         super().__init__("Gerenciamento de Categorias", "categoria", "categorias")
