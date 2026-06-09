@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.FileReader;
 
 import com.google.gson.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -22,12 +23,19 @@ public abstract class DaoGenerico<T extends Identificavel> {
         this.caminhoArquivo = caminhoArquivo;
         this.tipoLista = tipoLista;
         
-        // serve para o Gson formatar e ler as datas da Venda
+        // serve para o Gson formatar e ler as datas da Venda/Promoção
         this.gson = new GsonBuilder()
+            // Configuração LocalDateTime
             .registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>) (src, typeOfSrc, context) -> 
                 new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)))
             .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, typeOfT, context) -> 
                 LocalDateTime.parse(json.getAsString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+                
+            // Configuração LocalDate
+            .registerTypeAdapter(LocalDate.class, (JsonSerializer<LocalDate>) (src, typeOfSrc, context) -> 
+                new JsonPrimitive(src.format(DateTimeFormatter.ISO_LOCAL_DATE)))
+            .registerTypeAdapter(LocalDate.class, (JsonDeserializer<LocalDate>) (json, typeOfT, context) -> 
+                LocalDate.parse(json.getAsString(), DateTimeFormatter.ISO_LOCAL_DATE))
             .create();
     }
 
