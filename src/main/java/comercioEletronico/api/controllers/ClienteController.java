@@ -26,11 +26,23 @@ public class ClienteController {
                         cliente.getTelefone(),
                         cliente.getEmail(),
                         cliente.getSenha(),
-                        cliente.getIdFuncao() // Parâmetro adicionado
+                        cliente.getIdFuncao()
                 );
                 contexto.status(201).result("Cliente cadastrado com sucesso!");
+
             } catch (IllegalArgumentException e) {
                 contexto.status(400).result(e.getMessage());
+
+            } catch (Exception e) {
+                Throwable causa = e;
+                while (causa != null) {
+                    if (causa instanceof IllegalArgumentException) {
+                        contexto.status(400).result(causa.getMessage());
+                        return;
+                    }
+                    causa = causa.getCause();
+                }
+                contexto.status(500).result("Erro interno no servidor: " + e.getMessage());
             }
         });
 
@@ -38,11 +50,6 @@ public class ClienteController {
         app.put("/clientes/{id}", contexto -> {
             try {
                 int id = Integer.parseInt(contexto.pathParam("id"));
-
-                if (id == 1) {
-                    contexto.status(403).result("Os valores do administrador não podem ser alterados!");
-                    return;
-                }
 
                 Cliente clienteAntigo = AdminClienteView.listarId(id);
                 if (clienteAntigo == null) {
@@ -57,11 +64,23 @@ public class ClienteController {
                         dadosNovos.getTelefone(),
                         dadosNovos.getEmail(),
                         dadosNovos.getSenha(),
-                        dadosNovos.getIdFuncao() // Parâmetro adicionado
+                        dadosNovos.getIdFuncao()
                 );
                 contexto.status(200).result("Cliente atualizado com sucesso!");
+
             } catch (IllegalArgumentException e) {
                 contexto.status(400).result(e.getMessage());
+
+            } catch (Exception e) {
+                Throwable causa = e;
+                while (causa != null) {
+                    if (causa instanceof IllegalArgumentException) {
+                        contexto.status(400).result(causa.getMessage());
+                        return;
+                    }
+                    causa = causa.getCause();
+                }
+                contexto.status(500).result("Erro interno no servidor: " + e.getMessage());
             }
         });
 

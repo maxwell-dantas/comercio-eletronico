@@ -25,11 +25,24 @@ public class ProdutoController {
                         produto.getDescricao(),
                         produto.getPreco(),
                         produto.getEstoque(),
-                        produto.getIdCategoria()
+                        produto.getIdCategoria(),
+                        produto.getImagemBase64()
                 );
                 contexto.status(201).result("Produto cadastrado com sucesso!");
+
             } catch (IllegalArgumentException e) {
                 contexto.status(400).result(e.getMessage());
+
+            } catch (Exception e) {
+                Throwable causa = e;
+                while (causa != null) {
+                    if (causa instanceof IllegalArgumentException) {
+                        contexto.status(400).result(causa.getMessage());
+                        return;
+                    }
+                    causa = causa.getCause();
+                }
+                contexto.status(500).result("Erro interno no servidor: " + e.getMessage());
             }
         });
 
@@ -50,11 +63,24 @@ public class ProdutoController {
                         dadosNovos.getDescricao(),
                         dadosNovos.getPreco(),
                         dadosNovos.getEstoque(),
-                        dadosNovos.getIdCategoria()
+                        dadosNovos.getIdCategoria(),
+                        dadosNovos.getImagemBase64()
                 );
                 contexto.status(200).result("Produto atualizado com sucesso!");
+
             } catch (IllegalArgumentException e) {
                 contexto.status(400).result(e.getMessage());
+
+            } catch (Exception e) {
+                Throwable causa = e;
+                while (causa != null) {
+                    if (causa instanceof IllegalArgumentException) {
+                        contexto.status(400).result(causa.getMessage());
+                        return;
+                    }
+                    causa = causa.getCause();
+                }
+                contexto.status(500).result("Erro interno no servidor: " + e.getMessage());
             }
         });
 

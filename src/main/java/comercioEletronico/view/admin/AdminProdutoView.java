@@ -1,14 +1,20 @@
 package comercioEletronico.view.admin;
 
+import comercioEletronico.model.dao.VendaDao;
+import comercioEletronico.model.dao.VendaItemDao;
 import comercioEletronico.model.entities.Produto;
 import comercioEletronico.model.dao.ProdutoDao;
 import comercioEletronico.model.dao.CategoriaDao;
+import comercioEletronico.model.entities.Venda;
+import comercioEletronico.model.entities.VendaItem;
 
 import java.util.ArrayList;
 
 public class AdminProdutoView {
     private static ProdutoDao produtoDao = new ProdutoDao();
     private static CategoriaDao categoriaDao = new CategoriaDao();
+    private static VendaDao vendaDao = new VendaDao();
+    private static VendaItemDao vendaItemDao = new VendaItemDao();
 
     public static ArrayList<Produto> obterProdutos() {
         if (produtoDao.listar().isEmpty()) {
@@ -17,7 +23,7 @@ public class AdminProdutoView {
         return produtoDao.listar();
     }
 
-    public static void inserir(String descricao, double preco, int estoque, int idCategoria) {
+    public static void inserir(String descricao, double preco, int estoque, int idCategoria, String imagemBase64) {
         if (categoriaDao.listar().isEmpty()) {
             throw new IllegalArgumentException("\nPrimeiro insira uma categoria no sistema antes de inserir um produto!");
         }
@@ -28,7 +34,7 @@ public class AdminProdutoView {
             throw new IllegalArgumentException("\nEste produto já está cadastrado no sistema.");
         }
 
-        Produto produto = new Produto(descricao, preco, estoque, idCategoria);
+        Produto produto = new Produto(descricao, preco, estoque, idCategoria, imagemBase64);
         produtoDao.inserir(produto);
     }
 
@@ -36,7 +42,7 @@ public class AdminProdutoView {
         return produtoDao.listarId(id);
     }
 
-    public static void atualizar(Produto produto, String descricao, double preco, int estoque, int idCategoria) {
+    public static void atualizar(Produto produto, String descricao, double preco, int estoque, int idCategoria, String imagemBase64) {
         if (categoriaDao.listarId(idCategoria) == null) {
             throw new IllegalArgumentException("\nEsta categoria não está cadastrada no sistema! Digite um ID válido!");
         }
@@ -47,10 +53,20 @@ public class AdminProdutoView {
         produto.setPreco(preco);
         produto.setEstoque(estoque);
         produto.setIdCategoria(idCategoria);
+        produto.setImagemBase64(imagemBase64);
         produtoDao.atualizar(produto);
     }
 
     public static void remover(Produto produto) {
+        for (VendaItem item : vendaItemDao.listar()) {
+            if (item.getIdProduto() == produto.getId()) {
+                Venda venda = vendaDao.listarId(item.getIdVenda());
+
+                if (venda != null && !venda.getCarrinho()) {
+                    throw new IllegalArgumentException("Erro de validação: O produto não pode ser removido pois já faz parte de uma venda finalizada.");
+                }
+            }
+        }
         produtoDao.remover(produto.getId());
     }
 

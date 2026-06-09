@@ -23,8 +23,20 @@ public class CategoriaController {
                 Categoria categoria = contexto.bodyAsClass(Categoria.class);
                 AdminCategoriaView.inserir(categoria.getDescricao());
                 contexto.status(201).result("Categoria cadastrada com sucesso!");
+
             } catch (IllegalArgumentException e) {
                 contexto.status(400).result(e.getMessage());
+
+            } catch (Exception e) {
+                Throwable causa = e;
+                while (causa != null) {
+                    if (causa instanceof IllegalArgumentException) {
+                        contexto.status(400).result(causa.getMessage());
+                        return;
+                    }
+                    causa = causa.getCause();
+                }
+                contexto.status(500).result("Erro interno no servidor: " + e.getMessage());
             }
         });
 
@@ -42,8 +54,20 @@ public class CategoriaController {
                 Categoria dadosNovos = contexto.bodyAsClass(Categoria.class);
                 AdminCategoriaView.atualizar(categoriaAntiga, dadosNovos.getDescricao());
                 contexto.status(200).result("Categoria atualizada com sucesso!");
+
             } catch (IllegalArgumentException e) {
                 contexto.status(400).result(e.getMessage());
+
+            } catch (Exception e) {
+                Throwable causa = e;
+                while (causa != null) {
+                    if (causa instanceof IllegalArgumentException) {
+                        contexto.status(400).result(causa.getMessage());
+                        return;
+                    }
+                    causa = causa.getCause();
+                }
+                contexto.status(500).result("Erro interno no servidor: " + e.getMessage());
             }
         });
 

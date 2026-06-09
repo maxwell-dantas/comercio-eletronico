@@ -41,7 +41,8 @@ public class AdminClienteView {
             throw new IllegalArgumentException("\nEste e-mail já está cadastrado no sistema.");
         }
 
-        if (cliente.getIdFuncao() != 1 && idFuncao == 1) {
+        // se a função do cliente (2) for alterada, apaga o carrinho em aberto
+        if (cliente.getIdFuncao() == 2 && idFuncao != 2) {
             Venda venda = ClienteView.buscarCarrinhoAberto(cliente.getId());
 
             if (venda != null) {
