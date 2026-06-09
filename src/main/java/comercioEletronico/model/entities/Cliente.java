@@ -1,23 +1,29 @@
 package comercioEletronico.model.entities;
 
-public class Cliente {
+public class Cliente implements Identificavel {
     private int id;
+    private int idFuncao;
     private String nome;
     private String email;
     private String telefone;
     private String senha;
 
-    public Cliente(String nome, String telefone, String email, String senha) {
+    public Cliente() {}
+
+    public Cliente(String nome, String telefone, String email, String senha, int idFuncao) {
         setNome(nome);
         setTelefone(telefone);
         setEmail(email);
         setSenha(senha);
+        setIdFuncao(idFuncao);
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         if (this.id != 0) {
             throw new IllegalStateException("Violação de Segurança: O ID de um cliente não pode ser modificado após ser gerado!");
@@ -69,8 +75,19 @@ public class Cliente {
         this.senha = senha;
     }
 
+    public int getIdFuncao() {
+        return idFuncao;
+    }
+
+    public void setIdFuncao(int idFuncao) {
+        if (idFuncao < 1 || idFuncao > 3) {
+            throw new IllegalArgumentException("Erro de validação: ID de função inválido (1=Admin, 2=Cliente, 3=Entregador).");
+        }
+        this.idFuncao = idFuncao;
+    }
+
     @Override
     public String toString() {
-        return id + " - " + nome + " - " + telefone + " - " + email;
+        return id + " - " + nome + " - " + telefone + " - " + email + " - Função: " + idFuncao;
     }
 }

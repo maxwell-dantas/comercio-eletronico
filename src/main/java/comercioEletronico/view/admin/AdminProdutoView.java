@@ -43,8 +43,11 @@ public class AdminProdutoView {
         if (!produto.getDescricao().equalsIgnoreCase(descricao) && !produtoDao.isDescricaoDisponivel(descricao)) {
             throw new IllegalArgumentException("\nEste produto já está cadastrado no sistema.");
         }
-
-        produtoDao.atualizar(produto.getId(), descricao, preco, estoque, idCategoria);
+        produto.setDescricao(descricao);
+        produto.setPreco(preco);
+        produto.setEstoque(estoque);
+        produto.setIdCategoria(idCategoria);
+        produtoDao.atualizar(produto);
     }
 
     public static void remover(Produto produto) {
@@ -57,7 +60,8 @@ public class AdminProdutoView {
         }
         for (Produto produto : produtoDao.listar()) {
             double novoPreco = produto.getPreco() * (1 + (porcentagem / 100.0));
-            produtoDao.atualizar(produto.getId(), produto.getDescricao(), novoPreco, produto.getEstoque(), produto.getIdCategoria());
+            produto.setPreco(novoPreco);
+            produtoDao.atualizar(produto);
         }
     }
 
@@ -67,7 +71,8 @@ public class AdminProdutoView {
         }
         for (Produto produto : produtoDao.listar()) {
             double novoPreco = produto.getPreco() * (1 - (porcentagem / 100.0));
-            produtoDao.atualizar(produto.getId(), produto.getDescricao(), novoPreco, produto.getEstoque(), produto.getIdCategoria());
+            produto.setPreco(novoPreco);
+            produtoDao.atualizar(produto);
         }
     }
 }
