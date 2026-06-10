@@ -58,6 +58,7 @@ public class AdminProdutoView {
     }
 
     public static void remover(Produto produto) {
+        // Impede apagar se estiver em compra FINALIZADA
         for (VendaItem item : vendaItemDao.listar()) {
             if (item.getIdProduto() == produto.getId()) {
                 Venda venda = vendaDao.listarId(item.getIdVenda());
@@ -67,28 +68,33 @@ public class AdminProdutoView {
                 }
             }
         }
+        
+        // Remove o item de carrinhos ABERTOS antes de excluir o produto
+        ArrayList<VendaItem> itensParaRemover = new ArrayList<>();
+        for (VendaItem item : vendaItemDao.listar()) {
+            if (item.getIdProduto() == produto.getId()) {
+                itensParaRemover.add(item);
+            }
+        }
+        
+        for (VendaItem item : itensParaRemover) {
+            vendaItemDao.remover(item.getId());
+        }
+
+        // Exclusão definitiva do produto
         produtoDao.remover(produto.getId());
     }
 
-    public static void aplicarAumento(double porcentagem) {
+    public static void aplicarAumento(int idCategoria, double porcentagem) {
         if (porcentagem < 0.0) {
             throw new IllegalArgumentException("\nO valor do aumento precisa ser positivo.");
         }
         for (Produto produto : produtoDao.listar()) {
-            double novoPreco = produto.getPreco() * (1 + (porcentagem / 100.0));
-            produto.setPreco(novoPreco);
-            produtoDao.atualizar(produto);
-        }
-    }
-
-    public static void aplicarDesconto(double porcentagem) {
-        if (porcentagem < 0.0 || porcentagem > 99.99) {
-            throw new IllegalArgumentException("\nO valor do desconto precisa estar entre 0 e 99.99%.");
-        }
-        for (Produto produto : produtoDao.listar()) {
-            double novoPreco = produto.getPreco() * (1 - (porcentagem / 100.0));
-            produto.setPreco(novoPreco);
-            produtoDao.atualizar(produto);
+            if (produto.getIdCategoria() == idCategoria) {
+                double novoPreco = produto.getPreco() * (1 + (porcentagem / 100.0));
+                produto.setPreco(novoPreco);
+                produtoDao.atualizar(produto);
+            }
         }
     }
 }
