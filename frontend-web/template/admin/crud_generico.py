@@ -30,6 +30,10 @@ class CrudGenerico(ABC):
         """Recebe os objetos das abas extras para desenhar o conteúdo."""
         pass
 
+    def formatar_dataframe(self, df):
+        """Permite que as classes filhas manipulem e formatem as colunas do DataFrame antes de exibir."""
+        return df
+
     def menu(self):
         st.title(self._titulo)
         
@@ -56,9 +60,12 @@ class CrudGenerico(ABC):
                 
                 if dados:
                     df = pd.DataFrame(dados)
+                    
+                    # CHAMA O HOOK PARA FORMATAR A TABELA
+                    df = self.formatar_dataframe(df)
+                    
                     configuracoes_colunas = {}
 
-                    # formata imagem
                     if "imagemBase64" in df.columns:
                         df["imagemBase64"] = df["imagemBase64"].apply(
                             lambda img: f"data:image/jpeg;base64,{img}" if img else None
