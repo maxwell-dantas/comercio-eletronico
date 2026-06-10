@@ -2,6 +2,7 @@ import streamlit as st
 
 from template.admin.template import AdminTemplate
 from template.visitante.template import VisitanteTemplate
+from template.entregador.template import EntregadorTemplate
 
 st.set_page_config(page_title="Mercadinho Caju", page_icon="🛒", layout="centered")
 
@@ -18,10 +19,6 @@ elif st.session_state.id_funcao == 2:
     if st.button("Sair"):
         del st.session_state.id_usuario
         st.rerun()
-else:
-    # EntregadorTemplate.renderizar_navegacao()
-    st.title(f"🛒 Bem-vindo, {st.session_state.nome_usuario}!") # Placeholder para testes
-    st.write(f"Seu ID é: {st.session_state.id_usuario}")
-    if st.button("Sair"):
-        del st.session_state.id_usuario
-        st.rerun()
+        
+elif st.session_state.id_funcao == 3:
+    EntregadorTemplate.renderizar_navegacao()
