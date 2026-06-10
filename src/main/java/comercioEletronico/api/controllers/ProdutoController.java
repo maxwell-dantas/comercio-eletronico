@@ -101,5 +101,21 @@ public class ProdutoController {
                 contexto.status(400).result(e.getMessage());
             }
         });
+
+        // Rota de Aumento
+        app.put("/produtos/categoria/{id}/aumento", contexto -> {
+            try {
+                int idCategoria = Integer.parseInt(contexto.pathParam("id"));
+                double porcentagem = Double.parseDouble(contexto.queryParam("porcentagem"));
+                
+                AdminProdutoView.aplicarAumento(idCategoria, porcentagem);
+                contexto.status(200).result("Aumento aplicado com sucesso para a categoria!");
+                
+            } catch (IllegalArgumentException e) {
+                contexto.status(400).result(e.getMessage());
+            } catch (Exception e) {
+                contexto.status(500).result("Erro interno: " + e.getMessage());
+            }
+        });
     }
 }
