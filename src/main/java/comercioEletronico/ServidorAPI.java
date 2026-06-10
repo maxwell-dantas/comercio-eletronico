@@ -9,6 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import comercioEletronico.view.visitante.VisitanteView;
 import comercioEletronico.api.controllers.CategoriaController;
 import comercioEletronico.api.controllers.ProdutoController;
+import comercioEletronico.api.controllers.PromocaoController;
 import comercioEletronico.api.controllers.ClienteController;
 import comercioEletronico.api.controllers.AuthController;
 import comercioEletronico.api.controllers.CarrinhoController;
@@ -42,6 +43,7 @@ public class ServidorAPI {
         AuthController.registrarRotas(app);
         CarrinhoController.registrarRotas(app);
         VendaController.registrarRotas(app);
+        PromocaoController.registrarRotas(app);
 
         System.out.println("Servidor iniciado com sucesso na porta 8080!");
     }
