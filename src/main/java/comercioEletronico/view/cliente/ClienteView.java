@@ -3,16 +3,20 @@ package comercioEletronico.view.cliente;
 import comercioEletronico.model.dao.ProdutoDao;
 import comercioEletronico.model.dao.VendaDao;
 import comercioEletronico.model.dao.VendaItemDao;
+import comercioEletronico.model.dao.PromocaoDao;
 import comercioEletronico.model.entities.Produto;
+import comercioEletronico.model.entities.Promocao;
 import comercioEletronico.model.entities.Venda;
 import comercioEletronico.model.entities.VendaItem;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ClienteView {
     private static ProdutoDao produtoDao = new ProdutoDao();
     private static VendaDao vendaDao = new VendaDao();
     private static VendaItemDao vendaItemDao = new VendaItemDao();
+    private static PromocaoDao promocaoDao = new PromocaoDao();
 
     public static void adicionarVenda(Venda venda) {
         vendaDao.inserir(venda);
@@ -33,34 +37,43 @@ public class ClienteView {
             throw new IllegalArgumentException("\nAinda não há nenhum produto cadastrado no sistema, sentimos muito!");
         }
 
-        Produto produto = produtoDao.listarId(idProduto); // retorna um produto
+        Produto produto = produtoDao.listarId(idProduto);
 
         if (produto == null) {
             throw new IllegalArgumentException("\nEste produto não está cadastrado! Digite um ID válido.");
         }
+        
+        // Calcula se há promoção ativa na categoria deste produto
+        double precoFinal = produto.getPreco();
+        LocalDate hoje = LocalDate.now();
+        
+        for (Promocao p : promocaoDao.listar()) {
+            if (p.getIdCategoria() == produto.getIdCategoria()) {
+                if (!hoje.isBefore(p.getDataInicio()) && !hoje.isAfter(p.getDataFim())) {
+                    precoFinal = produto.getPreco() * (1 - (p.getPercentualDesconto() / 100.0));
+                    break;
+                }
+            }
+        }
 
-        // retorna null caso o item ainda não esteja no carrinho
         VendaItem vendaItem = vendaItemDao.obterVendaItemProduto(idVenda, idProduto);
 
         if (vendaItem != null) { // se o item já está no carrinho
-
-            // verifica se a quantidade adicionada ultrapassa o valor do estoque
             if (quantidadeItems + vendaItem.getQuantidade() > produto.getEstoque()) {
                 throw new IllegalArgumentException("\nQuantidade indisponível no estoque no momento!");
             }
 
             vendaItem.setQuantidade(vendaItem.getQuantidade() + quantidadeItems);
-            vendaItem.setPreco(produto.getPreco());
+            // Salva com o preço (com ou sem desconto) atualizado no momento
+            vendaItem.setPreco(precoFinal); 
             vendaItemDao.atualizar(vendaItem);
 
         } else { // se o item é novo no carrinho
-
-            // verifica se a quantidade pedida ultrapassa o valor do estoque
             if (quantidadeItems > produto.getEstoque()) {
                 throw new IllegalArgumentException("\nQuantidade indisponível no estoque no momento!");
             }
 
-            vendaItem = new VendaItem(quantidadeItems, produto.getPreco(), idVenda, idProduto);
+            vendaItem = new VendaItem(quantidadeItems, precoFinal, idVenda, idProduto);
             vendaItemDao.inserir(vendaItem);
         }
     }
