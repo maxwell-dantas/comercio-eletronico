@@ -4,28 +4,22 @@ import time
 
 URL_BASE = "http://localhost:8080"
 
-def inicializar_carrinho():
-    # Segurança: Verifica se o id_usuario existe na sessão (se fez login)
-    if "id_usuario" not in st.session_state:
-        st.error("Você precisa estar logado para acessar o catálogo de produtos!")
-        st.stop() 
 
-id_cliente_logado = st.session_state.id_usuario
 
 def buscar_catalogo():
     try:
         # busca informações na api
         resposta = requests.get(f"{URL_BASE}/produtos", timeout=5)
 
-        if resposta.status_code == 200: #Status favorável
+        if resposta.status_code == 200: #Status favorável 
             return resposta.json()
         
         elif resposta.status_code == 404:
             # resposta.text vai pegar o conteúdo de 'e.getMessage()' do Java
             st.warning(f"Aviso do servidor: {resposta.text}")
-
             return []
         
+        # Para outros erros (500, etc), força uma exceção
         else:
             resposta.raise_for_status()
     except requests.exceptions.RequestException as e:
@@ -33,8 +27,7 @@ def buscar_catalogo():
         # Cai aqui se o servidor Java estiver desligaDO
         st.error(f"Erro ao tentar conectar com o servidor Java. Verifique se ele está rodando na porta 8080. Detalhes: {e}")
         return []
-
-
+    
 def enviar_para_carrinho(produto_id, nome_produto, quantidade_selecionada):
     """Envia o pedido finalizado para o Java"""
     # Exemplo de como ficará o POST depois:
@@ -88,5 +81,5 @@ for produto in produtos:
 
         if carrinho:
             enviar_para_carrinho(produto["id"], produto["descricao"], qtd)
-            time.sleep(1.5)
+            time.sleep(2)
             st.rerun()

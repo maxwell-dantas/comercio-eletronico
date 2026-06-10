@@ -51,8 +51,3 @@ bin/
 ### venv ###
 .venv
 venv
-
-### python bytecode ###
-__pycache__/
-__pycache__
-*.pyc
