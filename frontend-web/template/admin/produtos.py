@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import time
 import base64
+from datetime import datetime
 
 from template.admin.crud_generico import CrudGenerico
 
@@ -20,8 +21,66 @@ class AdminProdutoTemplate(CrudGenerico):
         return []
 
     # Override
+    def formatar_dataframe(self, df):
+        categorias = self._obter_categorias()
+        dict_cat = {c['id']: c['descricao'] for c in categorias}
+
+        promocoes = []
+        resp_promo = requests.get(f"{URL_BASE}/promocoes")
+        if resp_promo.status_code == 200:
+            promocoes = resp_promo.json()
+
+        hoje = datetime.now().date()
+
+        nomes_categorias = []
+        precos_finais = []
+        status_promo = []
+
+        for index, row in df.iterrows():
+            id_cat = row['idCategoria']
+            preco_base = float(row['preco'])
+            
+            nomes_categorias.append(dict_cat.get(id_cat, "Desconhecida"))
+
+            promo_ativa = None
+            for p in promocoes:
+                if p['idCategoria'] == id_cat:
+                    dt_inicio = datetime.strptime(p['dataInicio'], "%Y-%m-%d").date()
+                    dt_fim = datetime.strptime(p['dataFim'], "%Y-%m-%d").date()
+                    if dt_inicio <= hoje <= dt_fim:
+                        promo_ativa = p
+                        break
+            
+            if promo_ativa:
+                desconto = promo_ativa['percentualDesconto']
+                preco_com_desconto = preco_base * (1 - (desconto / 100.0))
+                precos_finais.append(f"R$ {preco_com_desconto:.2f}")
+                status_promo.append(f"🔥 Ativa (-{desconto}%)")
+            else:
+                precos_finais.append(f"R$ {preco_base:.2f}")
+                status_promo.append("Desativado")
+
+        df['Categoria'] = nomes_categorias
+        df['Preço Promocional'] = precos_finais
+        df['Status'] = status_promo
+
+        df['preco'] = df['preco'].apply(lambda x: f"R$ {x:.2f}")
+        df = df.rename(columns={
+            'descricao': 'Descrição do Produto',
+            'preco': 'Preço Base',
+            'estoque': 'Estoque'
+        })
+        
+        colunas_ordem = ['id', 'Descrição do Produto', 'Categoria', 'idCategoria', 'Preço Base', 'Preço Promocional', 'Status', 'Estoque']
+        if 'imagemBase64' in df.columns:
+            colunas_ordem.append('imagemBase64')
+            
+        return df[colunas_ordem]
+
+    # Override
     def formatar_selectbox(self, content):
-        return f"{content['descricao']}"
+        descricao = content.get('descricao', 'Sem Descrição')
+        return f"{descricao}"
 
     # Override
     def inserir(self):
@@ -41,7 +100,7 @@ class AdminProdutoTemplate(CrudGenerico):
         categoria_selecionada = st.selectbox(
             "Selecione a Categoria:",
             options=categorias,
-            format_func=self.formatar_selectbox
+            format_func=lambda cat: cat['descricao']
         )
 
         imagem_final_inserir = None
@@ -59,9 +118,12 @@ class AdminProdutoTemplate(CrudGenerico):
 
     # Override
     def atualizar(self, item_selecionado):
-        descricao_up = st.text_input("Descrição do Produto", value=item_selecionado["descricao"])
-        preco_up = st.number_input("Preço (R$)", min_value=0.0, value=float(item_selecionado["preco"]), format="%.2f")
-        estoque_up = st.number_input("Estoque", min_value=0, value=int(item_selecionado["estoque"]), step=1)
+        descricao_up = st.text_input("Descrição do Produto", value=item_selecionado.get("descricao", ""))
+
+        preco_atual = float(item_selecionado.get("preco", 0.0))
+        preco_up = st.number_input("Preço (R$)", min_value=0.0, value=preco_atual, format="%.2f")
+        
+        estoque_up = st.number_input("Estoque", min_value=0, value=int(item_selecionado.get("estoque", 0)), step=1)
         
         imagem_atual = item_selecionado.get("imagemBase64")
         
@@ -80,7 +142,7 @@ class AdminProdutoTemplate(CrudGenerico):
         else:
             indice_categoria_atual = 0
             for index, cat in enumerate(categorias):
-                if cat["id"] == item_selecionado["idCategoria"]:
+                if cat["id"] == item_selecionado.get("idCategoria", 0):
                     indice_categoria_atual = index
                     break
 
@@ -88,7 +150,7 @@ class AdminProdutoTemplate(CrudGenerico):
                 "Selecione a nova Categoria:",
                 options=categorias,
                 index=indice_categoria_atual,
-                format_func=self.formatar_selectbox,
+                format_func=lambda cat: cat['descricao'],
                 key=f"select_cat_upd_{item_selecionado['id']}"
             )
             id_categoria_up = categoria_selecionada_up["id"]
@@ -122,44 +184,85 @@ class AdminProdutoTemplate(CrudGenerico):
             st.subheader("🎉 Configurar Promoções por Categoria")
             st.write("Defina um período promocional e o desconto para os produtos de uma categoria.")
             
-            with st.container(border=True):
-                categorias = self._obter_categorias()
-                
+            categorias = self._obter_categorias()
+            
+            with st.form("form_criar_promocao"):
                 if not categorias:
                     st.warning("Cadastre categorias antes de criar promoções.")
+                    cat_selecionada = None
                 else:
                     cat_selecionada = st.selectbox(
                         "Categoria Alvo", 
                         options=categorias, 
-                        format_func=self.formatar_selectbox,
-                        key="cat_promo"
+                        format_func=lambda cat: cat['descricao'],
                     )
                     
                     col1, col2 = st.columns(2)
                     with col1:
-                        data_inicio = st.date_input("Data de Início")
+                        data_inicio = st.date_input("Data de Início", format="DD/MM/YYYY")
                     with col2:
-                        data_fim = st.date_input("Data de Encerramento")
+                        data_fim = st.date_input("Data de Encerramento", format="DD/MM/YYYY")
                         
                     desconto = st.number_input("Percentual de Desconto (%)", min_value=1.0, max_value=99.0, step=1.0)
                     
-                    if st.button("Aplicar Promoção"):
-                        # Monta o JSON exato da Entidade Promocao
+                if st.form_submit_button("Aplicar Promoção"):
+                    if cat_selecionada:
                         dados_promocao = {
                             "idCategoria": cat_selecionada["id"],
-                            "dataInicio": str(data_inicio), # Converte para string ISO (YYYY-MM-DD)
+                            "dataInicio": str(data_inicio), 
                             "dataFim": str(data_fim),
                             "percentualDesconto": float(desconto)
                         }
                         
                         resposta = requests.post(f"{URL_BASE}/promocoes", json=dados_promocao)
+                        resposta.encoding = "utf-8"
                         
                         if resposta.status_code == 201:
-                            st.success(f"A promoção para a categoria {cat_selecionada['descricao']} foi agendada e está ativa no sistema!")
-                            time.sleep(2)
+                            st.success(f"A promoção para a categoria {cat_selecionada['descricao']} foi agendada!")
+                            time.sleep(1.5)
                             st.rerun()
                         else:
                             st.error(resposta.text)
+
+            st.markdown("---")
+            st.subheader("📋 Gerenciar Promoções Ativas")
+            
+            resp_promo = requests.get(f"{URL_BASE}/promocoes")
+            if resp_promo.status_code == 200:
+                lista_promocoes = resp_promo.json()
+                
+                if not lista_promocoes:
+                    st.info("Não há promoções ativas no momento.")
+                else:
+                    dict_cat = {c['id']: c['descricao'] for c in categorias} if categorias else {}
+                    
+                    for promo in lista_promocoes:
+                        nome_categoria = dict_cat.get(promo['idCategoria'], "Categoria Removida")
+                        
+                        data_inicio_br = datetime.strptime(promo['dataInicio'], "%Y-%m-%d").strftime("%d/%m/%Y")
+                        data_fim_br = datetime.strptime(promo['dataFim'], "%Y-%m-%d").strftime("%d/%m/%Y")
+                        
+                        with st.container(border=True):
+                            col_info, col_btn = st.columns([4, 1])
+                            
+                            with col_info:
+                                st.write(f"**Categoria:** {nome_categoria} | **Desconto:** 🔥 {promo['percentualDesconto']}%")
+                                st.write(f"**Período:** {data_inicio_br} até {data_fim_br}")
+                                
+                            with col_btn:
+                                st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
+                                if st.button("❌ Desfazer", key=f"del_promo_{promo['id']}", use_container_width=True):
+                                    res_del = requests.delete(f"{URL_BASE}/promocoes/{promo['id']}")
+                                    res_del.encoding = "utf-8"
+                                    
+                                    if res_del.status_code == 200:
+                                        st.success("Promoção cancelada!")
+                                        time.sleep(1.5)
+                                        st.rerun()
+                                    else:
+                                        st.error(res_del.text)
+            else:
+                st.error("Não foi possível carregar as promoções.")
 
         # AUMENTO
         with aba_aumento:
@@ -175,7 +278,7 @@ class AdminProdutoTemplate(CrudGenerico):
                     cat_selecionada_aumento = st.selectbox(
                         "Categoria Alvo", 
                         options=categorias, 
-                        format_func=self.formatar_selectbox,
+                        format_func=lambda cat: cat['descricao'],
                         key="cat_aum"
                     )
                         
@@ -184,10 +287,11 @@ class AdminProdutoTemplate(CrudGenerico):
                     if st.button("Aplicar Aumento"):
                         url = f"{URL_BASE}/produtos/categoria/{cat_selecionada_aumento['id']}/aumento?porcentagem={aumento}"
                         resposta = requests.put(url)
+                        resposta.encoding = "utf-8"
                         
                         if resposta.status_code == 200:
-                            st.success(f"O aumento de {aumento}% foi aplicado e todos os preços da categoria {cat_selecionada_aumento['descricao']} foram reajustados!")
-                            time.sleep(2)
+                            st.success(f"O aumento de {aumento}% foi aplicado e todos os preços reajustados!")
+                            time.sleep(1.5)
                             st.rerun()
                         else:
                             st.error(resposta.text)
