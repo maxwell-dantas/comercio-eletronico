@@ -4,15 +4,33 @@ import java.time.LocalDateTime;
 
 public class Venda implements Identificavel {
     private int id;
-    private LocalDateTime data = null;
-    private boolean carrinho = true;
+    private LocalDateTime data;
+    private boolean carrinho;
     private double total;
     private int idCliente;
+    
+    // Atributos de Logística
+    private int idEntregador; 
+    private StatusEntrega statusEntrega = StatusEntrega.AGUARDANDO_ENTREGADOR;
+    private LocalDateTime dataEntrega; // carimbo de tempo da entrega concluída
 
     public Venda() {}
 
     public Venda(int idCliente) {
         this.idCliente = idCliente;
+        this.carrinho = true;
+        this.total = 0.0;
+        this.idEntregador = 0;
+        this.statusEntrega = StatusEntrega.AGUARDANDO_ENTREGADOR;
+    }
+
+    public Venda(int idCliente, LocalDateTime data, boolean carrinho, double total) {
+        this.idCliente = idCliente;
+        this.data = data;
+        this.carrinho = carrinho;
+        this.total = total;
+        this.idEntregador = 0;
+        this.statusEntrega = StatusEntrega.AGUARDANDO_ENTREGADOR;
     }
 
     @Override
@@ -32,16 +50,16 @@ public class Venda implements Identificavel {
         return data;
     }
 
+    public void setData(LocalDateTime data) {
+        this.data = data;
+    }
+
     public boolean getCarrinho() {
         return carrinho;
     }
 
     public void setCarrinho(boolean carrinho) {
         this.carrinho = carrinho;
-
-        if (!carrinho) {
-            this.data = LocalDateTime.now();
-        }
     }
 
     public double getTotal() {
@@ -50,7 +68,7 @@ public class Venda implements Identificavel {
 
     public void setTotal(double total) {
         if (total < 0) {
-            throw new IllegalArgumentException("Erro de validação: o valor total da venda não pode ser negativo.");
+            throw new IllegalArgumentException("O total da venda não pode ser negativo.");
         }
         this.total = total;
     }
@@ -59,8 +77,31 @@ public class Venda implements Identificavel {
         return idCliente;
     }
 
-    @Override
-    public String toString() {
-        return "Total: R$ " + String.format("%.2f", total) + " - Data: " + data;
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
+    }
+
+    public int getIdEntregador() {
+        return idEntregador;
+    }
+
+    public void setIdEntregador(int idEntregador) {
+        this.idEntregador = idEntregador;
+    }
+
+    public StatusEntrega getStatusEntrega() {
+        return statusEntrega;
+    }
+
+    public void setStatusEntrega(StatusEntrega statusEntrega) {
+        this.statusEntrega = statusEntrega;
+    }
+
+    public LocalDateTime getDataEntrega() {
+        return dataEntrega;
+    }
+
+    public void setDataEntrega(LocalDateTime dataEntrega) {
+        this.dataEntrega = dataEntrega;
     }
 }
