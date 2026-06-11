@@ -17,34 +17,35 @@ class ClienteTemplate:
             return 500
     
     #pag temporarias
+    @staticmethod
     def pagina_carrinho():
         st.header("🛒 Meu Carrinho")
         st.info("Página em construção! Aqui você verá os itens que selecionou.")
-
+    @staticmethod
     def pagina_historico():
         st.header("🧾 Histórico de Compras")
         st.info("Página em construção! Suas compras anteriores serão listadas aqui.")
-
+    @staticmethod
     def redirecionar_para_produtos(pg_produtos):
         # Esta função só serve para jogar o usuário para a URL /produtos
         st.switch_page(pg_produtos)
 
-
+    @staticmethod
     def renderizar_navegacao():
 
         # página raiz (default) invisível
-        pg_raiz = st.Page(
-            ClienteTemplate.redirecionar_para_produtos(pg_produtos()), 
-            title="Início", 
-            default=True 
-        )
-
         pg_produtos = st.Page(
-            "catalogo_produtos.py", 
+            "template\cliente\catalogo_produtos.py", 
             title="Produtos Disponíveis", 
             icon="📦",
             url_path="produtos" 
         )
+        pg_raiz = st.Page(
+            ClienteTemplate.redirecionar_para_produtos(pg_produtos), 
+            title="Início", 
+            default=True 
+        )
+
 
         pg_carrinho = st.Page(
             ClienteTemplate.pagina_carrinho, 
@@ -54,7 +55,7 @@ class ClienteTemplate:
         )
 
         pg_historico = st.Page(
-            ClienteTemplate.pagina_historico(), 
+            ClienteTemplate.pagina_historico, 
             title="Histórico de Compras", 
             icon="🧾",
             url_path="historico"
@@ -72,5 +73,9 @@ class ClienteTemplate:
             st.page_link(pg_produtos)
             st.page_link(pg_carrinho)
             st.page_link(pg_historico)
+            
+            if st.button("Sair"):
+                del st.session_state.id_usuario
+                st.rerun()
 
         menu_navegacao.run()
