@@ -7,13 +7,13 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import comercioEletronico.view.visitante.VisitanteView;
-import comercioEletronico.api.controllers.CategoriaController;
-import comercioEletronico.api.controllers.ProdutoController;
-import comercioEletronico.api.controllers.PromocaoController;
-import comercioEletronico.api.controllers.ClienteController;
-import comercioEletronico.api.controllers.AuthController;
-import comercioEletronico.api.controllers.CarrinhoController;
-import comercioEletronico.api.controllers.VendaController;
+import comercioEletronico.controllers.CategoriaController;
+import comercioEletronico.controllers.ProdutoController;
+import comercioEletronico.controllers.PromocaoController;
+import comercioEletronico.controllers.ClienteController;
+import comercioEletronico.controllers.AuthController;
+import comercioEletronico.controllers.CarrinhoController;
+import comercioEletronico.controllers.VendaController;
 
 public class ServidorAPI {
     public static void main(String[] args) {

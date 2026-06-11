@@ -1,4 +1,4 @@
-package comercioEletronico.api.controllers;
+package comercioEletronico.controllers;
 
 import io.javalin.Javalin;
 import comercioEletronico.view.admin.AdminView;
