@@ -3,7 +3,7 @@ import streamlit as st
 from template.admin.template import AdminTemplate
 from template.visitante.template import VisitanteTemplate
 from template.entregador.template import EntregadorTemplate
-from template.cliente.cliente_template import ClienteTemplate
+from template.cliente.template import ClienteTemplate
 
 st.set_page_config(page_title="Mercadinho Caju", page_icon="🛒", layout="centered")
 
