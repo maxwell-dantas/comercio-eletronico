@@ -3,24 +3,41 @@ import requests
 import time
 import base64 # <-- Nova importação obrigatória para lidar com as imagens
 
-URL_BASE = "http://localhost:8080"
+
 
 class CatalogoProdutos:
+    URL_BASE = "http://localhost:8080"
 
+    @staticmethod
+    def inicializar_carrinho():
+        if "id_usuario" not in st.session_state:
+            st.error("Você precisa estar logado para acessar os produtos.")
+            st.stop()
+        id_cliente = st.session_state.id_usuario
+
+        if "id_venda" not in st.session_state:
+            try:
+                resposta = requests.get(f"{CatalogoProdutos.URL_BASE}/carrinho/{id_cliente}", timeout=5)
+                if resposta.status_code == 200:
+                    venda = resposta.json()
+                    st.session_state["id_venda"] = venda["id"]
+            except Exception:
+                st.warning("Servidor offline: Não foi possível abrir o carrinho.")
+
+    
     @staticmethod
     def buscar_catalogo():
         try:
-            resposta = requests.get(f"{URL_BASE}/produtos", timeout=5)
+            resposta = requests.get(f"{CatalogoProdutos.URL_BASE}/produtos", timeout=5)
 
             if resposta.status_code == 200: 
                 return resposta.json()
-            
             elif resposta.status_code == 404:
                 st.warning(f"Aviso do servidor: {resposta.text}")
                 return []
-            
             else:
                 resposta.raise_for_status()
+
         except requests.exceptions.RequestException as e:
             st.error(f"Erro ao tentar conectar com o servidor Java. Verifique se ele está rodando na porta 8080. Detalhes: {e}")
             return []
@@ -31,8 +48,6 @@ class CatalogoProdutos:
             
     @staticmethod
     def renderizar_catalogo():
-        st.set_page_config(page_title="Comércio Eletrônico", layout="centered")
-
         st.header("Veja nossos produtos disponíveis")
         st.divider()
 

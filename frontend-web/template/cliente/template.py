@@ -19,14 +19,12 @@ class ClienteTemplate:
     def pagina_raiz():
         st.switch_page("template/cliente/catalogo_produtos.py")
       
-    
     @staticmethod
     def pagina_historico():
         st.header("🧾 Histórico de Compras")
         st.info("Página em construção! Suas compras anteriores serão listadas aqui.")
-    
-    # --- RENDERIZAÇÃO DO MENU ---
-
+    # RENDERIZAÇÃO DO MENU 
+   
     @staticmethod
     def renderizar_navegacao():
 
