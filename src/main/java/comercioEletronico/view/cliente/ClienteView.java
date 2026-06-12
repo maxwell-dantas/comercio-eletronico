@@ -10,6 +10,7 @@ import comercioEletronico.model.entities.Venda;
 import comercioEletronico.model.entities.VendaItem;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class ClienteView {
@@ -31,6 +32,24 @@ public class ClienteView {
         return null;
     }
 
+    // Método dedicado para listar apenas as compras já finalizadas de um cliente específico
+    public static ArrayList<Venda> obterHistoricoCompras(int idCliente) {
+        ArrayList<Venda> historico = new ArrayList<>();
+
+        for (Venda venda : vendaDao.listar()) {
+            // Filtra pelo ID do cliente e garante que não é mais um carrinho em aberto
+            if (venda.getIdCliente() == idCliente && !venda.getCarrinho()) {
+                historico.add(venda);
+            }
+        }
+
+        if (historico.isEmpty()) {
+            throw new IllegalArgumentException("Você ainda não possui nenhuma compra finalizada.");
+        }
+
+        return historico;
+    }
+
     public static void adicionarProduto(int idVenda, int idProduto, int quantidadeItems) {
 
         if (produtoDao.listar().isEmpty()) {
@@ -46,7 +65,7 @@ public class ClienteView {
         // Calcula se há promoção ativa na categoria deste produto
         double precoFinal = produto.getPreco();
         LocalDate hoje = LocalDate.now();
-        
+
         for (Promocao p : promocaoDao.listar()) {
             if (p.getIdCategoria() == produto.getIdCategoria()) {
                 if (!hoje.isBefore(p.getDataInicio()) && !hoje.isAfter(p.getDataFim())) {
@@ -99,6 +118,16 @@ public class ClienteView {
         vendaItemDao.limparCarrinho(idVenda);
     }
 
+    public static void removerItemCarrinho(int idVenda, int idVendaItem) {
+        VendaItem item = vendaItemDao.listarId(idVendaItem);
+
+        if (item == null || item.getIdVenda() != idVenda) {
+            throw new IllegalArgumentException("Erro de validação: Item não encontrado neste carrinho.");
+        }
+
+        vendaItemDao.remover(idVendaItem);
+    }
+
     public static void finalizarCompra(int idVenda) {
         boolean temItens = false;
         double totalDaCompra = 0.0;
@@ -115,11 +144,12 @@ public class ClienteView {
             throw new IllegalArgumentException("\nNão é possível finalizar: Seu carrinho está vazio!");
         }
 
-        // atualiza o preço final e finaliza o carrinho
         Venda venda = vendaDao.listarId(idVenda);
         if (venda != null) {
             venda.setTotal(totalDaCompra);
             venda.setCarrinho(false);
+            // Registra a data/hora exata do checkout para a logística e os relatórios de filtro do Admin
+            venda.setData(LocalDateTime.now());
             vendaDao.atualizar(venda);
         }
     }
