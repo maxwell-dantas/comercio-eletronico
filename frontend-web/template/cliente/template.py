@@ -12,7 +12,7 @@ class ClienteTemplate:
             return requests.get(f"{URL_BASE}/health", timeout=0.5).status_code
         except Exception:
             return 500
-    
+
     # PÁGINAS TEMPORÁRIAS E DE REDIRECIONAMENTO
     
     @staticmethod
