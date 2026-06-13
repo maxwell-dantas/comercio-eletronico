@@ -1,4 +1,5 @@
 import streamlit as st
+from datetime import datetime
 import requests
 
 class ServicoProdutosAPI:
@@ -88,8 +89,14 @@ class ServicoCarrinhoAPI:
 
     @staticmethod
     def finalizar_compra(id_venda):
+
+        data_atual = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+        payload = {
+            "carrinho": False,
+            "data": data_atual
+        }
         try:
-            resposta = requests.post(f"{ServicoCarrinhoAPI.URL_BASE}/carrinho/{id_venda}/finalizar", timeout=5)
+            resposta = requests.post(f"{ServicoCarrinhoAPI.URL_BASE}/carrinho/{id_venda}/finalizar", json=payload, timeout=5)
             return resposta.status_code, resposta.text
         except requests.exceptions.RequestException as e:
             return 500, f"Erro de conexão: {e}"

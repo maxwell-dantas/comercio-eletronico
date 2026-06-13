@@ -37,19 +37,19 @@ class CatalogoProdutos:
         st.header("Veja nossos produtos disponíveis")
         st.divider()
 
-        # 1. Prepara a sessão do usuário
+        # Prepara a sessão do usuário
         CatalogoProdutos.inicializar_carrinho()
 
-        # 2. Busca os dados simultaneamente através da API
+        # Busca os dados simultaneamente através da API
         produtos = ServicoProdutosAPI.buscar_catalogo()
         promocoes = ServicoProdutosAPI.buscar_promocao()
 
         if not produtos: 
             st.stop()
 
-        # 3. Transforma a lista de promoções em um Dicionário Python
-        # Isso faz a busca ser instantânea, evitando lentidão na tela!
-        dict_promocoes = {promo["idProduto"]: promo for promo in promocoes if "idProduto" in promo}
+        # Transforma a lista de promoções em um Dicionário Python
+        
+        dict_promocoes = {promo["idCategoria"]: promo for promo in promocoes if "idCategoria" in promo}
 
         for produto in produtos:
             with st.container(border=True):
@@ -57,6 +57,7 @@ class CatalogoProdutos:
                 
                 esgotado = produto["estoque"] <= 0 
                 id_prod = produto["id"]
+                id_categoria = produto.get("idCategoria")
                 
                 with col_img:
                     img_base64 = produto.get("imagemBase64")
@@ -76,11 +77,10 @@ class CatalogoProdutos:
                     
                     preco_original = produto['preco']
                     
-                    # Verifica se o ID deste produto está na lista de promoções
-                    if id_prod in dict_promocoes:
-                        promo_atual = dict_promocoes[id_prod]
+                    if id_categoria in dict_promocoes:
+                        promo_atual = dict_promocoes[id_categoria]
                         
-                        # --- CÁLCULO DO DESCONTO TEMPORÁRIO ---
+                    
                         percentual = promo_atual.get("percentualDesconto", 10) 
                         preco_com_desconto = preco_original - (preco_original * (percentual / 100))
                         

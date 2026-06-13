@@ -72,7 +72,7 @@ class ClienteTemplate:
             st.page_link(pg_historico)
 
             if st.button("Sair"):
-                del st.session_state.id_usuario
+                st.session_state.clear()
                 st.rerun()
-                
+
         menu_navegacao.run()
