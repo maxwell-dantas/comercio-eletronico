@@ -1,12 +1,43 @@
 [
-  { "id": 1, "data": "2026-05-20T14:30:00", "carrinho": false, "total": 850.00, "idCliente": 2 },
-  { "id": 2, "data": "2026-05-21T09:15:22", "carrinho": false, "total": 950.00, "idCliente": 3 },
-  { "id": 3, "carrinho": true, "total": 280.00, "idCliente": 4 },
-  { "id": 4, "data": "2026-05-23T10:05:00", "carrinho": false, "total": 120.00, "idCliente": 5 },
-  { "id": 5, "carrinho": true, "total": 249.90, "idCliente": 6 },
-  { "id": 6, "data": "2026-05-25T11:11:11", "carrinho": false, "total": 180.00, "idCliente": 7 },
-  { "id": 7, "data": "2026-05-25T15:40:05", "carrinho": false, "total": 45.00, "idCliente": 8 },
-  { "id": 8, "carrinho": true, "total": 550.00, "idCliente": 9 },
-  { "id": 9, "data": "2026-05-26T16:50:45", "carrinho": false, "total": 1100.00, "idCliente": 10 },
-  { "id": 10, "carrinho": true, "total": 399.00, "idCliente": 2 }
+  { "id": 1, "data": "2026-06-01T10:00:00", "carrinho": false, "total": 1669.00, "idCliente": 2, "idEntregador": 9, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-01T14:00:00" },
+  { "id": 2, "data": "2026-06-05T09:30:00", "carrinho": false, "total": 2580.00, "idCliente": 2, "idEntregador": 10, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-05T11:45:00" },
+  { "id": 3, "data": "2026-06-10T15:20:00", "carrinho": false, "total": 2719.00, "idCliente": 2, "idEntregador": 11, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-11T10:10:00" },
+  { "id": 4, "data": "2026-06-12T16:00:00", "carrinho": false, "total": 2988.00, "idCliente": 2, "idEntregador": 12, "statusEntrega": "EM_ROTA", "dataEntrega": null },
+  { "id": 5, "data": null, "carrinho": true, "total": 3630.00, "idCliente": 2, "idEntregador": 0, "statusEntrega": "AGUARDANDO_ENTREGADOR", "dataEntrega": null },
+
+  { "id": 6, "data": "2026-06-01T10:00:00", "carrinho": false, "total": 1669.00, "idCliente": 3, "idEntregador": 13, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-01T14:00:00" },
+  { "id": 7, "data": "2026-06-05T09:30:00", "carrinho": false, "total": 2580.00, "idCliente": 3, "idEntregador": 9, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-05T11:45:00" },
+  { "id": 8, "data": "2026-06-10T15:20:00", "carrinho": false, "total": 2719.00, "idCliente": 3, "idEntregador": 10, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-11T10:10:00" },
+  { "id": 9, "data": "2026-06-12T16:00:00", "carrinho": false, "total": 2988.00, "idCliente": 3, "idEntregador": 11, "statusEntrega": "EM_ROTA", "dataEntrega": null },
+  { "id": 10, "data": null, "carrinho": true, "total": 3630.00, "idCliente": 3, "idEntregador": 0, "statusEntrega": "AGUARDANDO_ENTREGADOR", "dataEntrega": null },
+
+  { "id": 11, "data": "2026-06-01T10:00:00", "carrinho": false, "total": 1669.00, "idCliente": 4, "idEntregador": 12, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-01T14:00:00" },
+  { "id": 12, "data": "2026-06-05T09:30:00", "carrinho": false, "total": 2580.00, "idCliente": 4, "idEntregador": 13, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-05T11:45:00" },
+  { "id": 13, "data": "2026-06-10T15:20:00", "carrinho": false, "total": 2719.00, "idCliente": 4, "idEntregador": 9, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-11T10:10:00" },
+  { "id": 14, "data": "2026-06-12T16:00:00", "carrinho": false, "total": 2988.00, "idCliente": 4, "idEntregador": 10, "statusEntrega": "EM_ROTA", "dataEntrega": null },
+  { "id": 15, "data": null, "carrinho": true, "total": 3630.00, "idCliente": 4, "idEntregador": 0, "statusEntrega": "AGUARDANDO_ENTREGADOR", "dataEntrega": null },
+
+  { "id": 16, "data": "2026-06-01T10:00:00", "carrinho": false, "total": 1669.00, "idCliente": 5, "idEntregador": 11, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-01T14:00:00" },
+  { "id": 17, "data": "2026-06-05T09:30:00", "carrinho": false, "total": 2580.00, "idCliente": 5, "idEntregador": 12, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-05T11:45:00" },
+  { "id": 18, "data": "2026-06-10T15:20:00", "carrinho": false, "total": 2719.00, "idCliente": 5, "idEntregador": 13, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-11T10:10:00" },
+  { "id": 19, "data": "2026-06-12T16:00:00", "carrinho": false, "total": 2988.00, "idCliente": 5, "idEntregador": 9, "statusEntrega": "EM_ROTA", "dataEntrega": null },
+  { "id": 20, "data": null, "carrinho": true, "total": 3630.00, "idCliente": 5, "idEntregador": 0, "statusEntrega": "AGUARDANDO_ENTREGADOR", "dataEntrega": null },
+
+  { "id": 21, "data": "2026-06-01T10:00:00", "carrinho": false, "total": 1669.00, "idCliente": 6, "idEntregador": 10, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-01T14:00:00" },
+  { "id": 22, "data": "2026-06-05T09:30:00", "carrinho": false, "total": 2580.00, "idCliente": 6, "idEntregador": 11, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-05T11:45:00" },
+  { "id": 23, "data": "2026-06-10T15:20:00", "carrinho": false, "total": 2719.00, "idCliente": 6, "idEntregador": 12, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-11T10:10:00" },
+  { "id": 24, "data": "2026-06-12T16:00:00", "carrinho": false, "total": 2988.00, "idCliente": 6, "idEntregador": 13, "statusEntrega": "EM_ROTA", "dataEntrega": null },
+  { "id": 25, "data": null, "carrinho": true, "total": 3630.00, "idCliente": 6, "idEntregador": 0, "statusEntrega": "AGUARDANDO_ENTREGADOR", "dataEntrega": null },
+
+  { "id": 26, "data": "2026-06-01T10:00:00", "carrinho": false, "total": 1669.00, "idCliente": 7, "idEntregador": 9, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-01T14:00:00" },
+  { "id": 27, "data": "2026-06-05T09:30:00", "carrinho": false, "total": 2580.00, "idCliente": 7, "idEntregador": 10, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-05T11:45:00" },
+  { "id": 28, "data": "2026-06-10T15:20:00", "carrinho": false, "total": 2719.00, "idCliente": 7, "idEntregador": 11, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-11T10:10:00" },
+  { "id": 29, "data": "2026-06-12T16:00:00", "carrinho": false, "total": 2988.00, "idCliente": 7, "idEntregador": 12, "statusEntrega": "EM_ROTA", "dataEntrega": null },
+  { "id": 30, "data": null, "carrinho": true, "total": 3630.00, "idCliente": 7, "idEntregador": 0, "statusEntrega": "AGUARDANDO_ENTREGADOR", "dataEntrega": null },
+
+  { "id": 31, "data": "2026-06-01T10:00:00", "carrinho": false, "total": 1669.00, "idCliente": 8, "idEntregador": 13, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-01T14:00:00" },
+  { "id": 32, "data": "2026-06-05T09:30:00", "carrinho": false, "total": 2580.00, "idCliente": 8, "idEntregador": 9, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-05T11:45:00" },
+  { "id": 33, "data": "2026-06-10T15:20:00", "carrinho": false, "total": 2719.00, "idCliente": 8, "idEntregador": 10, "statusEntrega": "ENTREGUE", "dataEntrega": "2026-06-11T10:10:00" },
+  { "id": 34, "data": "2026-06-12T16:00:00", "carrinho": false, "total": 2988.00, "idCliente": 8, "idEntregador": 11, "statusEntrega": "EM_ROTA", "dataEntrega": null },
+  { "id": 35, "data": null, "carrinho": true, "total": 3630.00, "idCliente": 8, "idEntregador": 0, "statusEntrega": "AGUARDANDO_ENTREGADOR", "dataEntrega": null }
 ]

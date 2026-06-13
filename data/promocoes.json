@@ -1,0 +1,6 @@
+[
+  { "id": 1, "idCategoria": 1, "dataInicio": "2026-06-01", "dataFim": "2026-06-30", "percentualDesconto": 10.0 },
+  { "id": 2, "idCategoria": 5, "dataInicio": "2026-06-12", "dataFim": "2026-06-25", "percentualDesconto": 15.0 },
+  { "id": 3, "idCategoria": 3, "dataInicio": "2026-05-01", "dataFim": "2026-05-31", "percentualDesconto": 5.0 },
+  { "id": 4, "idCategoria": 4, "dataInicio": "2026-07-01", "dataFim": "2026-07-15", "percentualDesconto": 12.0 }
+]

@@ -2,11 +2,7 @@
   { "id": 1, "descricao": "Processadores" },
   { "id": 2, "descricao": "Placas-Mãe" },
   { "id": 3, "descricao": "Memória RAM" },
-  { "id": 4, "descricao": "Peças e Acessórios Automotivos" },
-  { "id": 5, "descricao": "Jogos Digitais" },
-  { "id": 6, "descricao": "Componentes Arcade e Hitbox" },
-  { "id": 7, "descricao": "Microcontroladores" },
-  { "id": 8, "descricao": "Armazenamento (SSD/HD)" },
-  { "id": 9, "descricao": "Monitores" },
-  { "id": 10, "descricao": "Gabinetes" }
+  { "id": 4, "descricao": "Armazenamento (SSD/HD)" },
+  { "id": 5, "descricao": "Placas de Vídeo" },
+  { "id": 6, "descricao": "Gabinetes e Periféricos" }
 ]
