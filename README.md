@@ -1,81 +1,97 @@
-# 🛒 Sistema de Comércio Eletrônico - Java Console App
+# 🛒 Mercadinho Caju - Sistema de Comércio Eletrônico
 
-Este é um Sistema de Comércio Eletrônico desenvolvido em Java, funcionando inteiramente via terminal (console). O projeto implementa uma separação rigorosa de responsabilidades através de uma arquitetura baseada em camadas, garantindo código limpo, manutenibilidade e persistência de dados utilizando arquivos JSON.
+Este é um Sistema de Comércio Eletrônico completo, construído sob uma arquitetura **Cliente-Servidor**. O projeto deu um salto evolutivo de uma aplicação de console para um ecossistema web moderno, apresentando um **Back-end construído em Java (API REST com Javalin)** e um **Front-end reativo em Python (Streamlit)**.
 
-O sistema foi projetado para atender a dois perfis distintos de usuários: **Administradores** e **Clientes**, com fluxos de navegação e permissões de acesso independentes.
+O sistema foi projetado para gerenciar todas as etapas de um e-commerce real, isolando as regras de negócio da interface gráfica e provendo uma experiência de uso para três perfis distintos: **Administradores**, **Clientes** e **Entregadores**.
 
 ## ✨ Funcionalidades Principais
 
-**Segurança e Inicialização:**
-* **Autenticação:** Sistema de login para usuários cadastrados.
-* **Bootstrap:** Geração automática do usuário Administrador mestre e da estrutura de arquivos na primeira execução.
-* **Validação Fail-Fast:** Proteção nas Entidades via encapsulamento, impedindo estados inválidos (estoque negativo, e-mail duplicado ou campos vazios).
-
-**Painel do Administrador:**
+**Painel do Administrador (Gestão & ERP):**
 * **Gestão Completa (CRUD):** Controle total sobre Clientes, Categorias e Produtos.
-* **Gestão de Preços:** Ferramenta para aplicação de reajustes (aumentos ou descontos) em lote por porcentagem.
-* **Auditoria:** Listagem global de todas as vendas e itens comercializados na plataforma.
+* **Promoções e Reajustes:** Sistema de agendamento de promoções (com % de desconto em categorias específicas) e ferramenta para aplicação de reajustes permanentes em lote.
+* **Logística e Vendas:** Emissão de relatórios filtrados por período, auditoria de todos os itens comercializados e sistema de alocação de pedidos para entregadores disponíveis.
 
-**Área do Cliente:**
-* **Vitrine Virtual:** Listagem de produtos com informações em tempo real.
-* **Carrinho Inteligente:** Agrupamento automático de itens e cálculo dinâmico de subtotais.
-* **Gestão de Sessão:** Limpeza automática de carrinhos e vendas não finalizadas para garantir a integridade dos dados (limpeza de "lixo" no JSON).
-* **Histórico:** Acesso detalhado a compras concluídas, incluindo data, total e categorias dos produtos.
+**Área do Cliente (E-commerce):**
+* **Vitrine Virtual:** Catálogo dinâmico de produtos com cálculo de descontos promocionais em tempo real (estilo e-commerce).
+* **Carrinho Inteligente:** Agrupamento de itens com sincronização em banco de dados, permitindo adicionar, remover e calcular totais antes do checkout.
+* **Histórico e Rastreamento:** Consulta de pedidos anteriores, exibindo em qual estágio logístico a compra se encontra (Aguardando, Em Rota ou Entregue).
 
-## 🏗️ Arquitetura do Sistema (MVT)
+**Aplicativo do Entregador (Logística):**
+* **Rotas Pendentes:** Visualização cronológica de pedidos alocados ao entregador logado (Status: `EM_ROTA`).
+* **Confirmação de Entrega:** Botão de ação direta para dar baixa em encomendas concluídas (Status: `ENTREGUE`).
+* **Histórico de Trabalho:** Registro completo das corridas finalizadas pelo profissional.
 
-O projeto utiliza uma adaptação do padrão **Model-View-Template**, isolando a lógica de persistência, as regras de negócio e a interface de usuário.
+## 🏗️ Arquitetura do Sistema (API RESTful + UI Web)
 
-![Arquitetura Geral](docs/diagramas/diagrama-arquitetura-pacotes.png)
+O projeto abandonou o acoplamento tradicional para adotar uma arquitetura de microsserviços distribuídos:
 
-**Divisão de Camadas:**
+1. **Back-end (Java API):** Responsável exclusivo pelas regras de negócio e persistência. Ele recebe requisições HTTP, valida os dados através de controladores, delega a lógica para a camada de serviços (Views/Services) e persiste as informações em arquivos JSON através dos DAOs. Toda a comunicação externa é feita via JSON.
+2. **Front-end (Python Streamlit):** O cliente web. Sem conexão direta ao banco de dados, ele funciona consumindo a API Java através de requisições HTTP (`requests`). Utiliza o `st.session_state` para gerenciar sessões ativas (Login e ID do Carrinho) e renderiza interfaces ricas em HTML/CSS encapsuladas em Python.
 
-1. **Model (Entities & DAO):** O núcleo de dados. As **Entities** contêm os dados e regras de validação interna. Os **DAOs** (Data Access Object) são responsáveis pela persistência atômica, realizando a leitura e gravação dos arquivos JSON via biblioteca Google GSON.
-2. **View:** A camada de serviços e lógica de negócio. Atua como intermediária: recebe requisições, processa validações complexas (como cálculos de estoque e regras de unicidade) e devolve os resultados processados. **A View é independente da interface e não possui conhecimento da existência do Template.**
-3. **Template:** O motor de navegação e interface (CLI). É a camada responsável por ditar o fluxo do sistema, capturar entradas do usuário, invocar os métodos da View e apresentar os dados ou mensagens de erro na tela.
+### Diagrama de Pacotes Geral
+![Arquitetura Geral](docs/diagramas/Diamagra_de_Pacotes.png)
 
-![Arquitetura Simplificada](docs/diagramas/diagrama-arquitetura-simplificada.png)
+## 📊 Diagramas UML Técnicos
 
-## 📊 Diagramas de Classes (UML)
+Abaixo estão os mapeamentos técnicos e documentações do projeto, modelados no Astah.
 
-### Entidades do Banco de Dados
-Mapeamento das classes de domínio e seus relacionamentos estruturais.
-![Entidades](docs/diagramas/diagrama-classes-entidades.png)
+### 1. Casos de Uso
+Mapeamento das interações dos diferentes atores com o sistema.
+![Casos de Uso](docs/diagramas/Mercadinho%20Caju.png)
 
-*Visão de dependências independentes do Model:*
-![Dependências Model](docs/diagramas/diagrama-dependencias-model.png)
+### 2. Diagrama de Domínio (Entidades)
+Regras estruturais e relacionamento entre objetos.
+![Entidades](docs/diagramas/Diagrama_de_Dominio.png)
 
-### Camada de Persistência (DAO)
-Interface de comunicação com os arquivos de dados.
-![Data Access Object](docs/diagramas/diagrama-classes-dao.png)
+### 3. Camada de Persistência (DAO)
+Manipulação atômica dos dados em arquivos JSON.
+![Data Access Object](docs/diagramas/Diagrama_de_Persistencia.png)
 
-### Camada de Negócio e Serviços (View)
-Processamento lógico e intermediação de dados.
-![View](docs/diagramas/diagrama-classes-view.png)
+### 4. Arquitetura de Controladores (API REST)
+Portas de entrada HTTP do Javalin recebendo requisições.
+![Controladores](docs/diagramas/Diagrama_de_Controladores.png)
 
-### Interface de Usuário e Utilitários (Template & Util)
-Gerenciamento de menus e métodos auxiliares de entrada segura.
-![Template](docs/diagramas/diagrama-classes-template-util.png)
+### 5. Camada de Serviços / Lógica de Negócio (Java)
+Processamento das validações do sistema separadas por atores.
+* **Admin:** ![Serviços Admin](docs/diagramas/Diagrama_de_Servicos_Admin.png)
+* **Cliente:** ![Serviços Cliente](docs/diagramas/Diagrama_de_Servicos_Cliente.png)
+* **Visitante (Auth):** ![Serviços Visitante](docs/diagramas/Diagrama_de_Servicos_Visitante.png)
+
+### 6. Arquitetura Front-end (Streamlit UI)
+Roteamento, componentização OO e abstração das chamadas de API no Python.
+![Front-end](docs/diagramas/Diagrama_de_Frontend.png)
 
 ## 🚀 Tecnologias Utilizadas
 
-* **Java (JDK 21+)**: Utilização de recursos modernos da linguagem e forte tipagem.
-* **Google GSON**: Serialização e desserialização eficiente de objetos para JSON.
-* **Astah Professional**: Modelagem técnica seguindo padrões UML.
-* **Git & GitHub**: Versionamento de código com foco em *Semantic Commits*.
+**Back-end:**
+* **Java (JDK 21+)**: Linguagem central da API.
+* **Javalin**: Framework web super leve para construção dos endpoints REST.
+* **Jackson (JavalinJackson)**: Serialização avançada de JSON, essencial para manipulação de atributos temporais (`LocalDateTime`).
+
+**Front-end:**
+* **Python 3**: Linguagem base do cliente.
+* **Streamlit**: Framework reativo para construção rápida de interfaces web.
+* **Requests & Pandas**: Comunicação HTTP com a API Java e formatação de dados matriciais (tabelas).
 
 ## 🛠️ Como Executar o Projeto
 
-1. Clone este repositório:
+Para rodar a aplicação, você precisará inicializar as duas pontas do sistema separadamente.
+
+**Passo 1: Inicializando o Servidor Java (API)**
+1. Importe o projeto Java na sua IDE de preferência.
+2. Certifique-se de que as dependências do `Javalin` e `Jackson` estão configuradas no seu `pom.xml` ou adicionadas ao classpath.
+3. Execute o arquivo `ServidorAPI.java`. O console exibirá: `Servidor iniciado com sucesso na porta 8080!`.
+
+**Passo 2: Inicializando o Cliente Web (Streamlit)**
+1. Certifique-se de ter o Python e o `pip` instalados.
+2. Abra o terminal na raiz da pasta do front-end e instale as dependências:
    ```bash
-   git clone https://github.com/maxwell-dantas/comercio-eletronico.git
-2.  Importe o projeto em sua IDE (IntelliJ, Eclipse ou VS Code).
-3.  Adicione a biblioteca **GSON** ao seu `classpath`.
-4.  Execute a classe `Main.java` na raiz do pacote `comercioEletronico`.
-5.  **Credenciais Iniciais:** O sistema cria um administrador padrão com login `admin` e senha `admin`.
+   pip install streamlit requests pandas
+3. Inicie o sistema web rodando: streamlit run app.py
+4. O navegador abrirá automaticamente na página de Login. Credenciais padrão do mestre: Email admin, Senha admin
 
-## 👨‍💻 Autor e Contexto
+## 👨‍💻 Autores e Contexto
 
-Desenvolvido por **Maxwell Dantas**, estudante de Análise e Desenvolvimento de Sistemas no IFRN (Campus Natal Central, RN).
+Desenvolvido por **Maxwell Dantas** e **Cazuí Souto**, estudante de Análise e Desenvolvimento de Sistemas no IFRN (Campus Natal Central, RN).
 
 Este projeto foi construído sob a orientação do **Prof. Gilbert Azevedo da Silva** na disciplina de Programação Orientada a Objetos. O objetivo principal foi aplicar padrões de projeto robustos e garantir a integridade de dados em sistemas complexos.
