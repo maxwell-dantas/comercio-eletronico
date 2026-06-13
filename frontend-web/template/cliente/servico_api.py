@@ -125,3 +125,71 @@ class ServicoCarrinhoAPI:
         except requests.exceptions.RequestException as e:
             st.error(f"Erro ao buscar o histórico de compras. Detalhes: {e}")
             return []
+
+class ServicoVendaAPI:
+    URL_BASE = "https://localhost:8080"
+
+    @staticmethod
+    def buscar_vendas():
+        try:
+            resposta = requests.get(f"{ServicoVendaAPI.URL_BASE}/vendas", timeout=5)
+            if resposta.status_code == 200:
+                return resposta.json()
+            elif resposta.status_code == 404:
+                return []
+            else:
+                resposta.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            st.error(f"Erro ao conectar com a API global de vendas. Detalhes: {e}")
+            return []
+        
+    @staticmethod
+    def buscar_relatorio_por_periodo(data_inicio, data_fim):
+        
+        parametros = {
+            "inicio": data_inicio,
+            "fim": data_fim
+        }
+        try:
+            resposta = requests.get(f"{ServicoVendaAPI.URL_BASE}/vendas/relatorio", params=parametros, timeout=5)
+            if resposta.status_code == 200:
+                return resposta.json()
+            elif resposta.status_code == 400:
+                st.warning(f"Erro de validação do relatório: {resposta.text}")
+                return []
+            else:
+                return []
+        except requests.exceptions.RequestException as e:
+            st.error(f"Erro ao conectar com a API de relatórios. Detalhes: {e}")
+            return []
+    
+    @staticmethod
+    def buscar_todos_itens_vendidos():
+        try:
+            resposta = requests.get(f"{ServicoVendaAPI.URL_BASE}/venda_itens", timeout=5)
+            if resposta.status_code == 200:
+                return resposta.json()
+            elif resposta.status_code == 404:
+                return []
+            else:
+                resposta.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            st.error(f"Erro ao conectar com a API de listagem de itens vendidos. Detalhes: {e}")
+            return []
+    
+    @staticmethod
+    def alocar_entregador(id_venda, id_entregador):
+        parametros = {"idEntregador": id_entregador}
+        try:
+            resposta = requests.put(f"{ServicoVendaAPI.URL_BASE}/vendas/{id_venda}/alocar", params=parametros, timeout=5)
+            return resposta.status_code, resposta.text
+        except requests.exceptions.RequestException as e:
+            return 500, f"Erro de conexão ao alocar entregador: {e}"
+        
+    @staticmethod
+    def finalizar_entrega(id_venda):
+        try:
+            resposta = requests.put(f"{ServicoVendaAPI.URL_BASE}/vendas/{id_venda}/finalizar-entrega", timeout=5)
+            return resposta.status_code, resposta.text
+        except requests.exceptions.RequestException as e:
+            return 500, f"Erro de conexão ao finalizar entrega: {e}"

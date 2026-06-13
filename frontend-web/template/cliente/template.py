@@ -13,19 +13,13 @@ class ClienteTemplate:
         except Exception:
             return 500
 
-    # PÁGINAS TEMPORÁRIAS E DE REDIRECIONAMENTO
     
     @staticmethod
     def pagina_raiz():
         st.switch_page("template/cliente/catalogo_produtos.py")
       
-    @staticmethod
-    def pagina_historico():
-        st.header("🧾 Histórico de Compras")
-        st.info("Página em construção! Suas compras anteriores serão listadas aqui.")
-    # RENDERIZAÇÃO DO MENU 
-   
-    @staticmethod
+     
+    @staticmethod # RENDERIZAÇÃO DO MENU
     def renderizar_navegacao():
 
         pg_raiz = st.Page(
@@ -51,7 +45,7 @@ class ClienteTemplate:
         )
 
         pg_historico = st.Page(
-            ClienteTemplate.pagina_historico, 
+            "template/cliente/compras.py", 
             title="Histórico de Compras", 
             icon="🧾",
             url_path="historico"
