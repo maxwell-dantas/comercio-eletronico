@@ -92,6 +92,6 @@ Para rodar a aplicação, você precisará inicializar as duas pontas do sistema
 
 ## 👨‍💻 Autores e Contexto
 
-Desenvolvido por **Maxwell Dantas** e **Cazuí Souto**, estudante de Análise e Desenvolvimento de Sistemas no IFRN (Campus Natal Central, RN).
+Desenvolvido por **Maxwell Dantas** e **Cazuí Souto**, estudantes de Análise e Desenvolvimento de Sistemas no IFRN (Campus Natal Central, RN).
 
 Este projeto foi construído sob a orientação do **Prof. Gilbert Azevedo da Silva** na disciplina de Programação Orientada a Objetos. O objetivo principal foi aplicar padrões de projeto robustos e garantir a integridade de dados em sistemas complexos.
