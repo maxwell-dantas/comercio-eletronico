@@ -67,12 +67,12 @@ class ClienteTemplate:
             st.header(f"Seja bem-vindo(a), {st.session_state.get('nome_usuario', '')}!")
             st.divider()
             
-            # Os botões para o cliente clicar
-            st.page_link(pg_produtos)
+            st.page_link(pg_produtos)  
             st.page_link(pg_carrinho)
             st.page_link(pg_historico)
 
             if st.button("Sair"):
                 del st.session_state.id_usuario
                 st.rerun()
+                
         menu_navegacao.run()
