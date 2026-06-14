@@ -18,12 +18,10 @@ class HistoricoCompras:
 
         id_cliente = st.session_state["id_usuario"]
 
-
         with st.expander("🔎 Filtrar e Buscar Pedidos", expanded=True):
             col_data, col_status = st.columns(2)
 
             with col_data:
-
                 filtro_datas = st.date_input(
                     "Por período de compra",
                     value=[],
@@ -79,7 +77,8 @@ class HistoricoCompras:
             if incluir_na_lista:
                 compras_filtradas.append(compra)
 
-        compras_filtradas.reverse()
+        # Ordena da data mais recente para a mais antiga
+        compras_filtradas.sort(key=lambda x: x.get("data") or "", reverse=True)
 
         if not compras_filtradas:
             st.info("Nenhum pedido encontrado para os filtros selecionados.")
@@ -146,7 +145,7 @@ class HistoricoCompras:
                             detalhes = dict_produtos.get(id_prod, {})
                             nome_prod = detalhes.get("descricao", f"Produto #{id_prod}")
                             img_base64 = detalhes.get("imagemBase64")
-                            preco_un = detalhes.get("preco", 0.0)
+                            preco_un = item.get("preco", detalhes.get("preco", 0.0))
 
                             col_img, col_txt, col_sub = st.columns([1, 4, 2], vertical_alignment="center")
 
