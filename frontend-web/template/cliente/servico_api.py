@@ -9,8 +9,9 @@ class ServicoProdutosAPI:
     def buscar_catalogo():
         try:
             resposta = requests.get(f"{ServicoProdutosAPI.URL_BASE}/produtos", timeout=5)
+            resposta.encoding = "utf-8"
 
-            if resposta.status_code == 200: 
+            if resposta.status_code == 200:
                 return resposta.json()
             elif resposta.status_code == 404:
                 st.warning(f"Aviso do servidor: {resposta.text}")
@@ -21,11 +22,12 @@ class ServicoProdutosAPI:
         except requests.exceptions.RequestException as e:
             st.error(f"Erro ao tentar conectar com o servidor Java. Verifique se ele está rodando na porta 8080. Detalhes: {e}")
             return []
-        
+
     @staticmethod
     def buscar_promocao():
         try:
             resposta = requests.get(f"{ServicoProdutosAPI.URL_BASE}/promocoes", timeout=5)
+            resposta.encoding = "utf-8"
 
             if resposta.status_code == 200:
                 return resposta.json()
@@ -46,9 +48,10 @@ class ServicoCarrinhoAPI:
     def inicializar_carrinho(id_cliente):
         try:
             resposta = requests.get(f"{ServicoCarrinhoAPI.URL_BASE}/carrinho/{id_cliente}", timeout=5)
+            resposta.encoding = "utf-8"
             if resposta.status_code == 200:
                 venda = resposta.json()
-                return venda["id"] 
+                return venda["id"]
             else:
                 st.warning(f"Aviso do servidor ao abrir carrinho: {resposta.text}")
                 return None
@@ -64,6 +67,7 @@ class ServicoCarrinhoAPI:
         }
         try:
             resposta = requests.post(f"{ServicoCarrinhoAPI.URL_BASE}/carrinho/{id_venda}/itens", json=payload, timeout=5)
+            resposta.encoding = "utf-8"
             return resposta.status_code, resposta.text
         except requests.exceptions.RequestException as e:
             return 500, f"Erro de conexão: {e}"
@@ -72,6 +76,7 @@ class ServicoCarrinhoAPI:
     def buscar_itens(id_venda):
         try:
             resposta = requests.get(f"{ServicoCarrinhoAPI.URL_BASE}/carrinho/{id_venda}/itens", timeout=5)
+            resposta.encoding = "utf-8"
             if resposta.status_code == 200:
                 return resposta.json()
             return []
@@ -83,6 +88,7 @@ class ServicoCarrinhoAPI:
     def limpar_carrinho(id_venda):
         try:
             resposta = requests.delete(f"{ServicoCarrinhoAPI.URL_BASE}/carrinho/{id_venda}/limpar", timeout=5)
+            resposta.encoding = "utf-8"
             return resposta.status_code, resposta.text
         except requests.exceptions.RequestException as e:
             return 500, f"Erro de conexão: {e}"
@@ -97,15 +103,16 @@ class ServicoCarrinhoAPI:
         }
         try:
             resposta = requests.post(f"{ServicoCarrinhoAPI.URL_BASE}/carrinho/{id_venda}/finalizar", json=payload, timeout=5)
+            resposta.encoding = "utf-8"
             return resposta.status_code, resposta.text
         except requests.exceptions.RequestException as e:
             return 500, f"Erro de conexão: {e}"
-
 
     @staticmethod
     def remover_item_especifico(id_venda, id_item):
         try:
             resposta = requests.delete(f"{ServicoCarrinhoAPI.URL_BASE}/carrinho/{id_venda}/itens/{id_item}", timeout=5)
+            resposta.encoding = "utf-8"
             return resposta.status_code, resposta.text
         except requests.exceptions.RequestException as e:
             return 500, f"Erro de conexão: {e}"
@@ -114,10 +121,10 @@ class ServicoCarrinhoAPI:
     def buscar_historico(id_cliente):
         try:
             resposta = requests.get(f"{ServicoCarrinhoAPI.URL_BASE}/cliente/{id_cliente}/historico", timeout=5)
+            resposta.encoding = "utf-8"
             if resposta.status_code == 200:
                 return resposta.json()
             elif resposta.status_code == 404:
-                # Retorna lista vazia se o cliente ainda não tiver compras
                 return []
             else:
                 st.warning(f"Aviso ao buscar histórico: {resposta.text}")
